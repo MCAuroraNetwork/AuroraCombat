@@ -92,10 +92,14 @@ public class CombatTag {
 
   public void removeTag() {
     t.cancel();
+    task.cancel();
 
     tags.remove(this);
+
     tagged.sendMessage(Lang.formatComponent("tag-removed", opponent.getName()));
     opponent.sendMessage(Lang.formatComponent("tag-removed", tagged.getName()));
+    tagged.sendActionBar(Lang.formatComponent("tag-removed-action-bar", tagged.getName()));
+    opponent.sendActionBar(Lang.formatComponent("tag-removed-action-bar", tagged.getName()));
   }
 
   public static void removeTags(Player p) {
