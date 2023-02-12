@@ -100,7 +100,7 @@ public class CombatTag {
   public static CombatTag getTag(Player p1, Player p2) {
     for (CombatTag tag : tags) {
       if ((tag.getTagged() == p1 || tag.getTagged() == p2) &&
-          (tag.getTagged() == p1 || tag.getOpponent() == p2)) {
+          (tag.getOpponent() == p1 || tag.getOpponent() == p2)) {
         return tag;
       }
     }
