@@ -17,7 +17,8 @@ public class CombatTag {
   private static final List<CombatTag> tags = new ArrayList<>();
   private final Player tagged;
   private final Player opponent;
-  private Timer t = new Timer();
+  private Timer t;
+  private BukkitTask task;
   private Long timeStarted;
 
   public CombatTag(Player tagged, Player opponent) {
@@ -47,33 +48,39 @@ public class CombatTag {
   }
 
   public void resetTimer() {
-    t.cancel();
-    t = new Timer();
-    timeStarted = System.currentTimeMillis();
+    if (t != null) {
+      t.cancel();
+    }
+    if (task != null) {
+      task.cancel();
+    }
 
+    timeStarted = System.currentTimeMillis();
     CombatTag tag = this;
+
+    t = new Timer();
     t.schedule(new TimerTask() {
                  @Override
                  public void run() {
                    tags.remove(tag);
                    tagged.sendMessage(Lang.formatComponent("tag-removed", opponent.getName()));
                    opponent.sendMessage(Lang.formatComponent("tag-removed", tagged.getName()));
-                   tagged.sendActionBar(Lang.formatComponent("tag-removed", tagged.getName()));
-                   opponent.sendActionBar(Lang.formatComponent("tag-removed", tagged.getName()));
+                   tagged.sendActionBar(Lang.formatComponent("tag-removed-action-bar", tagged.getName()));
+                   opponent.sendActionBar(Lang.formatComponent("tag-removed-action-bar", tagged.getName()));
                    this.cancel();
                  }
                }, Config.get().getInt("combat-tag.duration")
     );
 
-    new BukkitRunnable() {
+    task = new BukkitRunnable() {
       int seconds = Config.get().getInt("combat-tag.duration") / 1000;
       @Override
       public void run() {
         if ((seconds -= 1) == 0) {
           this.cancel();
         } else {
-          tagged.sendActionBar(Lang.formatComponent("tagged-by", opponent.getName(), seconds));
-          opponent.sendActionBar(Lang.formatComponent("tagged-by", tagged.getName(), seconds));
+          tagged.sendActionBar(Lang.formatComponent("tagged-action-bar", opponent.getName(), seconds));
+          opponent.sendActionBar(Lang.formatComponent("tagged-action-bar", tagged.getName(), seconds));
         }
       }
     }.runTaskTimer(AuroraCombat.INSTANCE, 0, 20);
