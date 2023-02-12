@@ -20,7 +20,7 @@ public class PlayerKilledByPlayerEvent extends PlayerDamagedByPlayerEvent implem
   private final PlayerDeathEvent deathEvent;
 
   public PlayerKilledByPlayerEvent(PlayerDamagedByPlayerEvent damage, PlayerDeathEvent deathEvent) {
-    super(damage.getPlayer(), deathEvent.getEntity().getLastDamageCause());
+    super(damage);
     this.deathEvent = deathEvent;
   }
 

@@ -1,5 +1,6 @@
 package club.aurorapvp.listeners;
 
+import club.aurorapvp.AuroraCombat;
 import club.aurorapvp.events.PlayerDamagedByPlayerEvent;
 import club.aurorapvp.events.PlayerKilledByPlayerEvent;
 import club.aurorapvp.modules.CombatTag;
@@ -58,6 +59,7 @@ public class Events implements Listener {
 
   @EventHandler
   public void onKilledByPlayer(PlayerKilledByPlayerEvent event) {
+    AuroraCombat.LOGGER.info(event.getDamager().getName() + 1);
     Rating.changeRating(event.getPlayer(), event.getDamager());
     new DeathMessage(event);
   }

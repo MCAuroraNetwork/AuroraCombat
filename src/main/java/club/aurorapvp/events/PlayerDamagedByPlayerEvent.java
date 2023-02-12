@@ -23,9 +23,11 @@ public class PlayerDamagedByPlayerEvent extends Event implements Cancellable {
   private final Player player;
   private Player damager;
   private Object weapon;
+  private final EntityDamageEvent damage;
 
   public PlayerDamagedByPlayerEvent(Player p, EntityDamageEvent damage) {
     this.player = p;
+    this.damage = damage;
     this.damageCause = damage.getCause();
 
     if (p.isDead()) {
@@ -64,40 +66,12 @@ public class PlayerDamagedByPlayerEvent extends Event implements Cancellable {
   }
 
   public PlayerDamagedByPlayerEvent(Player p, EntityDamageEvent damage, PlayerDeathEvent death) {
+    PlayerDamagedByPlayerEvent event = new PlayerDamagedByPlayerEvent(p, damage);
     this.player = p;
-    this.damageCause = damage.getCause();
-
-    switch (damage.getCause()) {
-      case ENTITY_ATTACK, ENTITY_SWEEP_ATTACK -> {
-        Player damager = Events.lastAttackedOtherPlayer.get(p);
-
-        if (damager != null) {
-          this.damager = damager;
-          this.weapon = damager.getInventory().getItemInMainHand();
-        }
-      }
-
-      case ENTITY_EXPLOSION -> {
-        if (Events.lastDamagedByCrystal.containsKey(p)) {
-          EnderCrystal crystalKiller = Events.lastDamagedByCrystal.get(p);
-          if (Events.lastKilledCrystal.containsKey(crystalKiller)) {
-            this.damager = Events.lastKilledCrystal.get(crystalKiller);
-            this.weapon = crystalKiller;
-          }
-        }
-      }
-
-      case BLOCK_EXPLOSION -> {
-        if (Events.lastDamagedByBlock.containsKey(p)) {
-          this.damager = Events.lastInteractedWithBlock;
-          this.weapon = Events.lastExplodedBlock;
-        }
-      }
-      default -> {
-        setCancelled(true);
-        return;
-      }
-    }
+    this.damage = event.getDamage();
+    this.damager = event.getDamager();
+    this.damageCause = event.getDamageCause();
+    this.weapon = event.getWeapon();
 
     if (CombatTag.isTagged(p)) {
       Player p1 = CombatTag.getRecentTag(p).getTagged();
@@ -113,12 +87,24 @@ public class PlayerDamagedByPlayerEvent extends Event implements Cancellable {
     Bukkit.getPluginManager().callEvent(new PlayerKilledByPlayerEvent(this, death));
   }
 
+  public PlayerDamagedByPlayerEvent(PlayerDamagedByPlayerEvent damage) {
+    this.player = damage.getPlayer();
+    this.damage = damage.getDamage();
+    this.damager = damage.getDamager();
+    this.damageCause = damage.getDamageCause();
+    this.weapon = damage.getWeapon();
+  }
+
   public EntityDamageEvent.DamageCause getDamageCause() {
     return damageCause;
   }
 
   public Object getWeapon() {
     return weapon;
+  }
+
+  public EntityDamageEvent getDamage() {
+    return damage;
   }
 
   public String getWeaponName() {
