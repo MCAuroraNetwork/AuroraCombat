@@ -6,7 +6,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.EnderCrystal;
-import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
@@ -14,7 +13,6 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.inventory.ItemStack;
-import org.checkerframework.checker.units.qual.C;
 import org.jetbrains.annotations.NotNull;
 
 public class PlayerDamagedByPlayerEvent extends Event implements Cancellable {
@@ -23,6 +21,7 @@ public class PlayerDamagedByPlayerEvent extends Event implements Cancellable {
   private final Player player;
   private Player damager;
   private Object weapon;
+
   public PlayerDamagedByPlayerEvent(Player p, EntityDamageEvent damage) {
     this.player = p;
 
@@ -56,7 +55,8 @@ public class PlayerDamagedByPlayerEvent extends Event implements Cancellable {
           this.damager = Events.lastInteractedWithBlock;
           this.weapon = Events.lastExplodedBlock;
         }
-      } default -> setCancelled(true);
+      }
+      default -> setCancelled(true);
     }
   }
 
@@ -88,6 +88,10 @@ public class PlayerDamagedByPlayerEvent extends Event implements Cancellable {
           this.damager = Events.lastInteractedWithBlock;
           this.weapon = Events.lastExplodedBlock;
         }
+      }
+      default -> {
+        setCancelled(true);
+        return;
       }
     }
 
