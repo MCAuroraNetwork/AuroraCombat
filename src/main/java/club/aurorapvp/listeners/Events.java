@@ -45,7 +45,8 @@ public class Events implements Listener {
   @EventHandler
   public void onPlayerDamage(EntityDamageEvent event) {
     if (event.getCause() == EntityDamageEvent.DamageCause.BLOCK_EXPLOSION) {
-      Bukkit.getPluginManager().callEvent(new PlayerDamagedByPlayerEvent((Player) event.getEntity(), event));
+      Bukkit.getPluginManager()
+          .callEvent(new PlayerDamagedByPlayerEvent((Player) event.getEntity(), event));
     }
   }
 
@@ -65,17 +66,21 @@ public class Events implements Listener {
     if (event.getEntity() instanceof EnderCrystal && event.getDamager() instanceof Player) {
       lastKilledCrystal.clear();
       lastKilledCrystal.put((EnderCrystal) event.getEntity(), (Player) event.getDamager());
-      Bukkit.getPluginManager().callEvent(new PlayerDamagedByPlayerEvent((Player) event.getEntity(), event));
+      Bukkit.getPluginManager()
+          .callEvent(new PlayerDamagedByPlayerEvent((Player) event.getEntity(), event));
     } else if (event.getEntity() instanceof Player && event.getDamager() instanceof EnderCrystal) {
       if (lastKilledCrystal.get((EnderCrystal) event.getDamager()) != event.getEntity()) {
         lastDamagedByCrystal.clear();
         lastDamagedByCrystal.put((Player) event.getEntity(), (EnderCrystal) event.getDamager());
-        Bukkit.getPluginManager().callEvent(new PlayerDamagedByPlayerEvent((Player) event.getEntity(), event));
+        Bukkit.getPluginManager()
+            .callEvent(new PlayerDamagedByPlayerEvent((Player) event.getEntity(), event));
       }
-    } if (event.getDamager() instanceof Player) {
+    }
+    if (event.getDamager() instanceof Player) {
       lastAttackedOtherPlayer.clear();
       lastAttackedOtherPlayer.put((Player) event.getEntity(), (Player) event.getDamager());
-      Bukkit.getPluginManager().callEvent(new PlayerDamagedByPlayerEvent((Player) event.getEntity(), event));
+      Bukkit.getPluginManager()
+          .callEvent(new PlayerDamagedByPlayerEvent((Player) event.getEntity(), event));
     }
   }
 

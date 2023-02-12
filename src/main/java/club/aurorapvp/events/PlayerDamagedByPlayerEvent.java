@@ -1,6 +1,7 @@
 package club.aurorapvp.events;
 
 import club.aurorapvp.listeners.Events;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.EnderCrystal;
@@ -48,6 +49,10 @@ public class PlayerDamagedByPlayerEvent extends Event implements Cancellable {
           this.weapon = Events.lastExplodedBlock;
         }
       } default -> setCancelled(true);
+    }
+
+    if (p.isDead()) {
+      Bukkit.getPluginManager().callEvent(new PlayerKilledByPlayerEvent(this));
     }
   }
 
