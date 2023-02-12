@@ -25,6 +25,7 @@ public class Lang {
     DEFAULTS.put("points-changed", "prefix <gradient:#FFAA00:#FF55FF>Your ELO changed by %s points!");
     DEFAULTS.put("tagged", "prefix <gradient:#FFAA00:#FF55FF>You have been tagged by %1$s for %2$s seconds!");
     DEFAULTS.put("tag-removed", "prefix <gradient:#FFAA00:#FF55FF>You are no longer tagged by %s!");
+    DEFAULTS.put("tagged-by", "<gradient:#FFAA00:#FF55FF>You are tagged by %1$s for %2$s more seconds");
 
     for (String path : DEFAULTS.keySet()) {
       if (!get().contains(path) || get().getString(path) == null) {

@@ -1,15 +1,17 @@
 package club.aurorapvp.modules;
 
+import club.aurorapvp.AuroraCombat;
 import club.aurorapvp.configs.Config;
 import club.aurorapvp.configs.Lang;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitTask;
 
 public class CombatTag {
   private static final List<CombatTag> tags = new ArrayList<>();
@@ -25,23 +27,14 @@ public class CombatTag {
     if (getTag(tagged, opponent) != null) {
       getTag(tagged, opponent).resetTimer();
     } else {
-      tagged.sendMessage(Lang.formatComponent("tagged", opponent.getName(), (Config.get().getInt("combat-tag.duration") / 1000)));
-      opponent.sendMessage(Lang.formatComponent("tagged", tagged.getName(), (Config.get().getInt("combat-tag.duration") / 1000)));
+      tagged.sendMessage(Lang.formatComponent("tagged", opponent.getName(),
+          (Config.get().getInt("combat-tag.duration") / 1000)));
+      opponent.sendMessage(Lang.formatComponent("tagged", tagged.getName(),
+          (Config.get().getInt("combat-tag.duration") / 1000)));
 
-      CombatTag tag = this;
       tags.add(this);
-      timeStarted = System.currentTimeMillis();
 
-      t.schedule(new TimerTask() {
-                             @Override
-                             public void run() {
-                               tags.remove(tag);
-                               tagged.sendMessage(Lang.formatComponent("tag-removed", opponent.getName()));
-                               opponent.sendMessage(Lang.formatComponent("tag-removed", tagged.getName()));
-                               this.cancel();
-                             }
-                           }, Config.get().getInt("combat-tag.duration")
-      );
+      resetTimer();
     }
   }
 
@@ -65,10 +58,25 @@ public class CombatTag {
                    tags.remove(tag);
                    tagged.sendMessage(Lang.formatComponent("tag-removed", opponent.getName()));
                    opponent.sendMessage(Lang.formatComponent("tag-removed", tagged.getName()));
+                   tagged.sendActionBar(Lang.formatComponent("tag-removed", tagged.getName()));
+                   opponent.sendActionBar(Lang.formatComponent("tag-removed", tagged.getName()));
                    this.cancel();
                  }
                }, Config.get().getInt("combat-tag.duration")
     );
+
+    new BukkitRunnable() {
+      int seconds = Config.get().getInt("combat-tag.duration") / 1000;
+      @Override
+      public void run() {
+        if ((seconds -= 1) == 0) {
+          this.cancel();
+        } else {
+          tagged.sendActionBar(Lang.formatComponent("tagged-by", opponent.getName(), seconds));
+          opponent.sendActionBar(Lang.formatComponent("tagged-by", tagged.getName(), seconds));
+        }
+      }
+    }.runTaskTimer(AuroraCombat.INSTANCE, 0, 20);
   }
 
   public int timeRemaining() {
