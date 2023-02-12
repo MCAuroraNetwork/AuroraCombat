@@ -1,6 +1,6 @@
 package club.aurorapvp.events;
 
-import club.aurorapvp.listeners.Events;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.EnderCrystal;
@@ -8,24 +8,31 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
-import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 public class PlayerKilledByPlayerEvent extends Event implements Cancellable {
   private static final HandlerList HANDLERS = new HandlerList();
   private boolean isCancelled = false;
+  private final PlayerDeathEvent deathEvent;
   private final Player player;
   private final Player killer;
   private final Object weapon;
-  public PlayerKilledByPlayerEvent(PlayerDamagedByPlayerEvent damage) {
+
+  public PlayerKilledByPlayerEvent(PlayerDamagedByPlayerEvent damage, PlayerDeathEvent deathEvent) {
     this.player = damage.getPlayer();
     this.weapon = damage.getWeapon();
     this.killer = damage.getDamager();
+    this.deathEvent = deathEvent;
   }
 
   public Object getWeapon() {
     return weapon;
+  }
+
+  public void deathMessage(Component message) {
+    deathEvent.deathMessage(message);
   }
 
   public Material getWeaponType() {

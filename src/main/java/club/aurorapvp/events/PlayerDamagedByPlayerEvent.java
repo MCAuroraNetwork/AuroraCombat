@@ -1,6 +1,7 @@
 package club.aurorapvp.events;
 
 import club.aurorapvp.listeners.Events;
+import club.aurorapvp.modules.CombatTag;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -11,7 +12,9 @@ import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.inventory.ItemStack;
+import org.checkerframework.checker.units.qual.C;
 import org.jetbrains.annotations.NotNull;
 
 public class PlayerDamagedByPlayerEvent extends Event implements Cancellable {
@@ -55,10 +58,51 @@ public class PlayerDamagedByPlayerEvent extends Event implements Cancellable {
         }
       } default -> setCancelled(true);
     }
+  }
 
-    if (p.isDead()) {
-      Bukkit.getPluginManager().callEvent(new PlayerKilledByPlayerEvent(this));
+  public PlayerDamagedByPlayerEvent(Player p, EntityDamageEvent damage, PlayerDeathEvent death) {
+    this.player = p;
+
+    switch (damage.getCause()) {
+      case ENTITY_ATTACK, ENTITY_SWEEP_ATTACK -> {
+        Player damager = Events.lastAttackedOtherPlayer.get(p);
+
+        if (damager != null) {
+          this.damager = damager;
+          this.weapon = damager.getInventory().getItemInMainHand();
+        }
+      }
+
+      case ENTITY_EXPLOSION -> {
+        if (Events.lastDamagedByCrystal.containsKey(p)) {
+          EnderCrystal crystalKiller = Events.lastDamagedByCrystal.get(p);
+          if (Events.lastKilledCrystal.containsKey(crystalKiller)) {
+            this.damager = Events.lastKilledCrystal.get(crystalKiller);
+            this.weapon = crystalKiller;
+          }
+        }
+      }
+
+      case BLOCK_EXPLOSION -> {
+        if (Events.lastDamagedByBlock.containsKey(p)) {
+          this.damager = Events.lastInteractedWithBlock;
+          this.weapon = Events.lastExplodedBlock;
+        }
+      }
     }
+
+    if (CombatTag.isTagged(p)) {
+      Player p1 = CombatTag.getRecentTag(p).getTagged();
+      Player p2 = CombatTag.getRecentTag(p).getOpponent();
+
+      if (p == p1) {
+        damager = p2;
+      } else {
+        damager = p1;
+      }
+    }
+
+    Bukkit.getPluginManager().callEvent(new PlayerKilledByPlayerEvent(this, death));
   }
 
   public Object getWeapon() {

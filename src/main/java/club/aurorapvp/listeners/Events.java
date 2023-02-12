@@ -1,7 +1,9 @@
 package club.aurorapvp.listeners;
 
 import club.aurorapvp.events.PlayerDamagedByPlayerEvent;
+import club.aurorapvp.events.PlayerKilledByPlayerEvent;
 import club.aurorapvp.modules.CombatTag;
+import club.aurorapvp.modules.DeathMessage;
 import club.aurorapvp.modules.Rating;
 import java.util.HashMap;
 import java.util.Map;
@@ -34,11 +36,15 @@ public class Events implements Listener {
   public void onPlayerQuit(PlayerQuitEvent event) {
     if (CombatTag.isTagged(event.getPlayer())) {
       event.getPlayer().setHealth(0);
+      CombatTag.removeTags(event.getPlayer());
     }
   }
 
   @EventHandler
   public void onPlayerDeath(PlayerDeathEvent event) {
+    Bukkit.getPluginManager().callEvent(
+        new PlayerDamagedByPlayerEvent(event.getPlayer(), event.getPlayer().getLastDamageCause(),
+            event));
     CombatTag.removeTags(event.getPlayer());
   }
 
@@ -48,6 +54,12 @@ public class Events implements Listener {
       Bukkit.getPluginManager()
           .callEvent(new PlayerDamagedByPlayerEvent((Player) event.getEntity(), event));
     }
+  }
+
+  @EventHandler
+  public void onKilledByPlayer(PlayerKilledByPlayerEvent event) {
+    Rating.changeRating(event.getPlayer(), event.getKiller());
+    new DeathMessage(event);
   }
 
   @EventHandler
@@ -62,8 +74,6 @@ public class Events implements Listener {
     if (event.getEntity() instanceof EnderCrystal && event.getDamager() instanceof Player) {
       lastKilledCrystal.clear();
       lastKilledCrystal.put((EnderCrystal) event.getEntity(), (Player) event.getDamager());
-      Bukkit.getPluginManager()
-          .callEvent(new PlayerDamagedByPlayerEvent((Player) event.getEntity(), event));
     } else if (event.getEntity() instanceof Player && event.getDamager() instanceof EnderCrystal) {
       if (lastKilledCrystal.get((EnderCrystal) event.getDamager()) != event.getEntity()) {
         lastDamagedByCrystal.clear();
