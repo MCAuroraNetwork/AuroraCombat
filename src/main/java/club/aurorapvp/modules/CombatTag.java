@@ -3,6 +3,8 @@ package club.aurorapvp.modules;
 import club.aurorapvp.configs.Config;
 import club.aurorapvp.configs.Lang;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Timer;
@@ -13,7 +15,8 @@ public class CombatTag {
   private static final List<CombatTag> tags = new ArrayList<>();
   private final Player tagged;
   private final Player opponent;
-  private final Timer t = new Timer();;
+  private Timer t = new Timer();
+  private Long timeStarted;
 
   public CombatTag(Player tagged, Player opponent) {
     this.tagged = tagged;
@@ -27,6 +30,7 @@ public class CombatTag {
 
       CombatTag tag = this;
       tags.add(this);
+      timeStarted = System.currentTimeMillis();
 
       t.schedule(new TimerTask() {
                              @Override
@@ -51,6 +55,8 @@ public class CombatTag {
 
   public void resetTimer() {
     t.cancel();
+    t = new Timer();
+    timeStarted = System.currentTimeMillis();
 
     CombatTag tag = this;
     t.schedule(new TimerTask() {
@@ -63,6 +69,10 @@ public class CombatTag {
                  }
                }, Config.get().getInt("combat-tag.duration")
     );
+  }
+
+  public int timeRemaining() {
+    return (int) (timeStarted + 15000 - System.currentTimeMillis());
   }
 
   public void removeTag() {
@@ -83,7 +93,7 @@ public class CombatTag {
     List<CombatTag> tagList = new ArrayList<>();
 
     for (CombatTag tag : tags) {
-      if ((tag.getTagged() == p || tag.getTagged() == p)) {
+      if ((tag.getTagged() == p || tag.getOpponent() == p)) {
         tagList.add(tag);
       }
     }
@@ -95,6 +105,23 @@ public class CombatTag {
     }
 
     return combatTags;
+  }
+
+  public static CombatTag getRecentTag(Player p) {
+    HashMap<Integer, CombatTag> tagTimes = new HashMap<>();
+    List<Integer> times = new ArrayList<>();
+
+
+    for (CombatTag tag : tags) {
+      if ((tag.getTagged() == p || tag.getOpponent() == p)) {
+        times.add(tag.timeRemaining());
+        tagTimes.put(tag.timeRemaining(), tag);
+      }
+    }
+
+    Collections.sort(times);
+
+    return tagTimes.get(times.get(0));
   }
 
   public static CombatTag getTag(Player p1, Player p2) {
