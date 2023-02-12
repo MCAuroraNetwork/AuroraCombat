@@ -23,6 +23,11 @@ public class PlayerDamagedByPlayerEvent extends Event implements Cancellable {
   public PlayerDamagedByPlayerEvent(Player p, EntityDamageEvent damage) {
     this.player = p;
 
+    if (p.isDead()) {
+      setCancelled(true);
+      return;
+    }
+
     switch (damage.getCause()) {
       case ENTITY_ATTACK, ENTITY_SWEEP_ATTACK -> {
         Player damager = Events.lastAttackedOtherPlayer.get(p);

@@ -52,12 +52,8 @@ public class Events implements Listener {
 
   @EventHandler
   public void onDamagedByPlayer(PlayerDamagedByPlayerEvent event) {
-    if (!event.damagedBySelf()) {
-      if (event.getPlayer().isDead()) {
-        Rating.changeRating(event.getPlayer(), event.getDamager());
-      } else if (!event.isCancelled()) {
-        new CombatTag(event.getPlayer(), event.getDamager());
-      }
+    if (!event.damagedBySelf() && !event.getPlayer().isDead()) {
+      new CombatTag(event.getPlayer(), event.getDamager());
     }
   }
 
@@ -75,8 +71,7 @@ public class Events implements Listener {
         Bukkit.getPluginManager()
             .callEvent(new PlayerDamagedByPlayerEvent((Player) event.getEntity(), event));
       }
-    }
-    if (event.getDamager() instanceof Player) {
+    } else if (event.getDamager() instanceof Player) {
       lastAttackedOtherPlayer.clear();
       lastAttackedOtherPlayer.put((Player) event.getEntity(), (Player) event.getDamager());
       Bukkit.getPluginManager()
