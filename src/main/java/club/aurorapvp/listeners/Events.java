@@ -58,7 +58,7 @@ public class Events implements Listener {
 
   @EventHandler
   public void onKilledByPlayer(PlayerKilledByPlayerEvent event) {
-    Rating.changeRating(event.getPlayer(), event.getKiller());
+    Rating.changeRating(event.getPlayer(), event.getDamager());
     new DeathMessage(event);
   }
 
