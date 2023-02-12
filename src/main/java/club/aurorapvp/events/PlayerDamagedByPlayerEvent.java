@@ -1,5 +1,6 @@
 package club.aurorapvp.events;
 
+import club.aurorapvp.AuroraCombat;
 import club.aurorapvp.listeners.Events;
 import club.aurorapvp.modules.CombatTag;
 import org.bukkit.Bukkit;
@@ -18,12 +19,14 @@ import org.jetbrains.annotations.NotNull;
 public class PlayerDamagedByPlayerEvent extends Event implements Cancellable {
   private static final HandlerList HANDLERS = new HandlerList();
   private boolean isCancelled = false;
+  private final EntityDamageEvent.DamageCause damageCause;
   private final Player player;
   private Player damager;
   private Object weapon;
 
   public PlayerDamagedByPlayerEvent(Player p, EntityDamageEvent damage) {
     this.player = p;
+    this.damageCause = damage.getCause();
 
     if (p.isDead()) {
       setCancelled(true);
@@ -62,6 +65,7 @@ public class PlayerDamagedByPlayerEvent extends Event implements Cancellable {
 
   public PlayerDamagedByPlayerEvent(Player p, EntityDamageEvent damage, PlayerDeathEvent death) {
     this.player = p;
+    this.damageCause = damage.getCause();
 
     switch (damage.getCause()) {
       case ENTITY_ATTACK, ENTITY_SWEEP_ATTACK -> {
@@ -109,8 +113,24 @@ public class PlayerDamagedByPlayerEvent extends Event implements Cancellable {
     Bukkit.getPluginManager().callEvent(new PlayerKilledByPlayerEvent(this, death));
   }
 
+  public EntityDamageEvent.DamageCause getDamageCause() {
+    return damageCause;
+  }
+
   public Object getWeapon() {
     return weapon;
+  }
+
+  public String getWeaponName() {
+    if (weapon instanceof EnderCrystal) {
+      return ((EnderCrystal) weapon).getName();
+    } else if (weapon instanceof Block) {
+      return ((Block) weapon).getType().name().replace("_", " ").toLowerCase();
+    } else if (weapon instanceof ItemStack) {
+      return AuroraCombat.COMPONENT_SERIALIZER.serialize(((ItemStack) weapon).getItemMeta().displayName());
+    } else {
+      return null;
+    }
   }
 
   public Material getWeaponType() {
