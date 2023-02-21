@@ -42,7 +42,6 @@ public class Rating {
   }
 
   public static void changeRating(Player deadPlayer, Player killer) {
-    AuroraCombat.LOGGER.info(killer.getName() + 0);
     Rating playerRating = Rating.getRating(deadPlayer);
     Rating killerRating = Rating.getRating(killer);
 

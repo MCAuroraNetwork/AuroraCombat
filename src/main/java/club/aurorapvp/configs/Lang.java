@@ -13,6 +13,11 @@ public class Lang {
   private static final File FILE = new File(AuroraCombat.DATA_FOLDER, "lang.yml");
   private static YamlConfiguration lang;
 
+  public Lang() {
+    reload();
+    generateDefaults();
+  }
+
   public static void generateDefaults() {
     for (Object path : get().getKeys(false).toArray()) {
       if (get().getString((String) path).startsWith("~") &&

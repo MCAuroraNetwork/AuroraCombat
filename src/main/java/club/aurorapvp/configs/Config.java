@@ -11,6 +11,11 @@ public class Config {
   private static final File FILE = new File(AuroraCombat.DATA_FOLDER, "config.yml");
   private static YamlConfiguration config;
 
+  public Config() {
+    reload();
+    generateDefaults();
+  }
+
   public static void generateDefaults() {
     DEFAULTS.put("elo.default-points", 1000);
     DEFAULTS.put("elo.max-change", 32);

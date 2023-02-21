@@ -1,17 +1,9 @@
-package club.aurorapvp.events;
+package club.aurorapvp.events.custom;
 
-import club.aurorapvp.modules.DeathMessage;
 import net.kyori.adventure.text.Component;
-import org.bukkit.Material;
-import org.bukkit.block.Block;
-import org.bukkit.entity.EnderCrystal;
-import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
-import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
-import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
-import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 public class PlayerKilledByPlayerEvent extends PlayerDamagedByPlayerEvent implements Cancellable {

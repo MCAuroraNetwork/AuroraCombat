@@ -1,7 +1,7 @@
-package club.aurorapvp.events;
+package club.aurorapvp.events.custom;
 
 import club.aurorapvp.AuroraCombat;
-import club.aurorapvp.listeners.Events;
+import club.aurorapvp.events.listeners.Damage;
 import club.aurorapvp.modules.CombatTag;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -37,7 +37,7 @@ public class PlayerDamagedByPlayerEvent extends Event implements Cancellable {
 
     switch (damage.getCause()) {
       case ENTITY_ATTACK, ENTITY_SWEEP_ATTACK -> {
-        Player damager = Events.lastAttackedOtherPlayer.get(p);
+        Player damager = Damage.lastAttackedOtherPlayer.get(p);
 
         if (damager != null) {
           this.damager = damager;
@@ -46,19 +46,19 @@ public class PlayerDamagedByPlayerEvent extends Event implements Cancellable {
       }
 
       case ENTITY_EXPLOSION -> {
-        if (Events.lastDamagedByCrystal.containsKey(p)) {
-          EnderCrystal crystalKiller = Events.lastDamagedByCrystal.get(p);
-          if (Events.lastKilledCrystal.containsKey(crystalKiller)) {
-            this.damager = Events.lastKilledCrystal.get(crystalKiller);
+        if (Damage.lastDamagedByCrystal.containsKey(p)) {
+          EnderCrystal crystalKiller = Damage.lastDamagedByCrystal.get(p);
+          if (Damage.lastKilledCrystal.containsKey(crystalKiller)) {
+            this.damager = Damage.lastKilledCrystal.get(crystalKiller);
             this.weapon = crystalKiller;
           }
         }
       }
 
       case BLOCK_EXPLOSION -> {
-        if (Events.lastDamagedByBlock.containsKey(p)) {
-          this.damager = Events.lastInteractedWithBlock;
-          this.weapon = Events.lastExplodedBlock;
+        if (Damage.lastDamagedByBlock.containsKey(p)) {
+          this.damager = Damage.lastInteractedWithBlock;
+          this.weapon = Damage.lastExplodedBlock;
         }
       }
       default -> setCancelled(true);
