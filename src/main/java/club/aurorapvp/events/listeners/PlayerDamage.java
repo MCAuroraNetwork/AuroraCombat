@@ -59,7 +59,7 @@ public class PlayerDamage implements Listener {
     }
 
     if (event.getDamager() instanceof Player damager) {
-      setDamageInformation(damager, damaged, attacker.getInventory().getItemInMainHand());
+      setDamageInformation(damager, damaged, damager.getInventory().getItemInMainHand());
 
       Bukkit.getPluginManager()
           .callEvent(new PlayerDamagedByPlayerEvent(DamageType.MELEE));
