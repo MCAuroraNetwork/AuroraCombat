@@ -9,7 +9,7 @@ import org.bukkit.event.Listener;
 public class BlockFallDamage implements Listener {
   private static final Set<Player> inVulnerable = new HashSet<>();
   public static boolean shouldTakeDamage(Player p) {
-    return inVulnerable.contains(p);
+    return !inVulnerable.contains(p);
   }
 
   public static void setInVulnerable(Player p) {
