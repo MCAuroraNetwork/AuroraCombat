@@ -45,7 +45,8 @@ public class PlayerDamage implements Listener {
 
     if (event.getCause() == EntityDamageEvent.DamageCause.PROJECTILE) {
       if (event.getDamager() == lastFiredProjectile) {
-        setDamageInformation((Player) lastFiredProjectile.getShooter(), damaged, event.getDamager());
+        setDamageInformation((Player) lastFiredProjectile.getShooter(), damaged,
+            event.getDamager());
 
         Bukkit.getPluginManager().callEvent(new PlayerDamagedByPlayerEvent(DamageType.RANGED));
       }
@@ -88,19 +89,19 @@ public class PlayerDamage implements Listener {
       return;
     }
 
-    if (event.getClickedBlock().getBlockData() instanceof RespawnAnchor respawnAnchor) {
+    if (event.getClickedBlock() instanceof RespawnAnchor respawnAnchor) {
       if ((respawnAnchor.getCharges() >= 0 &&
           event.getPlayer().getInventory().getItemInMainHand().getType() != Material.GLOWSTONE) ||
           respawnAnchor.getCharges() >= 4) {
         lastExplodedBlock = event.getClickedBlock();
         lastInteractedWithBlock = event.getPlayer();
       }
+    }
 
-      if (event.getClickedBlock() instanceof Bed &&
-          event.getPlayer().getWorld().getEnvironment() != World.Environment.NORMAL) {
-        lastExplodedBlock = event.getClickedBlock();
-        lastInteractedWithBlock = event.getPlayer();
-      }
+    if (event.getClickedBlock() instanceof Bed &&
+        event.getPlayer().getWorld().getEnvironment() != World.Environment.NORMAL) {
+      lastExplodedBlock = event.getClickedBlock();
+      lastInteractedWithBlock = event.getPlayer();
     }
   }
 
