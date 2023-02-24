@@ -10,6 +10,7 @@ import org.bukkit.block.data.type.Bed;
 import org.bukkit.block.data.type.RespawnAnchor;
 import org.bukkit.entity.EnderCrystal;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -22,7 +23,7 @@ public class PlayerDamage implements Listener {
   public static Player attacked;
   public static Object weapon;
   private static Player lastCrystalDamager;
-  private static Player lastFiredProjectile;
+  private static Projectile lastFiredProjectile;
   private static Player lastInteractedWithBlock;
   private static Block lastExplodedBlock;
 
@@ -42,10 +43,9 @@ public class PlayerDamage implements Listener {
       return;
     }
 
-
     if (event.getCause() == EntityDamageEvent.DamageCause.PROJECTILE) {
       if (event.getDamager() == lastFiredProjectile) {
-        setDamageInformation(lastFiredProjectile, damaged, event.getDamager());
+        setDamageInformation((Player) lastFiredProjectile.getShooter(), damaged, event.getDamager());
 
         Bukkit.getPluginManager().callEvent(new PlayerDamagedByPlayerEvent(DamageType.RANGED));
       }
@@ -107,7 +107,7 @@ public class PlayerDamage implements Listener {
   @EventHandler
   public void onProjectileFired(ProjectileLaunchEvent event) {
     if (event.getEntity().getShooter() instanceof Player p) {
-      lastFiredProjectile = p;
+      lastFiredProjectile = event.getEntity();
     }
   }
 }
