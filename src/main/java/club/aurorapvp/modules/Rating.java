@@ -45,12 +45,14 @@ public class Rating {
     Rating playerRating = Rating.getRating(deadPlayer);
     Rating killerRating = Rating.getRating(killer);
 
+    assert playerRating != null;
+    assert killerRating != null;
     double EloChange = Rating.getELOChange(playerRating.getPoints(), killerRating.getPoints());
 
     playerRating.changePoints((int) Math.round(
-        Config.get().getInt("elo.max-change") * -(1 - EloChange)));
+        Config.get().getInt("elo.max-change") * EloChange));
     killerRating.changePoints((int) Math.round(
-        Config.get().getInt("elo.max-change") * -(0 - (1 - EloChange))));
+        Config.get().getInt("elo.max-change") * EloChange));
   }
 
   public static Rating getRating(Player p) {
@@ -73,6 +75,6 @@ public class Rating {
   }
 
   public static double getELOChange(int playerElo, int opponentElo) {
-    return 1.0 / (1 + Math.pow(10, (playerElo - opponentElo) / 400.0));
+    return -( 1 - (1.0 / (1 + ((playerElo - opponentElo) ^ 10) / 400.0)));
   }
 }

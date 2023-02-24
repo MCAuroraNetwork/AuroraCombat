@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 import java.util.Timer;
 import java.util.TimerTask;
 import org.bukkit.entity.Player;
@@ -26,7 +27,7 @@ public class CombatTag {
     this.opponent = opponent;
 
     if (getTag(tagged, opponent) != null) {
-      getTag(tagged, opponent).resetTimer();
+      Objects.requireNonNull(getTag(tagged, opponent)).resetTimer();
     } else {
       tagged.sendMessage(Lang.formatComponent("tagged", opponent.getName(),
           (Config.get().getInt("combat-tag.duration") / 1000)));

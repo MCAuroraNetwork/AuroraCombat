@@ -1,147 +1,26 @@
 package club.aurorapvp.events.custom;
 
-import club.aurorapvp.AuroraCombat;
-import club.aurorapvp.events.listeners.Damage;
-import club.aurorapvp.modules.CombatTag;
-import org.bukkit.Bukkit;
-import org.bukkit.Material;
-import org.bukkit.block.Block;
-import org.bukkit.entity.EnderCrystal;
-import org.bukkit.entity.Player;
+import club.aurorapvp.modules.DamageType;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
-import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.entity.PlayerDeathEvent;
-import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 public class PlayerDamagedByPlayerEvent extends Event implements Cancellable {
   private static final HandlerList HANDLERS = new HandlerList();
+  private final DamageType damageType;
   private boolean isCancelled = false;
-  private final EntityDamageEvent.DamageCause damageCause;
-  private final Player player;
-  private Player damager;
-  private Object weapon;
-  private final EntityDamageEvent damage;
 
-  public PlayerDamagedByPlayerEvent(Player p, EntityDamageEvent damage) {
-    this.player = p;
-    this.damage = damage;
-    this.damageCause = damage.getCause();
+  public PlayerDamagedByPlayerEvent(DamageType damageType) {
+    this.damageType = damageType;
 
-    if (p.isDead()) {
-      setCancelled(true);
-      return;
-    }
-
-    switch (damage.getCause()) {
-      case ENTITY_ATTACK, ENTITY_SWEEP_ATTACK -> {
-        Player damager = Damage.lastAttackedOtherPlayer.get(p);
-
-        if (damager != null) {
-          this.damager = damager;
-          this.weapon = damager.getInventory().getItemInMainHand();
-        }
-      }
-
-      case ENTITY_EXPLOSION -> {
-        if (Damage.lastDamagedByCrystal.containsKey(p)) {
-          EnderCrystal crystalKiller = Damage.lastDamagedByCrystal.get(p);
-          if (Damage.lastKilledCrystal.containsKey(crystalKiller)) {
-            this.damager = Damage.lastKilledCrystal.get(crystalKiller);
-            this.weapon = crystalKiller;
-          }
-        }
-      }
-
-      case BLOCK_EXPLOSION -> {
-        if (Damage.lastDamagedByBlock.containsKey(p)) {
-          this.damager = Damage.lastInteractedWithBlock;
-          this.weapon = Damage.lastExplodedBlock;
-        }
-      }
-      default -> setCancelled(true);
+    if (damageType.getAttacked().isDead()) {
+      new PlayerKilledByPlayerEvent(damageType);
     }
   }
 
-  public PlayerDamagedByPlayerEvent(Player p, EntityDamageEvent damage, PlayerDeathEvent death) {
-    PlayerDamagedByPlayerEvent event = new PlayerDamagedByPlayerEvent(p, damage);
-    this.player = p;
-    this.damage = event.getDamage();
-    this.damager = event.getDamager();
-    this.damageCause = event.getDamageCause();
-    this.weapon = event.getWeapon();
-
-    if (CombatTag.isTagged(p)) {
-      Player p1 = CombatTag.getRecentTag(p).getTagged();
-      Player p2 = CombatTag.getRecentTag(p).getOpponent();
-
-      if (p == p1) {
-        damager = p2;
-      } else {
-        damager = p1;
-      }
-    }
-
-    Bukkit.getPluginManager().callEvent(new PlayerKilledByPlayerEvent(this, death));
-  }
-
-  public PlayerDamagedByPlayerEvent(PlayerDamagedByPlayerEvent damage) {
-    this.player = damage.getPlayer();
-    this.damage = damage.getDamage();
-    this.damager = damage.getDamager();
-    this.damageCause = damage.getDamageCause();
-    this.weapon = damage.getWeapon();
-  }
-
-  public EntityDamageEvent.DamageCause getDamageCause() {
-    return damageCause;
-  }
-
-  public Object getWeapon() {
-    return weapon;
-  }
-
-  public EntityDamageEvent getDamage() {
-    return damage;
-  }
-
-  public String getWeaponName() {
-    if (weapon instanceof EnderCrystal) {
-      return ((EnderCrystal) weapon).getName();
-    } else if (weapon instanceof Block) {
-      return ((Block) weapon).getType().name().replace("_", " ").toLowerCase();
-    } else if (weapon instanceof ItemStack) {
-      return AuroraCombat.COMPONENT_SERIALIZER.serialize(((ItemStack) weapon).getItemMeta().displayName());
-    } else {
-      return null;
-    }
-  }
-
-  public Material getWeaponType() {
-    if (weapon instanceof EnderCrystal) {
-      return Material.END_CRYSTAL;
-    } else if (weapon instanceof Block) {
-      return ((Block) weapon).getType();
-    } else if (weapon instanceof ItemStack) {
-      return ((ItemStack) weapon).getType();
-    } else if (weapon instanceof Material) {
-      return (Material) weapon;
-    }
-    return null;
-  }
-
-  public boolean damagedBySelf() {
-    return player == damager;
-  }
-
-  public Player getPlayer() {
-    return player;
-  }
-
-  public Player getDamager() {
-    return damager;
+  public DamageType getDamageType() {
+    return damageType;
   }
 
   @Override

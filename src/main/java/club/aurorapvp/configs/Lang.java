@@ -4,6 +4,7 @@ import club.aurorapvp.AuroraCombat;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Objects;
 import net.kyori.adventure.text.Component;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -20,9 +21,10 @@ public class Lang {
 
   public static void generateDefaults() {
     for (Object path : get().getKeys(false).toArray()) {
-      if (get().getString((String) path).startsWith("~") &&
-          get().getString((String) path).endsWith("~")) {
-        PLACEHOLDERS.put((String) path, get().getString((String) path).replace("~", ""));
+      if (Objects.requireNonNull(get().getString((String) path)).startsWith("~") &&
+          Objects.requireNonNull(get().getString((String) path)).endsWith("~")) {
+        PLACEHOLDERS.put((String) path, Objects.requireNonNull(get().getString((String) path))
+            .replace("~", ""));
       }
     }
 
@@ -52,6 +54,7 @@ public class Lang {
   public static String getString(String message) {
     String pathString = get().getString(message);
     for (String placeholder : PLACEHOLDERS.keySet()) {
+      assert pathString != null;
       if (pathString.contains(placeholder)) {
         pathString = pathString.replace(placeholder,
             PLACEHOLDERS.get(placeholder));
@@ -62,6 +65,7 @@ public class Lang {
 
   public static Component formatComponent(String message, Object... args) {
     String pathString = get().getString(message);
+    assert pathString != null;
     for (String placeholder : PLACEHOLDERS.keySet()) {
       if (pathString.contains(placeholder)) {
         pathString = pathString.replace(placeholder,
@@ -76,6 +80,8 @@ public class Lang {
 
   public static Component getComponent(String message) {
     String pathString = get().getString(message);
+    assert pathString != null;
+
     for (String placeholder : PLACEHOLDERS.keySet()) {
       if (pathString.contains(placeholder)) {
         pathString = pathString.replace(placeholder,
