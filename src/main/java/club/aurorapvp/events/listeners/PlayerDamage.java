@@ -1,13 +1,16 @@
 package club.aurorapvp.events.listeners;
 
+import club.aurorapvp.AuroraCombat;
 import club.aurorapvp.events.custom.PlayerDamagedByPlayerEvent;
 import club.aurorapvp.modules.DamageType;
+import java.util.LinkedList;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.type.Bed;
 import org.bukkit.block.data.type.RespawnAnchor;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.EnderCrystal;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
@@ -17,13 +20,14 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.ProjectileLaunchEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.ItemStack;
 
 public class PlayerDamage implements Listener {
   public static Player attacker;
   public static Player attacked;
   public static Object weapon;
   private static Player lastCrystalDamager;
-  private static Projectile lastFiredProjectile;
+  private static final LinkedList<Projectile> lastFiredProjectiles = new LinkedList<>();
   private static Player lastInteractedWithBlock;
   private static Block lastExplodedBlock;
 
@@ -44,11 +48,13 @@ public class PlayerDamage implements Listener {
     }
 
     if (event.getCause() == EntityDamageEvent.DamageCause.PROJECTILE) {
-      if (event.getDamager() == lastFiredProjectile) {
-        setDamageInformation((Player) lastFiredProjectile.getShooter(), damaged,
-            event.getDamager());
+      for (Projectile projectile : lastFiredProjectiles) {
+        if (event.getDamager() == projectile) {
+          setDamageInformation((Player) projectile.getShooter(), damaged,
+              event.getDamager());
 
-        Bukkit.getPluginManager().callEvent(new PlayerDamagedByPlayerEvent(DamageType.RANGED));
+          Bukkit.getPluginManager().callEvent(new PlayerDamagedByPlayerEvent(DamageType.RANGED));
+        }
       }
     }
 
@@ -108,7 +114,12 @@ public class PlayerDamage implements Listener {
   @EventHandler
   public void onProjectileFired(ProjectileLaunchEvent event) {
     if (event.getEntity().getShooter() instanceof Player p) {
-      lastFiredProjectile = event.getEntity();
+      ItemStack weapon = p.getInventory().getItemInMainHand();
+      if (lastFiredProjectiles.size() >= 3 || !weapon.containsEnchantment(Enchantment.MULTISHOT)) {
+        lastFiredProjectiles.clear();
+      }
+
+      lastFiredProjectiles.add(event.getEntity());
     }
   }
 }
