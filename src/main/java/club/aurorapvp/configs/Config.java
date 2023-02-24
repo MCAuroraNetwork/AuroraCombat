@@ -21,6 +21,7 @@ public class Config {
     DEFAULTS.put("elo.max-change", 32);
     DEFAULTS.put("combat-tag.duration", 15000);
     DEFAULTS.put("combat-tag.allow-commands", false);
+    DEFAULTS.put("misc.fall-damage.enable-first", false);
 
     for (String path : DEFAULTS.keySet()) {
       if (!get().contains(path) || get().getString(path) == null) {
