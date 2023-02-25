@@ -48,9 +48,9 @@ public class PlayerDamage implements Listener {
       return;
     }
 
-    if (event.getCause() == EntityDamageEvent.DamageCause.PROJECTILE) {
-      for (Projectile projectile : lastFiredProjectiles) {
-        if (event.getDamager() == projectile) {
+    if (event.getDamager() instanceof Projectile projectile) {
+      for (Projectile firedProjectile : lastFiredProjectiles) {
+        if (projectile == firedProjectile) {
           setDamageInformation((Player) projectile.getShooter(), damaged,
               event.getDamager());
 
