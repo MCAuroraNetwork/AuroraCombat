@@ -1,18 +1,17 @@
 package club.aurorapvp.enums;
 
-import club.aurorapvp.events.listeners.PlayerDamage;
-import org.bukkit.entity.Player;
+import club.aurorapvp.events.listeners.Player;
 
 public enum DamageType {
-  MELEE(PlayerDamage.attacked, PlayerDamage.attacker, PlayerDamage.weapon),
-  MAGIC(PlayerDamage.attacked, PlayerDamage.attacker, PlayerDamage.weapon),
-  RANGED(PlayerDamage.attacked, PlayerDamage.attacker, PlayerDamage.weapon),
-  EXPLOSION(PlayerDamage.attacked, PlayerDamage.attacker, PlayerDamage.weapon);
-  private final Player attacked;
-  private final Player attacker;
+  MELEE(Player.attacked, Player.attacker, Player.weapon),
+  MAGIC(Player.attacked, Player.attacker, Player.weapon),
+  RANGED(Player.attacked, Player.attacker, Player.weapon),
+  EXPLOSION(Player.attacked, Player.attacker, Player.weapon);
+  private final org.bukkit.entity.Player attacked;
+  private final org.bukkit.entity.Player attacker;
   private final Object weapon;
 
-  DamageType(Player attacked, Player attacker, Object weapon) {
+  DamageType(org.bukkit.entity.Player attacked, org.bukkit.entity.Player attacker, Object weapon) {
     this.attacked = attacked;
     this.attacker = attacker;
     this.weapon = weapon;
@@ -22,11 +21,11 @@ public enum DamageType {
     return weapon;
   }
 
-  public Player getAttacked() {
+  public org.bukkit.entity.Player getAttacked() {
     return attacked;
   }
 
-  public Player getAttacker() {
+  public org.bukkit.entity.Player getAttacker() {
     return attacker;
   }
 }

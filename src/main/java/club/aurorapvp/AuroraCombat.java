@@ -7,15 +7,16 @@ import java.io.File;
 import java.util.logging.Logger;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
-import org.bukkit.plugin.Plugin;
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class AuroraCombat extends JavaPlugin {
-  public static Plugin INSTANCE;
+  public static JavaPlugin INSTANCE;
   public static Logger LOGGER;
   public static File DATA_FOLDER;
   public static PlainTextComponentSerializer COMPONENT_SERIALIZER;
   public static MiniMessage COMPONENT_DESERIALIZER;
+  private static boolean auroraDuelsInstalled = false;
 
   @Override
   public void onEnable() {
@@ -33,9 +34,20 @@ public final class AuroraCombat extends JavaPlugin {
     new Config();
     new Events();
 
+    // Check if soft depends are installed
+    if (Bukkit.getPluginManager().getPlugin("AuroraDuels") != null) {
+      if (Config.get().getBoolean("optional-plugins.auroraduels-compatibility")) {
+        auroraDuelsInstalled = true;
+      }
+    }
+
     getLogger().info(
         "Aurora Combat Loaded in " + Math.subtractExact(System.currentTimeMillis(), startTime) +
             "ms");
+  }
+
+  public static boolean isAuroraDuelsInstalled() {
+    return auroraDuelsInstalled;
   }
 
   @Override

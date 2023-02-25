@@ -1,8 +1,11 @@
 package club.aurorapvp.events.listeners;
 
+import club.aurorapvp.AuroraCombat;
+import club.aurorapvp.events.custom.DuelEndEvent;
 import club.aurorapvp.events.custom.PlayerDamagedByPlayerEvent;
 import club.aurorapvp.events.custom.PlayerKilledByPlayerEvent;
 import club.aurorapvp.modules.CombatTag;
+import club.aurorapvp.modules.Duel;
 import club.aurorapvp.modules.Rating;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -25,7 +28,17 @@ public class Tagger implements Listener {
 
   @EventHandler
   public void onKilledByPlayer(PlayerKilledByPlayerEvent event) {
-    Rating.changeRating(event.getDamaged(), event.getDamager());
+    if (AuroraCombat.isAuroraDuelsInstalled()) {
+      if (Duel.inDuel(event.getDamaged()) || Duel.inDuel(event.getDamager())) {
+        return;
+      }
+    }
+    Rating.changeRating(event.getDamaged(), event.getDamager(), "default");
+  }
+
+  @EventHandler
+  public void onDuelEnd(DuelEndEvent event) {
+    Rating.changeRating(event.getWinner(), event.getLoser(), "duels");
   }
 
   @EventHandler
