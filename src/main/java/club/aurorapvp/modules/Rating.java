@@ -4,7 +4,9 @@ import club.aurorapvp.AuroraCombat;
 import club.aurorapvp.configs.Config;
 import club.aurorapvp.configs.Lang;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.persistence.PersistentDataContainer;
@@ -12,7 +14,7 @@ import org.bukkit.persistence.PersistentDataType;
 
 public class Rating {
   private static final NamespacedKey KEY = new NamespacedKey(AuroraCombat.INSTANCE, "rating");
-  private static final List<Rating> ratings = new ArrayList<>();
+  private static final Set<Rating> ratings = new HashSet<>();
   private final Player p;
   private int rating;
   private final PersistentDataContainer container;

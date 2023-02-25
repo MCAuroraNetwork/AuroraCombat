@@ -6,8 +6,10 @@ import club.aurorapvp.configs.Lang;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
 import org.bukkit.entity.Player;
@@ -15,7 +17,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
 public class CombatTag {
-  private static final List<CombatTag> tags = new ArrayList<>();
+  private static final Set<CombatTag> tags = new HashSet<>();
   private final Player tagged;
   private final Player opponent;
   private Timer t;
