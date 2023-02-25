@@ -1,16 +1,28 @@
 package club.aurorapvp.events.custom;
 
-import club.aurorapvp.modules.DamageType;
+import club.aurorapvp.enums.DamageType;
+import net.kyori.adventure.text.Component;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.HandlerList;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.jetbrains.annotations.NotNull;
 
 public class PlayerKilledByPlayerEvent extends PlayerDamagedByPlayerEvent implements Cancellable {
   private static final HandlerList HANDLERS = new HandlerList();
+  private final PlayerDeathEvent deathEvent;
   private boolean isCancelled = false;
 
-  public PlayerKilledByPlayerEvent(DamageType damageType) {
+  public PlayerKilledByPlayerEvent(DamageType damageType, PlayerDeathEvent deathEvent) {
     super(damageType);
+    this.deathEvent = deathEvent;
+  }
+
+  public void deathMessage(Component message) {
+    deathEvent.deathMessage(message);
+  }
+
+  public PlayerDeathEvent getDeathEvent() {
+    return deathEvent;
   }
 
   @Override

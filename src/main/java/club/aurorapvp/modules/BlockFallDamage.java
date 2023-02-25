@@ -3,11 +3,10 @@ package club.aurorapvp.modules;
 import java.util.HashSet;
 import java.util.Set;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
 
-public class BlockFallDamage implements Listener {
+public class BlockFallDamage {
   private static final Set<Player> inVulnerable = new HashSet<>();
+
   public static boolean shouldTakeDamage(Player p) {
     return !inVulnerable.contains(p);
   }

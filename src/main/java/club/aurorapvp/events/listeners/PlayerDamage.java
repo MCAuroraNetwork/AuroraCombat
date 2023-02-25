@@ -1,9 +1,7 @@
 package club.aurorapvp.events.listeners;
 
-import club.aurorapvp.AuroraCombat;
 import club.aurorapvp.events.custom.PlayerDamagedByPlayerEvent;
-import club.aurorapvp.modules.BlockFallDamage;
-import club.aurorapvp.modules.DamageType;
+import club.aurorapvp.enums.DamageType;
 import java.util.LinkedList;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;

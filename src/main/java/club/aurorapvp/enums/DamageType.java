@@ -1,13 +1,7 @@
-package club.aurorapvp.modules;
+package club.aurorapvp.enums;
 
 import club.aurorapvp.events.listeners.PlayerDamage;
-import org.bukkit.block.data.type.Bed;
-import org.bukkit.block.data.type.RespawnAnchor;
-import org.bukkit.entity.Arrow;
-import org.bukkit.entity.EnderCrystal;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.potion.PotionEffect;
 
 public enum DamageType {
   MELEE(PlayerDamage.attacked, PlayerDamage.attacker, PlayerDamage.weapon),
@@ -26,24 +20,6 @@ public enum DamageType {
 
   public Object getWeapon() {
     return weapon;
-  }
-
-  public Class<?> getWeaponType() {
-    if (weapon instanceof ItemStack) {
-      return ItemStack.class;
-    } else if (weapon instanceof EnderCrystal) {
-      return EnderCrystal.class;
-    } else if (weapon instanceof Arrow) {
-      return Arrow.class;
-    } else if (weapon instanceof RespawnAnchor) {
-      return RespawnAnchor.class;
-    } else if (weapon instanceof Bed) {
-      return Bed.class;
-    } else if (weapon instanceof PotionEffect) {
-      return PotionEffect.class;
-    } else {
-      return null;
-    }
   }
 
   public Player getAttacked() {

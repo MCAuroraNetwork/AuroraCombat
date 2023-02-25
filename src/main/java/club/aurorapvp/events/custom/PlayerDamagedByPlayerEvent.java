@@ -1,6 +1,7 @@
 package club.aurorapvp.events.custom;
 
-import club.aurorapvp.modules.DamageType;
+import club.aurorapvp.enums.DamageType;
+import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
@@ -13,10 +14,14 @@ public class PlayerDamagedByPlayerEvent extends Event implements Cancellable {
 
   public PlayerDamagedByPlayerEvent(DamageType damageType) {
     this.damageType = damageType;
+  }
 
-    if (damageType.getAttacked().isDead()) {
-      new PlayerKilledByPlayerEvent(damageType);
-    }
+  public Player getDamaged() {
+    return damageType.getAttacked();
+  }
+
+  public Player getDamager() {
+    return damageType.getAttacker();
   }
 
   public DamageType getDamageType() {

@@ -25,11 +25,11 @@ public class Tagger implements Listener {
 
   @EventHandler
   public void onKilledByPlayer(PlayerKilledByPlayerEvent event) {
-    Rating.changeRating(event.getDamageType().getAttacked(), event.getDamageType().getAttacker());
+    Rating.changeRating(event.getDamaged(), event.getDamager());
   }
 
   @EventHandler
   public void onDamagedByPlayer(PlayerDamagedByPlayerEvent event) {
-    new CombatTag(event.getDamageType().getAttacked(), event.getDamageType().getAttacker());
+    new CombatTag(event.getDamaged(), event.getDamager());
   }
 }
