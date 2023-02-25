@@ -43,6 +43,8 @@ public class Tagger implements Listener {
 
   @EventHandler
   public void onDamagedByPlayer(PlayerDamagedByPlayerEvent event) {
-    new CombatTag(event.getDamaged(), event.getDamager());
+    if (event.getDamager() != event.getDamaged()) {
+      new CombatTag(event.getDamaged(), event.getDamager());
+    }
   }
 }
