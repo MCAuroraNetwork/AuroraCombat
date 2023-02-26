@@ -4,6 +4,7 @@ import club.aurorapvp.AuroraCombat;
 import club.aurorapvp.events.custom.DuelEndEvent;
 import club.aurorapvp.events.custom.PlayerDamagedByPlayerEvent;
 import club.aurorapvp.events.custom.PlayerKilledByPlayerEvent;
+import club.aurorapvp.modules.BlockFallDamage;
 import club.aurorapvp.modules.CombatTag;
 import club.aurorapvp.modules.Duel;
 import club.aurorapvp.modules.Rating;
@@ -27,6 +28,7 @@ public class Tagger implements Listener {
   @EventHandler
   public void onPlayerDeath(PlayerDeathEvent event) {
     CombatTag.removeTags(event.getPlayer());
+    BlockFallDamage.setInVulnerable(event.getPlayer());
 
     if (event.getPlayer().equals(lastDamage.getDamaged())) {
       Bukkit.getPluginManager()
