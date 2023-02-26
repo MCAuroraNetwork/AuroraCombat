@@ -7,12 +7,16 @@ import club.aurorapvp.events.custom.PlayerKilledByPlayerEvent;
 import club.aurorapvp.modules.CombatTag;
 import club.aurorapvp.modules.Duel;
 import club.aurorapvp.modules.Rating;
+import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 public class Tagger implements Listener {
+
+  private PlayerDamagedByPlayerEvent lastDamage;
+
   @EventHandler
   public void onPlayerQuit(PlayerQuitEvent event) {
     if (CombatTag.isTagged(event.getPlayer())) {
@@ -24,6 +28,11 @@ public class Tagger implements Listener {
   @EventHandler
   public void onPlayerDeath(PlayerDeathEvent event) {
     CombatTag.removeTags(event.getPlayer());
+
+    if (event.getPlayer() == lastDamage.getDamaged()) {
+      Bukkit.getPluginManager()
+          .callEvent(new PlayerKilledByPlayerEvent(lastDamage.getDamageType(), event));
+    }
   }
 
   @EventHandler
@@ -45,6 +54,7 @@ public class Tagger implements Listener {
   public void onDamagedByPlayer(PlayerDamagedByPlayerEvent event) {
     if (event.getDamager() != event.getDamaged()) {
       new CombatTag(event.getDamaged(), event.getDamager());
+      lastDamage = event;
     }
   }
 }
