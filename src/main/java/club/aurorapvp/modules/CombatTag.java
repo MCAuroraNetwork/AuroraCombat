@@ -76,8 +76,10 @@ public class CombatTag {
                    tags.remove(tag);
                    playerOne.sendMessage(Lang.formatComponent("tag-removed", playerTwo.getName()));
                    playerTwo.sendMessage(Lang.formatComponent("tag-removed", playerOne.getName()));
-                   playerOne.sendActionBar(Lang.formatComponent("tag-removed-action-bar", playerTwo.getName()));
-                   playerTwo.sendActionBar(Lang.formatComponent("tag-removed-action-bar", playerOne.getName()));
+                   playerOne.sendActionBar(
+                       Lang.formatComponent("tag-removed-action-bar", playerTwo.getName()));
+                   playerTwo.sendActionBar(
+                       Lang.formatComponent("tag-removed-action-bar", playerOne.getName()));
                    this.cancel();
                  }
                }, Config.get().getInt("combat-tag.duration")
@@ -85,13 +87,16 @@ public class CombatTag {
 
     task = new BukkitRunnable() {
       int seconds = Config.get().getInt("combat-tag.duration") / 1000;
+
       @Override
       public void run() {
         if ((seconds -= 1) == 0) {
           this.cancel();
         } else {
-          playerOne.sendActionBar(Lang.formatComponent("tagged-action-bar", playerTwo.getName(), seconds));
-          playerTwo.sendActionBar(Lang.formatComponent("tagged-action-bar", playerOne.getName(), seconds));
+          playerOne.sendActionBar(
+              Lang.formatComponent("tagged-action-bar", playerTwo.getName(), seconds));
+          playerTwo.sendActionBar(
+              Lang.formatComponent("tagged-action-bar", playerOne.getName(), seconds));
         }
       }
     }.runTaskTimer(AuroraCombat.INSTANCE, 0, 20);

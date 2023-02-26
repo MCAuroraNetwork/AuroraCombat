@@ -15,7 +15,8 @@ public class PlayerDamagedByPlayerEvent extends Event implements Cancellable {
   private final Object weapon;
   private boolean isCancelled = false;
 
-  public PlayerDamagedByPlayerEvent(DamageType damageType, Player attacked, Player attacker, Object weapon) {
+  public PlayerDamagedByPlayerEvent(DamageType damageType, Player attacked, Player attacker,
+                                    Object weapon) {
     this.damageType = damageType;
     this.attacked = attacked;
     this.attacker = attacker;

@@ -2,8 +2,8 @@ package club.aurorapvp.events;
 
 import club.aurorapvp.AuroraCombat;
 import club.aurorapvp.events.listeners.FallDamage;
-import club.aurorapvp.events.listeners.Tagger;
 import club.aurorapvp.events.listeners.PlayerDamage;
+import club.aurorapvp.events.listeners.Tagger;
 import club.aurorapvp.modules.DeathMessage;
 import org.bukkit.Bukkit;
 

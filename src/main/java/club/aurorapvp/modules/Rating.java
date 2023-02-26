@@ -44,6 +44,7 @@ public class Rating {
   public Player getPlayer() {
     return p;
   }
+
   public String getType() {
     return type;
   }

@@ -22,7 +22,7 @@ public class Placeholders extends PlaceholderExpansion {
 
   @Override
   public @NotNull String getVersion() {
-    return AuroraCombat.INSTANCE.getDescription().getVersion();
+    return AuroraCombat.INSTANCE.getPluginMeta().getVersion();
   }
 
   @Override
@@ -50,7 +50,8 @@ public class Placeholders extends PlaceholderExpansion {
 
     if (params.startsWith("rating_")) {
       if (p.isOnline()) {
-        return String.valueOf(Rating.getRating((Player) p, params.replace("rating_", "")).getPoints());
+        return String.valueOf(
+            Rating.getRating((Player) p, params.replace("rating_", "")).getPoints());
       }
     }
     return null;
