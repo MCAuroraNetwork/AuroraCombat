@@ -1,5 +1,6 @@
 package club.aurorapvp.events.listeners;
 
+import club.aurorapvp.AuroraCombat;
 import club.aurorapvp.enums.DamageType;
 import club.aurorapvp.events.custom.PlayerDamagedByPlayerEvent;
 import club.aurorapvp.modules.BlockFallDamage;
@@ -17,6 +18,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageByBlockEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.ProjectileLaunchEvent;
@@ -101,7 +103,7 @@ public class PlayerDamage implements Listener {
 
   // TODO Potion damage
   @EventHandler
-  public void onEntityDamage(EntityDamageEvent event) {
+  public void onEntityDamage(EntityDamageByBlockEvent event) {
     if (!(event.getEntity() instanceof Player damaged)) {
       return;
     }
@@ -122,8 +124,8 @@ public class PlayerDamage implements Listener {
       return;
     }
 
-    if (event.getClickedBlock() instanceof RespawnAnchor respawnAnchor) {
-      if ((respawnAnchor.getCharges() >= 0 &&
+    if (event.getClickedBlock().getBlockData() instanceof RespawnAnchor respawnAnchor) {
+      if ((respawnAnchor.getCharges() > 0 &&
           event.getPlayer().getInventory().getItemInMainHand().getType() != Material.GLOWSTONE) ||
           respawnAnchor.getCharges() >= 4) {
         lastExplodedBlock = event.getClickedBlock();
@@ -131,7 +133,7 @@ public class PlayerDamage implements Listener {
       }
     }
 
-    if (event.getClickedBlock() instanceof Bed &&
+    if (event.getClickedBlock().getBlockData() instanceof Bed &&
         event.getPlayer().getWorld().getEnvironment() != World.Environment.NORMAL) {
       lastExplodedBlock = event.getClickedBlock();
       lastInteractedWithBlock = event.getPlayer();
