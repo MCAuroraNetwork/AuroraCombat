@@ -1,7 +1,7 @@
 package club.aurorapvp.events.listeners;
 
-import club.aurorapvp.events.custom.PlayerDamagedByPlayerEvent;
 import club.aurorapvp.enums.DamageType;
+import club.aurorapvp.events.custom.PlayerDamagedByPlayerEvent;
 import club.aurorapvp.modules.BlockFallDamage;
 import club.aurorapvp.modules.Rating;
 import java.util.LinkedList;
@@ -13,6 +13,7 @@ import org.bukkit.block.data.type.Bed;
 import org.bukkit.block.data.type.RespawnAnchor;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.EnderCrystal;
+import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -23,19 +24,32 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.ItemStack;
 
-public class Player implements Listener {
-  public static org.bukkit.entity.Player attacker;
-  public static org.bukkit.entity.Player attacked;
+public class PlayerDamage implements Listener {
+  public static Player attacker;
+  public static Player attacked;
   public static Object weapon;
-  private static org.bukkit.entity.Player lastCrystalDamager;
+  private static Player lastCrystalDamager;
   private static final LinkedList<Projectile> lastFiredProjectiles = new LinkedList<>();
-  private static org.bukkit.entity.Player lastInteractedWithBlock;
+  private static Player lastInteractedWithBlock;
   private static Block lastExplodedBlock;
 
-  public static void setDamageInformation(org.bukkit.entity.Player damager, org.bukkit.entity.Player damaged, Object attackWeapon) {
+  public static void setDamageInformation(Player damager,
+                                          Player damaged, Object attackWeapon) {
     attacker = damager;
     attacked = damaged;
     weapon = attackWeapon;
+  }
+
+  public static Player getAttacker() {
+    return attacker;
+  }
+
+  public static Player getAttacked() {
+    return attacked;
+  }
+
+  public static Object getWeapon() {
+    return weapon;
   }
 
   @EventHandler
@@ -46,21 +60,24 @@ public class Player implements Listener {
 
   @EventHandler
   public void onEntityDamage(EntityDamageByEntityEvent event) {
-    if (event.getEntity() instanceof EnderCrystal && event.getDamager() instanceof org.bukkit.entity.Player damager) {
+    if (event.getEntity() instanceof EnderCrystal &&
+        event.getDamager() instanceof Player damager) {
       lastCrystalDamager = damager;
     }
 
-    if (!(event.getEntity() instanceof org.bukkit.entity.Player damaged)) {
+    if (!(event.getEntity() instanceof Player damaged)) {
       return;
     }
 
     if (event.getDamager() instanceof Projectile projectile) {
       for (Projectile firedProjectile : lastFiredProjectiles) {
         if (projectile == firedProjectile) {
-          setDamageInformation((org.bukkit.entity.Player) projectile.getShooter(), damaged,
+          setDamageInformation((Player) projectile.getShooter(), damaged,
               event.getDamager());
 
-          Bukkit.getPluginManager().callEvent(new PlayerDamagedByPlayerEvent(DamageType.RANGED));
+          Bukkit.getPluginManager().callEvent(
+              new PlayerDamagedByPlayerEvent(DamageType.RANGED, getAttacked(), getAttacker(),
+                  getWeapon()));
         }
       }
     }
@@ -69,21 +86,23 @@ public class Player implements Listener {
       setDamageInformation(lastCrystalDamager, damaged, damager);
 
       Bukkit.getPluginManager()
-          .callEvent(new PlayerDamagedByPlayerEvent(DamageType.EXPLOSION_ENTITY));
+          .callEvent(new PlayerDamagedByPlayerEvent(DamageType.EXPLOSION_ENTITY, getAttacked(),
+              getAttacker(), getWeapon()));
     }
 
-    if (event.getDamager() instanceof org.bukkit.entity.Player damager) {
+    if (event.getDamager() instanceof Player damager) {
       setDamageInformation(damager, damaged, damager.getInventory().getItemInMainHand());
 
       Bukkit.getPluginManager()
-          .callEvent(new PlayerDamagedByPlayerEvent(DamageType.MELEE));
+          .callEvent(new PlayerDamagedByPlayerEvent(DamageType.MELEE, getAttacked(), getAttacker(),
+              getWeapon()));
     }
   }
 
   // TODO Potion damage
   @EventHandler
   public void onEntityDamage(EntityDamageEvent event) {
-    if (!(event.getEntity() instanceof org.bukkit.entity.Player damaged)) {
+    if (!(event.getEntity() instanceof Player damaged)) {
       return;
     }
 
@@ -92,7 +111,8 @@ public class Player implements Listener {
       setDamageInformation(lastInteractedWithBlock, damaged, lastExplodedBlock);
 
       Bukkit.getPluginManager()
-          .callEvent(new PlayerDamagedByPlayerEvent(DamageType.EXPLOSION_BLOCK));
+          .callEvent(new PlayerDamagedByPlayerEvent(DamageType.EXPLOSION_BLOCK, getAttacked(),
+              getAttacker(), getWeapon()));
     }
   }
 
@@ -120,7 +140,7 @@ public class Player implements Listener {
 
   @EventHandler
   public void onProjectileFired(ProjectileLaunchEvent event) {
-    if (event.getEntity().getShooter() instanceof org.bukkit.entity.Player p) {
+    if (event.getEntity().getShooter() instanceof Player p) {
       ItemStack weapon = p.getInventory().getItemInMainHand();
       if (lastFiredProjectiles.size() >= 3 || !weapon.containsEnchantment(Enchantment.MULTISHOT)) {
         lastFiredProjectiles.clear();

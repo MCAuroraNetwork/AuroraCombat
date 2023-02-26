@@ -14,7 +14,6 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 public class Tagger implements Listener {
-
   private PlayerDamagedByPlayerEvent lastDamage;
 
   @EventHandler
@@ -31,7 +30,8 @@ public class Tagger implements Listener {
 
     if (event.getPlayer().equals(lastDamage.getDamaged())) {
       Bukkit.getPluginManager()
-          .callEvent(new PlayerKilledByPlayerEvent(lastDamage.getDamageType(), event));
+          .callEvent(new PlayerKilledByPlayerEvent(lastDamage, event));
+      lastDamage = null;
     }
   }
 
@@ -53,7 +53,7 @@ public class Tagger implements Listener {
 
   @EventHandler
   public void onDamagedByPlayer(PlayerDamagedByPlayerEvent event) {
-    if (event.getDamager() != event.getDamaged()) {
+    if (!event.getDamager().equals(event.getDamaged())) {
       new CombatTag(event.getDamaged(), event.getDamager());
       lastDamage = event;
     }

@@ -10,22 +10,28 @@ import org.jetbrains.annotations.NotNull;
 public class PlayerDamagedByPlayerEvent extends Event implements Cancellable {
   private static final HandlerList HANDLERS = new HandlerList();
   private final DamageType damageType;
+  private final Player attacked;
+  private final Player attacker;
+  private final Object weapon;
   private boolean isCancelled = false;
 
-  public PlayerDamagedByPlayerEvent(DamageType damageType) {
+  public PlayerDamagedByPlayerEvent(DamageType damageType, Player attacked, Player attacker, Object weapon) {
     this.damageType = damageType;
+    this.attacked = attacked;
+    this.attacker = attacker;
+    this.weapon = weapon;
   }
 
   public Object getWeapon() {
-    return damageType.getWeapon();
+    return weapon;
   }
 
   public Player getDamaged() {
-    return damageType.getAttacked();
+    return attacked;
   }
 
   public Player getDamager() {
-    return damageType.getAttacker();
+    return attacker;
   }
 
   public DamageType getDamageType() {
