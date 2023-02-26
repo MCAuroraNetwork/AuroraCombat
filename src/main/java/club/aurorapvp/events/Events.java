@@ -4,6 +4,7 @@ import club.aurorapvp.AuroraCombat;
 import club.aurorapvp.events.listeners.FallDamage;
 import club.aurorapvp.events.listeners.Tagger;
 import club.aurorapvp.events.listeners.Player;
+import club.aurorapvp.modules.DeathMessage;
 import org.bukkit.Bukkit;
 
 public class Events {
@@ -11,5 +12,6 @@ public class Events {
     Bukkit.getPluginManager().registerEvents(new Tagger(), AuroraCombat.INSTANCE);
     Bukkit.getPluginManager().registerEvents(new FallDamage(), AuroraCombat.INSTANCE);
     Bukkit.getPluginManager().registerEvents(new Player(), AuroraCombat.INSTANCE);
+    Bukkit.getPluginManager().registerEvents(new DeathMessage(), AuroraCombat.INSTANCE);
   }
 }

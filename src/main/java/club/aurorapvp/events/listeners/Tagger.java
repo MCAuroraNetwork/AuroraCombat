@@ -29,7 +29,7 @@ public class Tagger implements Listener {
   public void onPlayerDeath(PlayerDeathEvent event) {
     CombatTag.removeTags(event.getPlayer());
 
-    if (event.getPlayer() == lastDamage.getDamaged()) {
+    if (event.getPlayer().equals(lastDamage.getDamaged())) {
       Bukkit.getPluginManager()
           .callEvent(new PlayerKilledByPlayerEvent(lastDamage.getDamageType(), event));
     }
@@ -42,6 +42,7 @@ public class Tagger implements Listener {
         return;
       }
     }
+
     Rating.changeRating(event.getDamaged(), event.getDamager(), "default");
   }
 

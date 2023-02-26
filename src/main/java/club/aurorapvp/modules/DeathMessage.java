@@ -1,5 +1,7 @@
 package club.aurorapvp.modules;
 
+import static club.aurorapvp.AuroraCombat.COMPONENT_SERIALIZER;
+
 import club.aurorapvp.configs.Lang;
 import club.aurorapvp.events.custom.PlayerKilledByPlayerEvent;
 import org.bukkit.block.Block;
@@ -18,32 +20,36 @@ public class DeathMessage implements Listener {
 
         event.deathMessage(
             Lang.formatComponent("death-message.killed-by-player-slain",
-                event.getDamaged(), event.getDamager(), weapon.displayName()));
+                event.getDamaged().getName(), event.getDamager().getName(),
+                COMPONENT_SERIALIZER.serialize(weapon.displayName())));
       }
       case EXPLOSION_ENTITY -> {
         Entity weapon = (Entity) event.getWeapon();
 
         event.deathMessage(
             Lang.formatComponent("death-message.killed-by-player-explosion",
-                event.getDamaged(), event.getDamager(), weapon.teamDisplayName()));
+                event.getDamaged().getName(), event.getDamager().getName(),
+                COMPONENT_SERIALIZER.serialize(weapon.teamDisplayName())));
       }
       case EXPLOSION_BLOCK -> {
         Block weapon = (Block) event.getWeapon();
 
         event.deathMessage(
             Lang.formatComponent("death-message.killed-by-player-explosion",
-                event.getDamaged(), event.getDamager(), weapon.getType().toString()));
+                event.getDamaged().getName(), event.getDamager().getName(),
+                weapon.getType().toString()));
       }
       case RANGED -> {
         Projectile weapon = (Projectile) event.getWeapon();
 
         event.deathMessage(
             Lang.formatComponent("death-message.killed-by-player-shot",
-                event.getDamaged(), event.getDamager(), weapon.teamDisplayName()));
+                event.getDamaged().getName(), event.getDamager().getName(),
+                COMPONENT_SERIALIZER.serialize(weapon.teamDisplayName())));
       }
       default -> event.deathMessage(
           Lang.formatComponent("death-message.killed-by-player-generic",
-              event.getDamaged(), event.getDamager()));
+              event.getDamaged().getName(), event.getDamager().getName()));
     }
   }
 }
