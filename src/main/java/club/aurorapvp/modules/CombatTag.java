@@ -109,7 +109,7 @@ public class CombatTag {
 
     playerOne.sendMessage(Lang.formatComponent("tag-removed", playerTwo.getName()));
     playerTwo.sendMessage(Lang.formatComponent("tag-removed", playerOne.getName()));
-    playerOne.sendActionBar(Lang.formatComponent("tag-removed-action-bar", playerOne.getName()));
+    playerOne.sendActionBar(Lang.formatComponent("tag-removed-action-bar", playerTwo.getName()));
     playerTwo.sendActionBar(Lang.formatComponent("tag-removed-action-bar", playerOne.getName()));
   }
 
