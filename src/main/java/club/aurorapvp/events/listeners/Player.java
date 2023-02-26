@@ -69,7 +69,7 @@ public class Player implements Listener {
       setDamageInformation(lastCrystalDamager, damaged, damager);
 
       Bukkit.getPluginManager()
-          .callEvent(new PlayerDamagedByPlayerEvent(DamageType.EXPLOSION));
+          .callEvent(new PlayerDamagedByPlayerEvent(DamageType.EXPLOSION_ENTITY));
     }
 
     if (event.getDamager() instanceof org.bukkit.entity.Player damager) {
@@ -92,7 +92,7 @@ public class Player implements Listener {
       setDamageInformation(lastInteractedWithBlock, damaged, lastExplodedBlock);
 
       Bukkit.getPluginManager()
-          .callEvent(new PlayerDamagedByPlayerEvent(DamageType.EXPLOSION));
+          .callEvent(new PlayerDamagedByPlayerEvent(DamageType.EXPLOSION_BLOCK));
     }
   }
 

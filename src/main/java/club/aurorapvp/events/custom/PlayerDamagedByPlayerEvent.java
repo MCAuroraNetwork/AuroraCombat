@@ -16,6 +16,10 @@ public class PlayerDamagedByPlayerEvent extends Event implements Cancellable {
     this.damageType = damageType;
   }
 
+  public Object getWeapon() {
+    return damageType.getWeapon();
+  }
+
   public Player getDamaged() {
     return damageType.getAttacked();
   }

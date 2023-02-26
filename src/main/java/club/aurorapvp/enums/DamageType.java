@@ -6,7 +6,8 @@ public enum DamageType {
   MELEE(Player.attacked, Player.attacker, Player.weapon),
   MAGIC(Player.attacked, Player.attacker, Player.weapon),
   RANGED(Player.attacked, Player.attacker, Player.weapon),
-  EXPLOSION(Player.attacked, Player.attacker, Player.weapon);
+  EXPLOSION_BLOCK(Player.attacked, Player.attacker, Player.weapon),
+  EXPLOSION_ENTITY(Player.attacked, Player.attacker, Player.weapon);
   private final org.bukkit.entity.Player attacked;
   private final org.bukkit.entity.Player attacker;
   private final Object weapon;

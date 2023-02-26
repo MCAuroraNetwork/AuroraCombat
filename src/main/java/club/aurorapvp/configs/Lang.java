@@ -34,9 +34,10 @@ public class Lang {
     DEFAULTS.put("tagged-action-bar", "<gradient:#FFAA00:#FF55FF>You are tagged by %1$s for %2$s more seconds");
     DEFAULTS.put("tag-removed", "prefix <gradient:#FFAA00:#FF55FF>You are no longer tagged by %s!");
     DEFAULTS.put("tag-removed-action-bar", "<gradient:#FFAA00:#FF55FF>You are no longer tagged by %s!");
-    DEFAULTS.put("killed-by-player-generic", "<gradient:#FFAA00:#FF55FF>%1$s was killed by %2$s");
-    DEFAULTS.put("killed-by-player-explosion", "<gradient:#FFAA00:#FF55FF>%1$s was blown up by %2$s using %3$s");
-    DEFAULTS.put("killed-by-player-slain", "<gradient:#FFAA00:#FF55FF>%1$s was slain by %2$s using %3$s");
+    DEFAULTS.put("death-message.killed-by-player-generic", "<gradient:#FFAA00:#FF55FF>%1$s was killed by %2$s");
+    DEFAULTS.put("death-message.killed-by-player-explosion", "<gradient:#FFAA00:#FF55FF>%1$s was blown up by %2$s using %3$s");
+    DEFAULTS.put("death-message.killed-by-player-slain", "<gradient:#FFAA00:#FF55FF>%1$s was slain by %2$s using %3$s");
+    DEFAULTS.put("death-message.killed-by-player-shot", "<gradient:#FFAA00:#FF55FF>%1$s was shot by %2$s using %3$s");
 
     for (String path : DEFAULTS.keySet()) {
       if (!get().contains(path) || get().getString(path) == null) {
