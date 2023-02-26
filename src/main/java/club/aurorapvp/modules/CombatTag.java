@@ -18,15 +18,15 @@ import org.bukkit.scheduler.BukkitTask;
 
 public class CombatTag {
   private static final Set<CombatTag> tags = new HashSet<>();
-  private final Player tagged;
-  private final Player opponent;
+  private final Player playerOne;
+  private final Player playerTwo;
   private Timer t;
   private BukkitTask task;
   private Long timeStarted;
 
   public CombatTag(Player tagged, Player opponent) {
-    this.tagged = tagged;
-    this.opponent = opponent;
+    this.playerOne = tagged;
+    this.playerTwo = opponent;
 
     if (getTag(tagged, opponent) != null) {
       Objects.requireNonNull(getTag(tagged, opponent)).resetTimer();
@@ -42,12 +42,20 @@ public class CombatTag {
     }
   }
 
-  public Player getTagged() {
-    return tagged;
+  public Player getPlayerOne() {
+    return playerOne;
   }
 
-  public Player getOpponent() {
-    return opponent;
+  public Player getPlayerTwo() {
+    return playerTwo;
+  }
+
+  public Player getOpponent(Player p) {
+    if (p == playerOne) {
+      return playerTwo;
+    } else {
+      return playerOne;
+    }
   }
 
   public void resetTimer() {
@@ -66,10 +74,10 @@ public class CombatTag {
                  @Override
                  public void run() {
                    tags.remove(tag);
-                   tagged.sendMessage(Lang.formatComponent("tag-removed", opponent.getName()));
-                   opponent.sendMessage(Lang.formatComponent("tag-removed", tagged.getName()));
-                   tagged.sendActionBar(Lang.formatComponent("tag-removed-action-bar", tagged.getName()));
-                   opponent.sendActionBar(Lang.formatComponent("tag-removed-action-bar", tagged.getName()));
+                   playerOne.sendMessage(Lang.formatComponent("tag-removed", playerTwo.getName()));
+                   playerTwo.sendMessage(Lang.formatComponent("tag-removed", playerOne.getName()));
+                   playerOne.sendActionBar(Lang.formatComponent("tag-removed-action-bar", playerTwo.getName()));
+                   playerTwo.sendActionBar(Lang.formatComponent("tag-removed-action-bar", playerOne.getName()));
                    this.cancel();
                  }
                }, Config.get().getInt("combat-tag.duration")
@@ -82,8 +90,8 @@ public class CombatTag {
         if ((seconds -= 1) == 0) {
           this.cancel();
         } else {
-          tagged.sendActionBar(Lang.formatComponent("tagged-action-bar", opponent.getName(), seconds));
-          opponent.sendActionBar(Lang.formatComponent("tagged-action-bar", tagged.getName(), seconds));
+          playerOne.sendActionBar(Lang.formatComponent("tagged-action-bar", playerTwo.getName(), seconds));
+          playerTwo.sendActionBar(Lang.formatComponent("tagged-action-bar", playerOne.getName(), seconds));
         }
       }
     }.runTaskTimer(AuroraCombat.INSTANCE, 0, 20);
@@ -99,10 +107,10 @@ public class CombatTag {
 
     tags.remove(this);
 
-    tagged.sendMessage(Lang.formatComponent("tag-removed", opponent.getName()));
-    opponent.sendMessage(Lang.formatComponent("tag-removed", tagged.getName()));
-    tagged.sendActionBar(Lang.formatComponent("tag-removed-action-bar", tagged.getName()));
-    opponent.sendActionBar(Lang.formatComponent("tag-removed-action-bar", tagged.getName()));
+    playerOne.sendMessage(Lang.formatComponent("tag-removed", playerTwo.getName()));
+    playerTwo.sendMessage(Lang.formatComponent("tag-removed", playerOne.getName()));
+    playerOne.sendActionBar(Lang.formatComponent("tag-removed-action-bar", playerOne.getName()));
+    playerTwo.sendActionBar(Lang.formatComponent("tag-removed-action-bar", playerOne.getName()));
   }
 
   public static void removeTags(Player p) {
@@ -115,7 +123,7 @@ public class CombatTag {
     List<CombatTag> tagList = new ArrayList<>();
 
     for (CombatTag tag : tags) {
-      if ((tag.getTagged() == p || tag.getOpponent() == p)) {
+      if ((tag.getPlayerOne() == p || tag.getPlayerTwo() == p)) {
         tagList.add(tag);
       }
     }
@@ -133,9 +141,8 @@ public class CombatTag {
     HashMap<Integer, CombatTag> tagTimes = new HashMap<>();
     List<Integer> times = new ArrayList<>();
 
-
     for (CombatTag tag : tags) {
-      if ((tag.getTagged() == p || tag.getOpponent() == p)) {
+      if ((tag.getPlayerOne() == p || tag.getPlayerTwo() == p)) {
         times.add(tag.timeRemaining());
         tagTimes.put(tag.timeRemaining(), tag);
       }
@@ -143,13 +150,16 @@ public class CombatTag {
 
     Collections.sort(times);
 
-    return tagTimes.get(times.get(0));
+    if (times.size() > 0) {
+      return tagTimes.get(times.get(0));
+    }
+    return null;
   }
 
   public static CombatTag getTag(Player p1, Player p2) {
     for (CombatTag tag : tags) {
-      if ((tag.getTagged() == p1 || tag.getTagged() == p2) &&
-          (tag.getOpponent() == p1 || tag.getOpponent() == p2)) {
+      if ((tag.getPlayerOne() == p1 || tag.getPlayerOne() == p2) &&
+          (tag.getPlayerTwo() == p1 || tag.getPlayerTwo() == p2)) {
         return tag;
       }
     }
@@ -158,7 +168,7 @@ public class CombatTag {
 
   public static boolean isTagged(Player p) {
     for (CombatTag tag : tags) {
-      if (tag.getTagged() == p || tag.getOpponent() == p) {
+      if (tag.getPlayerOne() == p || tag.getPlayerTwo() == p) {
         return true;
       }
     }
