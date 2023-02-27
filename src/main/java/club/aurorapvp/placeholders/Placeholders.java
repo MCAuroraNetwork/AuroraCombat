@@ -36,23 +36,29 @@ public class Placeholders extends PlaceholderExpansion {
   }
 
   private String getResult(OfflinePlayer p, String params) {
+    if (!(p.isOnline())) {
+      return "Player offline";
+    }
+
     if (params.startsWith("opponent")) {
-      if (p.isOnline()) {
-        CombatTag recentTag = CombatTag.getRecentTag((Player) p);
+      CombatTag recentTag = CombatTag.getRecentTag((Player) p);
 
-        if (recentTag == null) {
-          return "None";
-        }
-
-        return recentTag.getOpponent((Player) p).getName();
+      if (recentTag == null) {
+        return "None";
       }
+
+      return recentTag.getOpponent((Player) p).getName();
     }
 
     if (params.startsWith("rating_")) {
-      if (p.isOnline()) {
-        return String.valueOf(
-            Rating.getRating((Player) p, params.replace("rating_", "")).getPoints());
+      Rating rating = Rating.getRating((Player) p, params.replace("rating_", ""));
+
+      if (rating == null) {
+        return "Rating not found";
+      } else {
+        return String.valueOf(rating.getPoints());
       }
+
     }
     return null;
   }

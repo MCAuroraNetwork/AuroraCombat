@@ -3,6 +3,7 @@ package club.aurorapvp;
 import club.aurorapvp.configs.Config;
 import club.aurorapvp.configs.Lang;
 import club.aurorapvp.events.Events;
+import club.aurorapvp.modules.Rating;
 import club.aurorapvp.placeholders.Placeholders;
 import java.io.File;
 import java.util.logging.Logger;
@@ -34,6 +35,7 @@ public final class AuroraCombat extends JavaPlugin {
     new Lang();
     new Config();
     new Events();
+    new Rating();
 
     // Check if soft depends are installed
     if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
@@ -43,6 +45,7 @@ public final class AuroraCombat extends JavaPlugin {
     if (Bukkit.getPluginManager().getPlugin("AuroraDuels") != null) {
       if (Config.get().getBoolean("optional-plugins.auroraduels-compatibility")) {
         auroraDuelsInstalled = true;
+        Rating.setupRating("duels");
       }
     }
 

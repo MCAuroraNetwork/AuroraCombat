@@ -11,11 +11,6 @@ public class PlayerJoin implements Listener {
   @EventHandler
   public void onPlayerJoin(PlayerJoinEvent event) {
     BlockFallDamage.setInVulnerable(event.getPlayer());
-
-    if (AuroraCombat.isAuroraDuelsInstalled()) {
-      Rating.setupRating("duels");
-    }
-
     Rating.setupPlayer(event.getPlayer());
   }
 }

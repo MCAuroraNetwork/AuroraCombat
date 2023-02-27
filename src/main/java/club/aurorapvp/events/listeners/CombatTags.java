@@ -42,18 +42,23 @@ public class CombatTags implements Listener {
   }
 
   @EventHandler
+  public void onDuelEnd(DuelEndEvent event) {
+    Rating.changeRating(event.getLoser(), event.getWinner(), "duels");
+  }
+
+  @EventHandler
   public void onKilledByPlayer(PlayerKilledByPlayerEvent event) {
+    Rating.changeRating(event.getDamaged(), event.getDamager(), "default");
+  }
+
+  @EventHandler
+  public void onDamagedByPlayer(PlayerDamagedByPlayerEvent event) {
     if (AuroraCombat.isAuroraDuelsInstalled()) {
       if (Duel.inDuel(event.getDamaged()) || Duel.inDuel(event.getDamager())) {
         return;
       }
     }
 
-    Rating.changeRating(event.getDamaged(), event.getDamager(), "default");
-  }
-
-  @EventHandler
-  public void onDamagedByPlayer(PlayerDamagedByPlayerEvent event) {
     if (!event.getDamager().equals(event.getDamaged())) {
       new CombatTag(event.getDamaged(), event.getDamager());
       lastDamage = event;

@@ -20,6 +20,15 @@ public class Rating {
   private final String type;
   private final PersistentDataContainer container;
 
+  public Rating() {
+    types.add("default");
+
+    this.key = null;
+    this.p = null;
+    this.type = null;
+    this.container = null;
+  }
+
   public Rating(Player p, String type) {
     this.p = p;
     this.container = p.getPersistentDataContainer();
