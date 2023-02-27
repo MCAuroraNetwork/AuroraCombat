@@ -13,6 +13,7 @@ import org.bukkit.persistence.PersistentDataType;
 
 public class Rating {
   private static final Set<Rating> ratings = new HashSet<>();
+  private static final Set<String> types = new HashSet<>();
   private final NamespacedKey key;
   private final Player p;
   private int rating;
@@ -49,6 +50,11 @@ public class Rating {
     return type;
   }
 
+  // TODO create better rating API
+  public static void setupRating(String type) {
+    types.add(type);
+  }
+
   public static void changeRating(Player deadPlayer, Player killer, String type) {
     Rating playerRating = Rating.getRating(deadPlayer, type);
     Rating killerRating = Rating.getRating(killer, type);
@@ -74,13 +80,16 @@ public class Rating {
 
   public static void setupPlayer(Player p) {
     PersistentDataContainer container = p.getPersistentDataContainer();
-    NamespacedKey key = new NamespacedKey(AuroraCombat.INSTANCE, "rating_default");
 
-    if (!container.has(key)) {
-      container.set(key, PersistentDataType.INTEGER, Config.get().getInt("elo.default-points"));
+    for (String type : types) {
+      NamespacedKey key = new NamespacedKey(AuroraCombat.INSTANCE, "rating_" + type);
+
+      if (!container.has(key)) {
+        container.set(key, PersistentDataType.INTEGER, Config.get().getInt("elo.default-points"));
+      }
+
+      new Rating(p, type);
     }
-
-    new Rating(p, "default");
   }
 
   public static double getELOChange(int playerElo, int opponentElo) {

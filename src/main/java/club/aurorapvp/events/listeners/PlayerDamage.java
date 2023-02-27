@@ -55,12 +55,6 @@ public class PlayerDamage implements Listener {
   }
 
   @EventHandler
-  public void onPlayerJoin(PlayerJoinEvent event) {
-    BlockFallDamage.setInVulnerable(event.getPlayer());
-    Rating.setupPlayer(event.getPlayer());
-  }
-
-  @EventHandler
   public void onEntityDamage(EntityDamageByEntityEvent event) {
     if (event.getEntity() instanceof EnderCrystal &&
         event.getDamager() instanceof Player damager) {
