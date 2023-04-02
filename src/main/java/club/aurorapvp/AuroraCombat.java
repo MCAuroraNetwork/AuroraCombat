@@ -31,11 +31,11 @@ public final class AuroraCombat extends JavaPlugin {
     COMPONENT_SERIALIZER = PlainTextComponentSerializer.plainText();
     COMPONENT_DESERIALIZER = MiniMessage.miniMessage();
 
-    // Setup
-    new Lang();
-    new Config();
-    new Events();
-    new Rating();
+    // Setup classes
+    Config.init();
+    Lang.init();
+    Events.init();
+    Rating.init();
 
     // Check if soft depends are installed
     if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {

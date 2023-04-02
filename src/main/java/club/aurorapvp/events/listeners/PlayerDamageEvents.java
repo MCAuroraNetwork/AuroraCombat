@@ -1,10 +1,9 @@
 package club.aurorapvp.events.listeners;
 
-import club.aurorapvp.AuroraCombat;
+import club.aurorapvp.configs.Config;
 import club.aurorapvp.enums.DamageType;
 import club.aurorapvp.events.custom.PlayerDamagedByPlayerEvent;
 import club.aurorapvp.modules.BlockFallDamage;
-import club.aurorapvp.modules.Rating;
 import java.util.LinkedList;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -23,10 +22,9 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.ProjectileLaunchEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.ItemStack;
 
-public class PlayerDamage implements Listener {
+public class PlayerDamageEvents implements Listener {
   public static Player attacker;
   public static Player attacked;
   public static Object weapon;
@@ -143,6 +141,26 @@ public class PlayerDamage implements Listener {
       }
 
       lastFiredProjectiles.add(event.getEntity());
+    }
+  }
+
+  @EventHandler
+  public void onFallDamage(EntityDamageEvent event) {
+    if (!(event.getEntity() instanceof Player p)) {
+      return;
+    }
+
+    if (!(event.getCause() == EntityDamageEvent.DamageCause.FALL)) {
+      return;
+    }
+
+    if (Config.get().getBoolean("misc.fall-damage.enable-first")) {
+      return;
+    }
+
+    if (!BlockFallDamage.shouldTakeDamage(p)) {
+      event.setCancelled(true);
+      BlockFallDamage.setVulnerable(p);
     }
   }
 }

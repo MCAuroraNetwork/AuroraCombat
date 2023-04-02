@@ -11,7 +11,7 @@ public class Config {
   private static final File FILE = new File(AuroraCombat.DATA_FOLDER, "config.yml");
   private static YamlConfiguration config;
 
-  public Config() {
+  public static void init() {
     reload();
     generateDefaults();
   }

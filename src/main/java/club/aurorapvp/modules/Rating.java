@@ -3,7 +3,10 @@ package club.aurorapvp.modules;
 import club.aurorapvp.AuroraCombat;
 import club.aurorapvp.configs.Config;
 import club.aurorapvp.configs.Lang;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import org.bukkit.NamespacedKey;
@@ -20,13 +23,8 @@ public class Rating {
   private final String type;
   private final PersistentDataContainer container;
 
-  public Rating() {
+  public static void init() {
     types.add("default");
-
-    this.key = null;
-    this.p = null;
-    this.type = null;
-    this.container = null;
   }
 
   public Rating(Player p, String type) {
@@ -86,6 +84,17 @@ public class Rating {
     }
     return null;
   }
+
+  public static Rating getRating(int index, String type) {
+    List<Rating> sortedRatings = new ArrayList<>(ratings);
+    sortedRatings.sort(Comparator.comparingInt(Rating::getPoints).reversed());
+
+    if (index > 0 && index <= sortedRatings.size()) {
+      return sortedRatings.get(index - 1);
+    }
+    return null;
+  }
+
 
   public static void setupPlayer(Player p) {
     PersistentDataContainer container = p.getPersistentDataContainer();

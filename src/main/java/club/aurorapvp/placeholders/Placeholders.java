@@ -36,6 +36,19 @@ public class Placeholders extends PlaceholderExpansion {
   }
 
   private String getResult(OfflinePlayer p, String params) {
+    if (params.startsWith("leaderboard_")) {
+      String ratingName = params.substring("leaderboard_".length(), params.lastIndexOf("_"));
+      int index = Integer.parseInt(params.substring(params.lastIndexOf("_") + 1));
+
+      Rating rating = Rating.getRating(index, ratingName);
+
+      if (rating == null) {
+        return "Rating not found";
+      } else {
+        return rating.getPlayer().getName() + " - " + rating.getPoints();
+      }
+    }
+
     if (!(p.isOnline())) {
       return "Player offline";
     }
@@ -60,6 +73,7 @@ public class Placeholders extends PlaceholderExpansion {
       }
 
     }
+
     return null;
   }
 }

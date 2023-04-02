@@ -14,7 +14,7 @@ public class Lang {
   private static final File FILE = new File(AuroraCombat.DATA_FOLDER, "lang.yml");
   private static YamlConfiguration lang;
 
-  public Lang() {
+  public static void init() {
     reload();
     generateDefaults();
   }

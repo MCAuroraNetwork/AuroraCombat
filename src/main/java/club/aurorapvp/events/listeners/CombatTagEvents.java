@@ -14,7 +14,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
-public class CombatTags implements Listener {
+public class CombatTagEvents implements Listener {
   private PlayerDamagedByPlayerEvent lastDamage;
 
   @EventHandler
@@ -27,6 +27,9 @@ public class CombatTags implements Listener {
 
   @EventHandler
   public void onPlayerDeath(PlayerDeathEvent event) {
+    CombatTag.removeTags(event.getPlayer());
+    BlockFallDamage.setInVulnerable(event.getPlayer());
+
     CombatTag.removeTags(event.getPlayer());
     BlockFallDamage.setInVulnerable(event.getPlayer());
 
