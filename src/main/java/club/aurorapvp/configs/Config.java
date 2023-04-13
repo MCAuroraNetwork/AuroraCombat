@@ -27,13 +27,13 @@ public class Config {
     for (String path : DEFAULTS.keySet()) {
       if (!get().contains(path) || get().getString(path) == null) {
         get().set(path, DEFAULTS.get(path));
-
-        try {
-          get().save(FILE);
-        } catch (IOException e) {
-          AuroraCombat.INSTANCE.getLogger().severe("Failed to save config file");
-        }
       }
+    }
+
+    try {
+      get().save(FILE);
+    } catch (IOException e) {
+      AuroraCombat.LOGGER.severe("Failed to save config file");
     }
   }
 
@@ -47,10 +47,10 @@ public class Config {
         FILE.getParentFile().mkdirs();
         FILE.createNewFile();
       } catch (IOException e) {
-        AuroraCombat.INSTANCE.getLogger().severe("Failed to generate config file");
+        AuroraCombat.LOGGER.severe("Failed to generate config file");
       }
     }
     config = YamlConfiguration.loadConfiguration(FILE);
-    AuroraCombat.INSTANCE.getLogger().info("Config reloaded!");
+    AuroraCombat.LOGGER.info("Config reloaded!");
   }
 }
