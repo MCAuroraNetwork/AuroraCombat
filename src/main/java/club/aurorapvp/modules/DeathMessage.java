@@ -4,6 +4,7 @@ import static club.aurorapvp.AuroraCombat.COMPONENT_SERIALIZER;
 
 import club.aurorapvp.configs.Lang;
 import club.aurorapvp.events.custom.PlayerKilledByPlayerEvent;
+import club.aurorapvp.util.MaterialUtil;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Projectile;
@@ -35,7 +36,7 @@ public class DeathMessage {
         event.deathMessage(
             Lang.formatComponent("death-message.killed-by-player-explosion",
                 event.getDamaged().getName(), event.getDamager().getName(),
-                weapon.getType().toString()));
+                MaterialUtil.getFriendlyName(weapon.getType())));
       }
       case RANGED -> {
         Projectile weapon = (Projectile) event.getWeapon();
