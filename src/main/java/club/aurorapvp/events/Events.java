@@ -12,6 +12,5 @@ public class Events {
     Bukkit.getPluginManager().registerEvents(new CombatTagEvents(), AuroraCombat.INSTANCE);
     Bukkit.getPluginManager().registerEvents(new PlayerDamageEvents(), AuroraCombat.INSTANCE);
     Bukkit.getPluginManager().registerEvents(new JoinEvent(), AuroraCombat.INSTANCE);
-    Bukkit.getPluginManager().registerEvents(new DeathMessage(), AuroraCombat.INSTANCE);
   }
 }
