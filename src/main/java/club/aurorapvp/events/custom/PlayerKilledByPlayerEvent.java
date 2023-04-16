@@ -1,5 +1,6 @@
 package club.aurorapvp.events.custom;
 
+import club.aurorapvp.modules.DeathMessage;
 import net.kyori.adventure.text.Component;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.HandlerList;
@@ -14,6 +15,7 @@ public class PlayerKilledByPlayerEvent extends PlayerDamagedByPlayerEvent implem
   public PlayerKilledByPlayerEvent(PlayerDamagedByPlayerEvent event, PlayerDeathEvent deathEvent) {
     super(event.getDamageType(), event.getDamaged(), event.getDamager(), event.getWeapon());
     this.deathEvent = deathEvent;
+    new DeathMessage(this);
   }
 
   public void deathMessage(Component message) {
