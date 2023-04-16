@@ -3,7 +3,6 @@ package club.aurorapvp.modules;
 import club.aurorapvp.AuroraCombat;
 import club.aurorapvp.configs.Config;
 import club.aurorapvp.configs.Lang;
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
@@ -86,15 +85,21 @@ public class Rating {
   }
 
   public static Rating getRating(int index, String type) {
-    List<Rating> sortedRatings = new ArrayList<>(ratings);
-    sortedRatings.sort(Comparator.comparingInt(Rating::getPoints).reversed());
+    List<Rating> filteredRatings = ratings.stream()
+        .filter(r -> r.getType().equals(type))
+        .sorted(Comparator.comparingInt(Rating::getPoints).reversed())
+        .toList();
 
-    if (index > 0 && index <= sortedRatings.size()) {
-      return sortedRatings.get(index - 1);
+    if (index > 0 && index <= filteredRatings.size()) {
+      return filteredRatings.get(index - 1);
     }
+
     return null;
   }
 
+  public static Rating[] getRatings() {
+    return ratings.toArray(new Rating[0]);
+  }
 
   public static void setupPlayer(Player p) {
     PersistentDataContainer container = p.getPersistentDataContainer();
@@ -108,6 +113,10 @@ public class Rating {
 
       new Rating(p, type);
     }
+  }
+
+  public static void removeRatings(Player p) {
+    ratings.removeIf(rating -> rating.getPlayer().equals(p));
   }
 
   public static double getELOChange(int playerElo, int opponentElo) {
