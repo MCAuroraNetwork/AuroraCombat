@@ -7,13 +7,11 @@ import club.aurorapvp.events.custom.PlayerKilledByPlayerEvent;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Projectile;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 
-public class DeathMessage implements Listener {
-  @EventHandler
-  public void onKilled(PlayerKilledByPlayerEvent event) {
+public class DeathMessage {
+
+  public DeathMessage(PlayerKilledByPlayerEvent event) {
     switch (event.getDamageType()) {
       case MELEE -> {
         ItemStack weapon = (ItemStack) event.getWeapon();
