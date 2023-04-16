@@ -33,25 +33,6 @@ public class PlayerDamageEvents implements Listener {
   private static Player lastInteractedWithBlock;
   private static Block lastExplodedBlock;
 
-  public static void setDamageInformation(Player damager,
-                                          Player damaged, Object attackWeapon) {
-    attacker = damager;
-    attacked = damaged;
-    weapon = attackWeapon;
-  }
-
-  public static Player getAttacker() {
-    return attacker;
-  }
-
-  public static Player getAttacked() {
-    return attacked;
-  }
-
-  public static Object getWeapon() {
-    return weapon;
-  }
-
   @EventHandler
   public void onEntityDamage(EntityDamageByEntityEvent event) {
     if (event.getEntity() instanceof EnderCrystal &&
@@ -66,30 +47,23 @@ public class PlayerDamageEvents implements Listener {
     if (event.getDamager() instanceof Projectile projectile) {
       for (Projectile firedProjectile : lastFiredProjectiles) {
         if (projectile == firedProjectile) {
-          setDamageInformation((Player) projectile.getShooter(), damaged,
-              event.getDamager());
-
           Bukkit.getPluginManager().callEvent(
-              new PlayerDamagedByPlayerEvent(DamageType.RANGED, getAttacked(), getAttacker(),
-                  getWeapon()));
+              new PlayerDamagedByPlayerEvent(DamageType.RANGED, damaged, (Player) projectile.getShooter(),
+                  event.getDamager()));
         }
       }
     }
 
     if (event.getDamager() instanceof EnderCrystal damager) {
-      setDamageInformation(lastCrystalDamager, damaged, damager);
-
       Bukkit.getPluginManager()
-          .callEvent(new PlayerDamagedByPlayerEvent(DamageType.EXPLOSION_ENTITY, getAttacked(),
-              getAttacker(), getWeapon()));
+          .callEvent(new PlayerDamagedByPlayerEvent(DamageType.EXPLOSION_ENTITY, damaged,
+              lastCrystalDamager, damager));
     }
 
     if (event.getDamager() instanceof Player damager) {
-      setDamageInformation(damager, damaged, damager.getInventory().getItemInMainHand());
-
       Bukkit.getPluginManager()
-          .callEvent(new PlayerDamagedByPlayerEvent(DamageType.MELEE, getAttacked(), getAttacker(),
-              getWeapon()));
+          .callEvent(new PlayerDamagedByPlayerEvent(DamageType.MELEE, damaged, damager,
+              damager.getInventory().getItemInMainHand()));
     }
   }
 
@@ -102,11 +76,10 @@ public class PlayerDamageEvents implements Listener {
 
     if (event.getCause() == EntityDamageEvent.DamageCause.BLOCK_EXPLOSION &&
         damaged.getLocation().distance(lastExplodedBlock.getLocation()) <= 10) {
-      setDamageInformation(lastInteractedWithBlock, damaged, lastExplodedBlock);
 
       Bukkit.getPluginManager()
-          .callEvent(new PlayerDamagedByPlayerEvent(DamageType.EXPLOSION_BLOCK, getAttacked(),
-              getAttacker(), getWeapon()));
+          .callEvent(new PlayerDamagedByPlayerEvent(DamageType.EXPLOSION_BLOCK, damaged,
+              lastInteractedWithBlock, lastExplodedBlock));
     }
   }
 
