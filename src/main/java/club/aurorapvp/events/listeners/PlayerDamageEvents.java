@@ -26,9 +26,6 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
 public class PlayerDamageEvents implements Listener {
-  public static Player attacker;
-  public static Player attacked;
-  public static Object weapon;
   private static Player lastCrystalDamager;
   private static final LinkedList<Projectile> lastFiredProjectiles = new LinkedList<>();
   private static Player lastInteractedWithBlock;
@@ -78,8 +75,6 @@ public class PlayerDamageEvents implements Listener {
 
     if (event.getCause() == EntityDamageEvent.DamageCause.BLOCK_EXPLOSION &&
         damaged.getLocation().distance(lastExplodedBlock.getLocation()) <= 10) {
-
-      AuroraCombat.LOGGER.info("joe2 " + lastExplodedBlock);
 
       Bukkit.getPluginManager()
           .callEvent(new PlayerDamagedByPlayerEvent(DamageType.EXPLOSION_BLOCK, damaged,

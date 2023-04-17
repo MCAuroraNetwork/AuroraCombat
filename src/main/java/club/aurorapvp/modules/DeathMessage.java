@@ -34,8 +34,6 @@ public class DeathMessage {
       case EXPLOSION_BLOCK -> {
         BlockState weapon = (BlockState) event.getWeapon();
 
-        AuroraCombat.LOGGER.info("joe1 " + weapon);
-
         event.deathMessage(
             Lang.formatComponent("death-message.killed-by-player-explosion",
                 event.getDamaged().getName(), event.getDamager().getName(),
