@@ -30,6 +30,10 @@ public class CombatTag {
     this.playerOne = tagged;
     this.playerTwo = opponent;
 
+    if (!(canBeTagged(tagged) && canBeTagged(opponent))) {
+      return;
+    }
+
     if (getTag(tagged, opponent) != null) {
       Objects.requireNonNull(getTag(tagged, opponent)).resetTimer();
     } else {
