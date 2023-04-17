@@ -28,7 +28,7 @@ public class CombatTagEvents implements Listener {
   @EventHandler
   public void onCommandRun(PlayerCommandPreprocessEvent event) {
     if (CombatTag.isTagged(event.getPlayer()) &&
-        Config.get().getBoolean("combat-tag.allow-commands")) {
+        !Config.get().getBoolean("combat-tag.allow-commands")) {
       event.getPlayer().sendMessage(Lang.getComponent("commands-disabled"));
 
       event.setCancelled(true);
