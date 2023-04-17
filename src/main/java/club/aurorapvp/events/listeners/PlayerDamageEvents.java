@@ -26,16 +26,17 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
 public class PlayerDamageEvents implements Listener {
-  private static Player lastCrystalDamager;
-  private static final LinkedList<Projectile> lastFiredProjectiles = new LinkedList<>();
-  private static Player lastInteractedWithBlock;
-  private static BlockState lastExplodedBlock;
+
+  private Player lastCrystalDamager;
+  private final LinkedList<Projectile> lastFiredProjectiles = new LinkedList<>();
+  private Player lastInteractedWithBlock;
+  private BlockState lastExplodedBlock;
 
   @EventHandler
   public void onEntityDamage(EntityDamageByEntityEvent event) {
     if (event.getEntity() instanceof EnderCrystal &&
         event.getDamager() instanceof Player damager) {
-      lastCrystalDamager = damager;
+      this.lastCrystalDamager = damager;
     }
 
     if (!(event.getEntity() instanceof Player damaged)) {
@@ -43,7 +44,7 @@ public class PlayerDamageEvents implements Listener {
     }
 
     if (event.getDamager() instanceof Projectile projectile) {
-      for (Projectile firedProjectile : lastFiredProjectiles) {
+      for (Projectile firedProjectile : this.lastFiredProjectiles) {
         if (projectile == firedProjectile) {
           Bukkit.getPluginManager().callEvent(
               new PlayerDamagedByPlayerEvent(DamageType.RANGED, damaged,
@@ -56,7 +57,7 @@ public class PlayerDamageEvents implements Listener {
     if (event.getDamager() instanceof EnderCrystal damager) {
       Bukkit.getPluginManager()
           .callEvent(new PlayerDamagedByPlayerEvent(DamageType.EXPLOSION_ENTITY, damaged,
-              lastCrystalDamager, damager));
+              this.lastCrystalDamager, damager));
     }
 
     if (event.getDamager() instanceof Player damager) {
@@ -74,11 +75,11 @@ public class PlayerDamageEvents implements Listener {
     }
 
     if (event.getCause() == EntityDamageEvent.DamageCause.BLOCK_EXPLOSION &&
-        damaged.getLocation().distance(lastExplodedBlock.getLocation()) <= 10) {
+        damaged.getLocation().distance(this.lastExplodedBlock.getLocation()) <= 10) {
 
       Bukkit.getPluginManager()
           .callEvent(new PlayerDamagedByPlayerEvent(DamageType.EXPLOSION_BLOCK, damaged,
-              lastInteractedWithBlock, lastExplodedBlock));
+              this.lastInteractedWithBlock, this.lastExplodedBlock));
     }
   }
 
@@ -92,15 +93,15 @@ public class PlayerDamageEvents implements Listener {
       if ((respawnAnchor.getCharges() > 0 &&
           event.getPlayer().getInventory().getItemInMainHand().getType() != Material.GLOWSTONE) ||
           respawnAnchor.getCharges() >= 4) {
-        lastExplodedBlock = event.getClickedBlock().getState();
-        lastInteractedWithBlock = event.getPlayer();
+        this.lastExplodedBlock = event.getClickedBlock().getState();
+        this.lastInteractedWithBlock = event.getPlayer();
       }
     }
 
     if (event.getClickedBlock().getBlockData() instanceof Bed &&
         event.getPlayer().getWorld().getEnvironment() != World.Environment.NORMAL) {
-      lastExplodedBlock = event.getClickedBlock().getState();
-      lastInteractedWithBlock = event.getPlayer();
+      this.lastExplodedBlock = event.getClickedBlock().getState();
+      this.lastInteractedWithBlock = event.getPlayer();
     }
   }
 
@@ -108,11 +109,11 @@ public class PlayerDamageEvents implements Listener {
   public void onProjectileFired(ProjectileLaunchEvent event) {
     if (event.getEntity().getShooter() instanceof Player p) {
       ItemStack weapon = p.getInventory().getItemInMainHand();
-      if (lastFiredProjectiles.size() >= 3 || !weapon.containsEnchantment(Enchantment.MULTISHOT)) {
-        lastFiredProjectiles.clear();
+      if (this.lastFiredProjectiles.size() >= 3 || !weapon.containsEnchantment(Enchantment.MULTISHOT)) {
+        this.lastFiredProjectiles.clear();
       }
 
-      lastFiredProjectiles.add(event.getEntity());
+      this.lastFiredProjectiles.add(event.getEntity());
     }
   }
 
