@@ -1,5 +1,7 @@
 package club.aurorapvp.events.listeners;
 
+import club.aurorapvp.configs.Config;
+import club.aurorapvp.configs.Lang;
 import club.aurorapvp.events.custom.PlayerDamagedByPlayerEvent;
 import club.aurorapvp.events.custom.PlayerKilledByPlayerEvent;
 import club.aurorapvp.modules.BlockFallDamage;
@@ -9,6 +11,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 public class CombatTagEvents implements Listener {
@@ -19,6 +22,16 @@ public class CombatTagEvents implements Listener {
     if (CombatTag.isTagged(event.getPlayer())) {
       event.getPlayer().setHealth(0);
       CombatTag.removeTags(event.getPlayer());
+    }
+  }
+
+  @EventHandler
+  public void onCommandRun(PlayerCommandPreprocessEvent event) {
+    if (CombatTag.isTagged(event.getPlayer()) &&
+        Config.get().getBoolean("combat-tag.allow-commands")) {
+      event.getPlayer().sendMessage(Lang.getComponent("commands-disabled"));
+
+      event.setCancelled(true);
     }
   }
 

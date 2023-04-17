@@ -46,6 +46,8 @@ public class Lang {
         "<gradient:#FFAA00:#FF55FF>%1$s was slain by %2$s using %3$s");
     DEFAULTS.put("death-message.killed-by-player-shot",
         "<gradient:#FFAA00:#FF55FF>%1$s was shot by %2$s using %3$s");
+    DEFAULTS.put("commands-disabled",
+        "prefix <gradient:#FFAA00:#FF55FF>Commands are disabled in combat!");
 
     for (String path : DEFAULTS.keySet()) {
       if (!get().contains(path) || get().getString(path) == null) {
