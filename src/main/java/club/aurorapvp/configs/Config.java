@@ -23,6 +23,7 @@ public class Config {
     DEFAULTS.put("combat-tag.duration", 15000);
     DEFAULTS.put("combat-tag.allow-commands", false);
     DEFAULTS.put("misc.fall-damage.enable-first", false);
+    DEFAULTS.put("rating.enable-default", true);
     DEFAULTS.put("optional-plugins.auroraduels-compatibility", true);
 
     for (String path : DEFAULTS.keySet()) {

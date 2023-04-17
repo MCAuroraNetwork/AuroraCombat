@@ -18,8 +18,6 @@ public final class AuroraCombat extends JavaPlugin {
   public static File DATA_FOLDER;
   public static PlainTextComponentSerializer COMPONENT_SERIALIZER;
   public static MiniMessage COMPONENT_DESERIALIZER;
-  private static boolean auroraDuelsInstalled = false;
-
   @Override
   public void onEnable() {
     long startTime = System.currentTimeMillis();
@@ -42,20 +40,9 @@ public final class AuroraCombat extends JavaPlugin {
       new Placeholders().register();
     }
 
-    if (Bukkit.getPluginManager().getPlugin("AuroraDuels") != null) {
-      if (Config.get().getBoolean("optional-plugins.auroraduels-compatibility")) {
-        auroraDuelsInstalled = true;
-        Rating.setupRating("duels");
-      }
-    }
-
     getLogger().info(
         "Aurora Combat Loaded in " + Math.subtractExact(System.currentTimeMillis(), startTime) +
             "ms");
-  }
-
-  public static boolean isAuroraDuelsInstalled() {
-    return auroraDuelsInstalled;
   }
 
   @Override

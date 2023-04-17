@@ -4,8 +4,10 @@ import club.aurorapvp.AuroraCombat;
 import club.aurorapvp.configs.Config;
 import club.aurorapvp.configs.Lang;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import org.bukkit.NamespacedKey;
@@ -16,6 +18,7 @@ import org.bukkit.persistence.PersistentDataType;
 public class Rating {
   private static final Set<Rating> ratings = new HashSet<>();
   private static final Set<String> types = new HashSet<>();
+  private static final Map<String, Boolean> activeRatings = new HashMap<>();
   private final NamespacedKey key;
   private final Player p;
   private int rating;
@@ -23,7 +26,7 @@ public class Rating {
   private final PersistentDataContainer container;
 
   public static void init() {
-    types.add("default");
+    setupRating("default", Config.get().getBoolean("rating.enable-default"));
   }
 
   public Rating(Player p, String type) {
@@ -56,9 +59,17 @@ public class Rating {
     return type;
   }
 
-  // TODO create better rating API
-  public static void setupRating(String type) {
+  public static void setupRating(String type, boolean updating) {
     types.add(type);
+    activeRatings.put(type, updating);
+  }
+
+  public static void setUpdating(String type, boolean updating) {
+    activeRatings.put(type, updating);
+  }
+
+  public static boolean isUpdating(String type) {
+    return activeRatings.get(type);
   }
 
   public static void changeRating(Player deadPlayer, Player killer, String type) {
