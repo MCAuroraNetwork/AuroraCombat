@@ -64,6 +64,10 @@ public class Rating {
     activeRatings.put(type, updating);
   }
 
+  public static String[] getTypes() {
+    return types.toArray(new String[0]);
+  }
+
   public static void setUpdating(String type, boolean updating) {
     activeRatings.put(type, updating);
   }

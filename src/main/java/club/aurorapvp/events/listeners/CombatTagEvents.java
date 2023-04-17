@@ -43,8 +43,10 @@ public class CombatTagEvents implements Listener {
 
   @EventHandler
   public void onKilledByPlayer(PlayerKilledByPlayerEvent event) {
-    if (Rating.isUpdating("default")) {
-      Rating.changeRating(event.getDamaged(), event.getDamager(), "default");
+    for (String type : Rating.getTypes()) {
+      if (Rating.isUpdating(type)) {
+        Rating.changeRating(event.getDamaged(), event.getDamager(), type);
+      }
     }
   }
 
