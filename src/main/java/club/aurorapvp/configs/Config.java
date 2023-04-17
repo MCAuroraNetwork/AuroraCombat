@@ -22,6 +22,7 @@ public class Config {
     DEFAULTS.put("elo.max-change", 32);
     DEFAULTS.put("combat-tag.duration", 15000);
     DEFAULTS.put("combat-tag.allow-commands", false);
+    DEFAULTS.put("combat-tag.enable", true);
     DEFAULTS.put("misc.fall-damage.enable-first", false);
     DEFAULTS.put("rating.enable-default", true);
     DEFAULTS.put("optional-plugins.auroraduels-compatibility", true);

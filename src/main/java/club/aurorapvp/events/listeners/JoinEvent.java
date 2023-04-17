@@ -1,6 +1,8 @@
 package club.aurorapvp.events.listeners;
 
+import club.aurorapvp.configs.Config;
 import club.aurorapvp.modules.BlockFallDamage;
+import club.aurorapvp.modules.CombatTag;
 import club.aurorapvp.modules.Rating;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -12,6 +14,10 @@ public class JoinEvent implements Listener {
   public void onPlayerJoin(PlayerJoinEvent event) {
     Rating.setupPlayer(event.getPlayer());
     BlockFallDamage.setInVulnerable(event.getPlayer());
+
+    if (Config.get().getBoolean("combat-tag.enable")) {
+      CombatTag.setTaggable(event.getPlayer(), true);
+    }
   }
 
   @EventHandler

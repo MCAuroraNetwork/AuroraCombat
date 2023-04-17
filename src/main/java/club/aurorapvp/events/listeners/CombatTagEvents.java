@@ -1,12 +1,9 @@
 package club.aurorapvp.events.listeners;
 
-import club.aurorapvp.AuroraCombat;
-import club.aurorapvp.events.custom.DuelEndEvent;
 import club.aurorapvp.events.custom.PlayerDamagedByPlayerEvent;
 import club.aurorapvp.events.custom.PlayerKilledByPlayerEvent;
 import club.aurorapvp.modules.BlockFallDamage;
 import club.aurorapvp.modules.CombatTag;
-import club.aurorapvp.modules.Duel;
 import club.aurorapvp.modules.Rating;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
@@ -45,23 +42,14 @@ public class CombatTagEvents implements Listener {
   }
 
   @EventHandler
-  public void onDuelEnd(DuelEndEvent event) {
-    Rating.changeRating(event.getLoser(), event.getWinner(), "duels");
-  }
-
-  @EventHandler
   public void onKilledByPlayer(PlayerKilledByPlayerEvent event) {
-    Rating.changeRating(event.getDamaged(), event.getDamager(), "default");
+    if (Rating.isUpdating("default")) {
+      Rating.changeRating(event.getDamaged(), event.getDamager(), "default");
+    }
   }
 
   @EventHandler
   public void onDamagedByPlayer(PlayerDamagedByPlayerEvent event) {
-    if (AuroraCombat.isAuroraDuelsInstalled()) {
-      if (Duel.inDuel(event.getDamaged()) || Duel.inDuel(event.getDamager())) {
-        return;
-      }
-    }
-
     if (!event.getDamager().equals(event.getDamaged())) {
       new CombatTag(event.getDamaged(), event.getDamager());
       lastDamage = event;

@@ -8,6 +8,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.Timer;
@@ -18,6 +19,7 @@ import org.bukkit.scheduler.BukkitTask;
 
 public class CombatTag {
   private static final Set<CombatTag> tags = new HashSet<>();
+  private static final Map<Player, Boolean> taggablePlayers = new HashMap<>();
   private final Player playerOne;
   private final Player playerTwo;
   private Timer t;
@@ -178,5 +180,13 @@ public class CombatTag {
       }
     }
     return false;
+  }
+
+  public static void setTaggable(Player p, boolean taggable) {
+    taggablePlayers.put(p, taggable);
+  }
+
+  public static boolean canBeTagged(Player p) {
+    return taggablePlayers.get(p);
   }
 }
