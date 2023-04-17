@@ -1,5 +1,6 @@
 package club.aurorapvp.events.listeners;
 
+import club.aurorapvp.AuroraCombat;
 import club.aurorapvp.configs.Config;
 import club.aurorapvp.enums.DamageType;
 import club.aurorapvp.events.custom.PlayerDamagedByPlayerEvent;
@@ -8,7 +9,7 @@ import java.util.LinkedList;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.World;
-import org.bukkit.block.Block;
+import org.bukkit.block.BlockState;
 import org.bukkit.block.data.type.Bed;
 import org.bukkit.block.data.type.RespawnAnchor;
 import org.bukkit.enchantments.Enchantment;
@@ -31,7 +32,7 @@ public class PlayerDamageEvents implements Listener {
   private static Player lastCrystalDamager;
   private static final LinkedList<Projectile> lastFiredProjectiles = new LinkedList<>();
   private static Player lastInteractedWithBlock;
-  private static Block lastExplodedBlock;
+  private static BlockState lastExplodedBlock;
 
   @EventHandler
   public void onEntityDamage(EntityDamageByEntityEvent event) {
@@ -48,7 +49,8 @@ public class PlayerDamageEvents implements Listener {
       for (Projectile firedProjectile : lastFiredProjectiles) {
         if (projectile == firedProjectile) {
           Bukkit.getPluginManager().callEvent(
-              new PlayerDamagedByPlayerEvent(DamageType.RANGED, damaged, (Player) projectile.getShooter(),
+              new PlayerDamagedByPlayerEvent(DamageType.RANGED, damaged,
+                  (Player) projectile.getShooter(),
                   event.getDamager()));
         }
       }
@@ -77,6 +79,8 @@ public class PlayerDamageEvents implements Listener {
     if (event.getCause() == EntityDamageEvent.DamageCause.BLOCK_EXPLOSION &&
         damaged.getLocation().distance(lastExplodedBlock.getLocation()) <= 10) {
 
+      AuroraCombat.LOGGER.info("joe2 " + lastExplodedBlock);
+
       Bukkit.getPluginManager()
           .callEvent(new PlayerDamagedByPlayerEvent(DamageType.EXPLOSION_BLOCK, damaged,
               lastInteractedWithBlock, lastExplodedBlock));
@@ -93,14 +97,14 @@ public class PlayerDamageEvents implements Listener {
       if ((respawnAnchor.getCharges() > 0 &&
           event.getPlayer().getInventory().getItemInMainHand().getType() != Material.GLOWSTONE) ||
           respawnAnchor.getCharges() >= 4) {
-        lastExplodedBlock = event.getClickedBlock();
+        lastExplodedBlock = event.getClickedBlock().getState();
         lastInteractedWithBlock = event.getPlayer();
       }
     }
 
     if (event.getClickedBlock().getBlockData() instanceof Bed &&
         event.getPlayer().getWorld().getEnvironment() != World.Environment.NORMAL) {
-      lastExplodedBlock = event.getClickedBlock();
+      lastExplodedBlock = event.getClickedBlock().getState();
       lastInteractedWithBlock = event.getPlayer();
     }
   }

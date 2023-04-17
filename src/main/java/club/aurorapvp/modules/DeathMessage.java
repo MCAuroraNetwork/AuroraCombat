@@ -2,10 +2,11 @@ package club.aurorapvp.modules;
 
 import static club.aurorapvp.AuroraCombat.COMPONENT_SERIALIZER;
 
+import club.aurorapvp.AuroraCombat;
 import club.aurorapvp.configs.Lang;
 import club.aurorapvp.events.custom.PlayerKilledByPlayerEvent;
 import club.aurorapvp.util.MaterialUtil;
-import org.bukkit.block.Block;
+import org.bukkit.block.BlockState;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Projectile;
 import org.bukkit.inventory.ItemStack;
@@ -31,7 +32,9 @@ public class DeathMessage {
                 COMPONENT_SERIALIZER.serialize(weapon.teamDisplayName())));
       }
       case EXPLOSION_BLOCK -> {
-        Block weapon = (Block) event.getWeapon();
+        BlockState weapon = (BlockState) event.getWeapon();
+
+        AuroraCombat.LOGGER.info("joe1 " + weapon);
 
         event.deathMessage(
             Lang.formatComponent("death-message.killed-by-player-explosion",
