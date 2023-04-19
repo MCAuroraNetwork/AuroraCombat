@@ -8,11 +8,12 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.world.WorldSaveEvent;
 
-public class JoinEvent implements Listener {
+public class PlayerEvents implements Listener {
   @EventHandler
   public void onPlayerJoin(PlayerJoinEvent event) {
-    Rating.setupPlayer(event.getPlayer());
+    Rating.register(event.getPlayer());
     BlockFallDamage.setInVulnerable(event.getPlayer());
 
     if (Config.get().getBoolean("combat-tag.enable")) {
@@ -21,7 +22,12 @@ public class JoinEvent implements Listener {
   }
 
   @EventHandler
+  public void onSave(WorldSaveEvent event) {
+    Rating.saveAll();
+  }
+
+  @EventHandler
   public void onPlayerQuit(PlayerQuitEvent event) {
-    Rating.removeRatings(event.getPlayer());
+    Rating.unregister(event.getPlayer());
   }
 }

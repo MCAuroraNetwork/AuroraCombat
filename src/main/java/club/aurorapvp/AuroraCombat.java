@@ -47,6 +47,6 @@ public final class AuroraCombat extends JavaPlugin {
 
   @Override
   public void onDisable() {
-    // Plugin shutdown logic
+    Rating.saveAll();
   }
 }

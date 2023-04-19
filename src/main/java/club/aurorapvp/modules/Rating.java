@@ -3,6 +3,8 @@ package club.aurorapvp.modules;
 import club.aurorapvp.AuroraCombat;
 import club.aurorapvp.configs.Config;
 import club.aurorapvp.configs.Lang;
+import club.aurorapvp.datahandlers.RatingData;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -19,11 +21,10 @@ public class Rating {
   private static final Set<Rating> ratings = new HashSet<>();
   private static final Set<String> types = new HashSet<>();
   private static final Map<String, Boolean> activeRatings = new HashMap<>();
-  private final NamespacedKey key;
   private final Player p;
   private int rating;
   private final String type;
-  private final PersistentDataContainer container;
+  private final RatingData data;
 
   public static void init() {
     setupRating("default", Config.get().getBoolean("rating.enable-default"));
@@ -31,10 +32,14 @@ public class Rating {
 
   public Rating(Player p, String type) {
     this.p = p;
-    this.container = p.getPersistentDataContainer();
     this.type = type;
-    this.key = new NamespacedKey(AuroraCombat.INSTANCE, "rating_" + type);
-    this.rating = container.get(key, PersistentDataType.INTEGER);
+    this.data = new RatingData(this);
+
+    if (this.exists()) {
+      this.rating = data.getRating();
+    } else {
+      rating = Config.get().getInt("elo.default-points");
+    }
 
     ratings.add(this);
   }
@@ -47,8 +52,6 @@ public class Rating {
     rating = rating + points;
 
     p.sendMessage(Lang.formatComponent("points-changed", points));
-
-    container.set(key, PersistentDataType.INTEGER, rating);
   }
 
   public Player getPlayer() {
@@ -57,6 +60,14 @@ public class Rating {
 
   public String getType() {
     return type;
+  }
+
+  public void save() {
+    this.data.save();
+  }
+
+  public boolean exists() {
+    return this.data.exists();
   }
 
   public static void setupRating(String type, boolean updating) {
@@ -70,6 +81,12 @@ public class Rating {
 
   public static void setUpdating(String type, boolean updating) {
     activeRatings.put(type, updating);
+  }
+
+  public static void saveAll() {
+    for (Rating rating : ratings) {
+      rating.save();
+    }
   }
 
   public static boolean isUpdating(String type) {
@@ -112,11 +129,23 @@ public class Rating {
     return null;
   }
 
+  public static Rating[] getRatings(Player p) {
+    List<Rating> ratingsList = new ArrayList<>();
+    for (Rating r : ratings) {
+      if (r.getPlayer().equals(p)) {
+        ratingsList.add(r);
+      }
+    }
+
+    return ratingsList.toArray(new Rating[0]);
+  }
+
+
   public static Rating[] getRatings() {
     return ratings.toArray(new Rating[0]);
   }
 
-  public static void setupPlayer(Player p) {
+  public static void register(Player p) {
     PersistentDataContainer container = p.getPersistentDataContainer();
 
     for (String type : types) {
@@ -130,7 +159,11 @@ public class Rating {
     }
   }
 
-  public static void removeRatings(Player p) {
+  public static void unregister(Player p) {
+    for (Rating rating : Rating.getRatings(p)) {
+      rating.save();
+    }
+
     ratings.removeIf(rating -> rating.getPlayer().equals(p));
   }
 
