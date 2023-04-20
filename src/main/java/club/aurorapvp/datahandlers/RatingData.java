@@ -3,7 +3,6 @@ package club.aurorapvp.datahandlers;
 import club.aurorapvp.AuroraCombat;
 import club.aurorapvp.modules.Rating;
 import org.bukkit.NamespacedKey;
-import org.bukkit.entity.Player;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 

@@ -2,7 +2,9 @@ name: AuroraCombat
 version: '${version}'
 main: club.aurorapvp.AuroraCombat
 api-version: 1.19
-softdepend: [ PlaceholderAPI ]
 authors: [ Villagers654 ]
 description: A combat plugin for the Aurora Network
 website: aurorapvp.club
+dependencies:
+  - name: PlaceholderAPI
+    required: false
