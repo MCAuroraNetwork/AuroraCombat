@@ -20,14 +20,6 @@ public class Lang {
   }
 
   public static void generateDefaults() {
-    for (Object path : get().getKeys(false).toArray()) {
-      if (Objects.requireNonNull(get().getString((String) path)).startsWith("~") &&
-          Objects.requireNonNull(get().getString((String) path)).endsWith("~")) {
-        PLACEHOLDERS.put((String) path, Objects.requireNonNull(get().getString((String) path))
-            .replace("~", ""));
-      }
-    }
-
     DEFAULTS.put("prefix", "~<gradient:#FFAA00:#FF55FF><bold>AuroraCombat ><reset>~");
     DEFAULTS.put("points-changed",
         "prefix <gradient:#FFAA00:#FF55FF>Your ELO changed by %s points!");
@@ -58,6 +50,14 @@ public class Lang {
         } catch (IOException e) {
           AuroraCombat.INSTANCE.getLogger().severe("Failed to save lang file");
         }
+      }
+    }
+
+    for (Object path : get().getKeys(false).toArray()) {
+      if (Objects.requireNonNull(get().getString((String) path)).startsWith("~") &&
+          Objects.requireNonNull(get().getString((String) path)).endsWith("~")) {
+        PLACEHOLDERS.put((String) path, Objects.requireNonNull(get().getString((String) path))
+            .replace("~", ""));
       }
     }
   }
