@@ -10,7 +10,6 @@ import org.bukkit.configuration.file.YamlConfiguration;
 
 public class Lang {
   private static final HashMap<String, String> PLACEHOLDERS = new HashMap<>();
-  private static final HashMap<String, String> DEFAULTS = new HashMap<>();
   private static final File FILE = new File(AuroraCombat.DATA_FOLDER, "lang.yml");
   private static YamlConfiguration lang;
 
@@ -20,6 +19,8 @@ public class Lang {
   }
 
   public static void generateDefaults() {
+    final HashMap<String, String> DEFAULTS = new HashMap<>();
+
     DEFAULTS.put("prefix", "~<gradient:#FFAA00:#FF55FF><bold>AuroraCombat ><reset>~");
     DEFAULTS.put("points-changed",
         "prefix <gradient:#FFAA00:#FF55FF>Your ELO changed by %s points!");
@@ -44,13 +45,13 @@ public class Lang {
     for (String path : DEFAULTS.keySet()) {
       if (!get().contains(path) || get().getString(path) == null) {
         get().set(path, DEFAULTS.get(path));
-
-        try {
-          get().save(FILE);
-        } catch (IOException e) {
-          AuroraCombat.INSTANCE.getLogger().severe("Failed to save lang file");
-        }
       }
+    }
+
+    try {
+      get().save(FILE);
+    } catch (IOException e) {
+      AuroraCombat.INSTANCE.getLogger().severe("Failed to save lang file");
     }
 
     for (Object path : get().getKeys(false).toArray()) {
