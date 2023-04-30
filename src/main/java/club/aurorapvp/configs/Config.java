@@ -7,7 +7,7 @@ import java.util.HashMap;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 public class Config {
-  private static final File FILE = new File(AuroraCombat.DATA_FOLDER, "config.yml");
+  private static final File FILE = new File(AuroraCombat.INSTANCE.getDataFolder(), "config.yml");
   private static YamlConfiguration config;
 
   public static void init() {
@@ -36,7 +36,7 @@ public class Config {
     try {
       get().save(FILE);
     } catch (IOException e) {
-      AuroraCombat.LOGGER.severe("Failed to save config file");
+      AuroraCombat.INSTANCE.getLogger().severe("Failed to save config file");
     }
   }
 
@@ -50,10 +50,10 @@ public class Config {
         FILE.getParentFile().mkdirs();
         FILE.createNewFile();
       } catch (IOException e) {
-        AuroraCombat.LOGGER.severe("Failed to generate config file");
+        AuroraCombat.INSTANCE.getLogger().severe("Failed to generate config file");
       }
     }
     config = YamlConfiguration.loadConfiguration(FILE);
-    AuroraCombat.LOGGER.info("Config reloaded!");
+    AuroraCombat.INSTANCE.getLogger().info("Config reloaded!");
   }
 }

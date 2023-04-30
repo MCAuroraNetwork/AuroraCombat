@@ -14,20 +14,11 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public final class AuroraCombat extends JavaPlugin {
   public static JavaPlugin INSTANCE;
-  public static Logger LOGGER;
-  public static File DATA_FOLDER;
-  public static PlainTextComponentSerializer COMPONENT_SERIALIZER;
-  public static MiniMessage COMPONENT_DESERIALIZER;
   @Override
   public void onEnable() {
     long startTime = System.currentTimeMillis();
 
-    // Register important variables
     INSTANCE = this;
-    LOGGER = this.getLogger();
-    DATA_FOLDER = this.getDataFolder();
-    COMPONENT_SERIALIZER = PlainTextComponentSerializer.plainText();
-    COMPONENT_DESERIALIZER = MiniMessage.miniMessage();
 
     // Setup classes
     Config.init();

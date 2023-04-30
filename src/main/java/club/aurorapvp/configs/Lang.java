@@ -6,11 +6,12 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Objects;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 public class Lang {
   private static final HashMap<String, String> PLACEHOLDERS = new HashMap<>();
-  private static final File FILE = new File(AuroraCombat.DATA_FOLDER, "lang.yml");
+  private static final File FILE = new File(AuroraCombat.INSTANCE.getDataFolder(), "lang.yml");
   private static YamlConfiguration lang;
 
   public static void init() {
@@ -87,7 +88,7 @@ public class Lang {
 
     pathString = String.format(pathString, args);
 
-    return AuroraCombat.COMPONENT_DESERIALIZER.deserialize(pathString);
+    return MiniMessage.miniMessage().deserialize(pathString);
   }
 
   public static Component getComponent(String message) {
@@ -100,7 +101,7 @@ public class Lang {
             PLACEHOLDERS.get(placeholder));
       }
     }
-    return AuroraCombat.COMPONENT_DESERIALIZER.deserialize(pathString);
+    return MiniMessage.miniMessage().deserialize(pathString);
   }
 
   public static YamlConfiguration get() {

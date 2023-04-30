@@ -1,11 +1,10 @@
 package club.aurorapvp.modules;
 
-import static club.aurorapvp.AuroraCombat.COMPONENT_SERIALIZER;
-
 import club.aurorapvp.configs.Lang;
 import club.aurorapvp.events.custom.PlayerKilledByPlayerEvent;
 import club.aurorapvp.util.MaterialUtil;
 import net.kyori.adventure.text.event.HoverEvent;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.block.BlockState;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Projectile;
@@ -23,7 +22,7 @@ public class DeathMessage {
             Lang.formatComponent("death-message.killed-by-player-slain",
                     event.getDamaged().getName(),
                     event.getDamager().getName(),
-                    COMPONENT_SERIALIZER.serialize(weapon.displayName()))
+                    MiniMessage.miniMessage().serialize(weapon.displayName()))
                 .hoverEvent(hover)
         );
       }
@@ -34,7 +33,7 @@ public class DeathMessage {
         event.deathMessage(
             Lang.formatComponent("death-message.killed-by-player-explosion",
                 event.getDamaged().getName(), event.getDamager().getName(),
-                COMPONENT_SERIALIZER.serialize(weapon.teamDisplayName())));
+                MiniMessage.miniMessage().serialize(weapon.teamDisplayName())));
       }
       case EXPLOSION_BLOCK -> {
         BlockState weapon = (BlockState) event.getWeapon();
@@ -50,7 +49,7 @@ public class DeathMessage {
         event.deathMessage(
             Lang.formatComponent("death-message.killed-by-player-shot",
                 event.getDamaged().getName(), event.getDamager().getName(),
-                COMPONENT_SERIALIZER.serialize(weapon.teamDisplayName())));
+                MiniMessage.miniMessage().serialize(weapon.teamDisplayName())));
       }
       default -> event.deathMessage(
           Lang.formatComponent("death-message.killed-by-player-generic",
