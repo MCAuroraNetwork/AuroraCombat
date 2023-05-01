@@ -107,6 +107,16 @@ public class Rating {
         Config.get().getInt("elo.max-change") * -(0 + EloChange)));
   }
 
+  public static void changeRating(Player p, int otherRating, String type) {
+    Rating playerRating = Rating.getRating(p, type);
+
+    assert playerRating != null;
+    double EloChange = Rating.getELOChange(playerRating.getPoints(), otherRating);
+
+    playerRating.changePoints((int) Math.round(
+        Config.get().getInt("elo.max-change") * EloChange));
+  }
+
   public static Rating getRating(Player p, String type) {
     for (Rating rating : ratings) {
       if (rating.getPlayer() == p && Objects.equals(rating.getType(), type)) {
