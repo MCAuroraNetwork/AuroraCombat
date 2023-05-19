@@ -5,14 +5,14 @@ import club.aurorapvp.configs.Config;
 import club.aurorapvp.enums.DamageType;
 import club.aurorapvp.events.custom.PlayerDamagedByPlayerEvent;
 import club.aurorapvp.modules.BlockFallDamage;
-import java.util.LinkedList;
+import club.aurorapvp.util.ItemStackUtil;
+import java.util.HashSet;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.data.type.Bed;
 import org.bukkit.block.data.type.RespawnAnchor;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.EnderCrystal;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
@@ -21,14 +21,14 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByBlockEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.entity.ProjectileLaunchEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
 public class PlayerDamageEvents implements Listener {
-
   private Player lastCrystalDamager;
-  private final LinkedList<Projectile> lastFiredProjectiles = new LinkedList<>();
+  private final HashSet<Projectile> firedProjectiles = new HashSet<>();
   private Player lastInteractedWithBlock;
   private BlockState lastExplodedBlock;
 
@@ -43,27 +43,43 @@ public class PlayerDamageEvents implements Listener {
       return;
     }
 
-    if (event.getDamager() instanceof Projectile projectile) {
-      for (Projectile firedProjectile : this.lastFiredProjectiles) {
-        if (projectile == firedProjectile) {
-          Bukkit.getPluginManager().callEvent(
-              new PlayerDamagedByPlayerEvent(DamageType.RANGED, damaged,
-                  (Player) projectile.getShooter(),
-                  event.getDamager()));
-        }
+    if (!(event.getDamager() instanceof Projectile projectile)) {
+      return;
+    }
+
+    for (Projectile firedProjectile : firedProjectiles) {
+      if (projectile == firedProjectile) {
+        Bukkit.getPluginManager().callEvent(
+            new PlayerOnPlayerDamageBuilder()
+                .damageType(DamageType.RANGED)
+                .damaged(damaged)
+                .damager((Player) projectile.getShooter())
+                .weapon(ItemStackUtil.toItemStack(projectile))
+                .build());
       }
     }
 
-    if (event.getDamager() instanceof EnderCrystal damager) {
-      Bukkit.getPluginManager()
-          .callEvent(new PlayerDamagedByPlayerEvent(DamageType.EXPLOSION_ENTITY, damaged,
-              this.lastCrystalDamager, damager));
+
+    if (event.getDamager() instanceof
+        EnderCrystal damager) {
+      Bukkit.getPluginManager().callEvent(
+          new PlayerOnPlayerDamageBuilder()
+              .damageType(DamageType.EXPLOSION_ENTITY)
+              .damaged(damaged)
+              .damager(this.lastCrystalDamager)
+              .weapon(ItemStackUtil.toItemStack(damager))
+              .build());
     }
 
-    if (event.getDamager() instanceof Player damager) {
-      Bukkit.getPluginManager()
-          .callEvent(new PlayerDamagedByPlayerEvent(DamageType.MELEE, damaged, damager,
-              damager.getInventory().getItemInMainHand()));
+    if (event.getDamager() instanceof
+        Player damager) {
+      Bukkit.getPluginManager().callEvent(
+          new PlayerOnPlayerDamageBuilder()
+              .damageType(DamageType.MELEE)
+              .damaged(damaged)
+              .damager(damager)
+              .weapon(damager.getInventory().getItemInMainHand())
+              .build());
     }
   }
 
@@ -77,9 +93,13 @@ public class PlayerDamageEvents implements Listener {
     if (event.getCause() == EntityDamageEvent.DamageCause.BLOCK_EXPLOSION &&
         damaged.getLocation().distance(this.lastExplodedBlock.getLocation()) <= 10) {
 
-      Bukkit.getPluginManager()
-          .callEvent(new PlayerDamagedByPlayerEvent(DamageType.EXPLOSION_BLOCK, damaged,
-              this.lastInteractedWithBlock, this.lastExplodedBlock));
+      Bukkit.getPluginManager().callEvent(
+          new PlayerOnPlayerDamageBuilder()
+              .damageType(DamageType.EXPLOSION_BLOCK)
+              .damaged(damaged)
+              .damager(this.lastInteractedWithBlock)
+              .weapon(new ItemStack(this.lastExplodedBlock.getType()))
+              .build());
     }
   }
 
@@ -108,13 +128,14 @@ public class PlayerDamageEvents implements Listener {
   @EventHandler
   public void onProjectileFired(ProjectileLaunchEvent event) {
     if (event.getEntity().getShooter() instanceof Player p) {
-      ItemStack weapon = p.getInventory().getItemInMainHand();
-      if (this.lastFiredProjectiles.size() >= 3 || !weapon.containsEnchantment(Enchantment.MULTISHOT)) {
-        this.lastFiredProjectiles.clear();
-      }
-
-      this.lastFiredProjectiles.add(event.getEntity());
+      this.firedProjectiles.add(event.getEntity());
     }
+  }
+
+  @EventHandler
+  public void onProjectileHit(ProjectileHitEvent event) {
+    Bukkit.getScheduler()
+        .runTaskLater(AuroraCombat.INSTANCE, () -> firedProjectiles.remove(event.getEntity()), 20L);
   }
 
   @EventHandler
@@ -134,6 +155,38 @@ public class PlayerDamageEvents implements Listener {
     if (!BlockFallDamage.shouldTakeDamage(p)) {
       event.setCancelled(true);
       BlockFallDamage.setVulnerable(p);
+    }
+  }
+
+  public static class PlayerOnPlayerDamageBuilder {
+    private DamageType damageType;
+    private Player damaged;
+    private Player damager;
+    private ItemStack weapon;
+
+    public PlayerOnPlayerDamageBuilder damageType(DamageType damageType) {
+      this.damageType = damageType;
+      return this;
+    }
+
+    public PlayerOnPlayerDamageBuilder damaged(Player damaged) {
+      this.damaged = damaged;
+      return this;
+    }
+
+    public PlayerOnPlayerDamageBuilder damager(Player damager) {
+      this.damager = damager;
+      return this;
+    }
+
+    public PlayerOnPlayerDamageBuilder weapon(ItemStack weapon) {
+      this.weapon = weapon;
+      return this;
+    }
+
+    public PlayerDamagedByPlayerEvent build() {
+      return new PlayerDamagedByPlayerEvent(this.damageType, this.damaged, this.damager,
+          this.weapon);
     }
   }
 }

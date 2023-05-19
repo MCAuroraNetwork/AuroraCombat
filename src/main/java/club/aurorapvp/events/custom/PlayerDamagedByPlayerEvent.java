@@ -5,6 +5,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
+import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 public class PlayerDamagedByPlayerEvent extends Event implements Cancellable {
@@ -12,18 +13,18 @@ public class PlayerDamagedByPlayerEvent extends Event implements Cancellable {
   private final DamageType damageType;
   private final Player attacked;
   private final Player attacker;
-  private final Object weapon;
+  private final ItemStack weapon;
   private boolean isCancelled = false;
 
   public PlayerDamagedByPlayerEvent(DamageType damageType, Player attacked, Player attacker,
-                                    Object weapon) {
+                                    ItemStack weapon) {
     this.damageType = damageType;
     this.attacked = attacked;
     this.attacker = attacker;
     this.weapon = weapon;
   }
 
-  public Object getWeapon() {
+  public ItemStack getWeapon() {
     return weapon;
   }
 
