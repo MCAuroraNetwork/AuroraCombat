@@ -4,6 +4,14 @@ import club.aurorapvp.AuroraCombat;
 import club.aurorapvp.configs.Config;
 import club.aurorapvp.configs.Lang;
 import club.aurorapvp.datahandlers.RatingData;
+import club.aurorapvp.flags.RatingFlag;
+import com.sk89q.worldedit.bukkit.BukkitAdapter;
+import com.sk89q.worldguard.WorldGuard;
+import com.sk89q.worldguard.protection.ApplicableRegionSet;
+import com.sk89q.worldguard.protection.flags.StateFlag;
+import com.sk89q.worldguard.protection.regions.ProtectedRegion;
+import com.sk89q.worldguard.protection.regions.RegionContainer;
+import com.sk89q.worldguard.protection.regions.RegionQuery;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -12,6 +20,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.persistence.PersistentDataContainer;
@@ -89,7 +98,20 @@ public class Rating {
     }
   }
 
-  public static boolean isUpdating(String type) {
+  public static boolean isUpdating(Location loc, String type) {
+    if (AuroraCombat.isWorldGuardInstalled()) {
+      RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
+      RegionQuery query = container.createQuery();
+      ApplicableRegionSet set = query.getApplicableRegions(BukkitAdapter.adapt(loc));
+
+      if (set != null) {
+        for (ProtectedRegion region : set.getRegions()) {
+          return !region.getFlag(RatingFlag.GLOBAL_RATINGS).equals(StateFlag.State.DENY) ||
+              Objects.equals(region.getFlag(RatingFlag.REGION_RATING), type);
+        }
+      }
+    }
+
     return activeRatings.get(type);
   }
 

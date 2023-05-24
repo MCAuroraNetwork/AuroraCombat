@@ -18,6 +18,9 @@ repositories {
     maven {
         url = 'https://repo.extendedclip.com/content/repositories/placeholderapi/'
     }
+    maven {
+        url = 'https://maven.enginehub.org/repo/'
+    }
     flatDir {
         dirs '.'
     }
@@ -25,6 +28,7 @@ repositories {
 
 dependencies {
     compileOnly 'io.papermc.paper:paper-api:1.19.4-R0.1-SNAPSHOT'
+    compileOnly 'com.sk89q.worldguard:worldguard-bukkit:7.0.8-SNAPSHOT'
     compileOnly 'me.clip:placeholderapi:2.11.1'
 }
 

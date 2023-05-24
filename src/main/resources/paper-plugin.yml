@@ -8,3 +8,5 @@ website: aurorapvp.club
 dependencies:
   - name: PlaceholderAPI
     required: false
+  - name: WorldGuard
+    required: false

@@ -25,7 +25,7 @@ public class Config {
     DEFAULTS.put("combat-tag.enable", true);
     DEFAULTS.put("misc.fall-damage.enable-first", false);
     DEFAULTS.put("rating.enable-default", true);
-    DEFAULTS.put("optional-plugins.auroraduels-compatibility", true);
+    DEFAULTS.put("optional-plugins.worldguard-compatibility", true);
 
     for (String path : DEFAULTS.keySet()) {
       if (!get().isSet(path) || get().getString(path) == null) {
