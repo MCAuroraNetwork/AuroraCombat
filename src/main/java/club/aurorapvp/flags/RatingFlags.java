@@ -7,7 +7,7 @@ import com.sk89q.worldguard.protection.flags.StringFlag;
 import com.sk89q.worldguard.protection.flags.registry.FlagConflictException;
 import com.sk89q.worldguard.protection.flags.registry.FlagRegistry;
 
-public class RatingFlag {
+public class RatingFlags {
   public static StateFlag GLOBAL_RATINGS;
   public static StringFlag REGION_RATING;
 

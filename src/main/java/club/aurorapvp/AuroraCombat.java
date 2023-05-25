@@ -3,7 +3,7 @@ package club.aurorapvp;
 import club.aurorapvp.configs.Config;
 import club.aurorapvp.configs.Lang;
 import club.aurorapvp.events.Events;
-import club.aurorapvp.flags.RatingFlag;
+import club.aurorapvp.flags.RatingFlags;
 import club.aurorapvp.modules.Rating;
 import club.aurorapvp.placeholders.Placeholders;
 import org.bukkit.Bukkit;
@@ -31,7 +31,7 @@ public final class AuroraCombat extends JavaPlugin {
     }
     if (Bukkit.getPluginManager().getPlugin("WorldGuard") != null) {
       if (Config.get().getBoolean("optional-plugins.worldguard-compatibility")) {
-        RatingFlag.init();
+        RatingFlags.init();
         worldGuardInstalled = true;
       }
     }
@@ -43,7 +43,13 @@ public final class AuroraCombat extends JavaPlugin {
 
   @Override
   public void onDisable() {
+    long startTime = System.currentTimeMillis();
+
     Rating.saveAll();
+
+    getLogger().info(
+        "Aurora Combat Unloaded in " + Math.subtractExact(System.currentTimeMillis(), startTime) +
+            "ms");
   }
 
   public static boolean isWorldGuardInstalled() {

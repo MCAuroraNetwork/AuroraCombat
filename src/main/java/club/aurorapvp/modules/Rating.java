@@ -4,7 +4,7 @@ import club.aurorapvp.AuroraCombat;
 import club.aurorapvp.configs.Config;
 import club.aurorapvp.configs.Lang;
 import club.aurorapvp.datahandlers.RatingData;
-import club.aurorapvp.flags.RatingFlag;
+import club.aurorapvp.flags.RatingFlags;
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldguard.WorldGuard;
 import com.sk89q.worldguard.protection.ApplicableRegionSet;
@@ -106,8 +106,8 @@ public class Rating {
 
       if (set != null) {
         for (ProtectedRegion region : set.getRegions()) {
-          return !region.getFlag(RatingFlag.GLOBAL_RATINGS).equals(StateFlag.State.DENY) ||
-              Objects.equals(region.getFlag(RatingFlag.REGION_RATING), type);
+          return !region.getFlag(RatingFlags.GLOBAL_RATINGS).equals(StateFlag.State.DENY) ||
+              Objects.equals(region.getFlag(RatingFlags.REGION_RATING), type);
         }
       }
     }
