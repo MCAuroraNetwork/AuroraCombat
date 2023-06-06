@@ -10,3 +10,5 @@ dependencies:
     required: false
   - name: WorldGuard
     required: false
+load-after:
+  - name: WorldGuard
