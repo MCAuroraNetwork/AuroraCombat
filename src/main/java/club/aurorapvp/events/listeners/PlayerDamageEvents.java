@@ -127,7 +127,7 @@ public class PlayerDamageEvents implements Listener {
 
   @EventHandler
   public void onProjectileFired(ProjectileLaunchEvent event) {
-    if (event.getEntity().getShooter() instanceof Player p) {
+    if (event.getEntity().getShooter() instanceof Player) {
       this.firedProjectiles.add(event.getEntity());
     }
   }

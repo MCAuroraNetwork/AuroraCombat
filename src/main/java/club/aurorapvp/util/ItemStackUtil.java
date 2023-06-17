@@ -31,8 +31,7 @@ public class ItemStackUtil {
     ItemStack item;
     Component displayName = projectile.name();
 
-    if (projectile instanceof Arrow) {
-      Arrow arrow = (Arrow) projectile;
+    if (projectile instanceof Arrow arrow) {
       if (!arrow.getCustomEffects().isEmpty()) {
         item = new ItemStack(Material.TIPPED_ARROW);
         PotionMeta potionMeta = (PotionMeta) item.getItemMeta();
@@ -48,23 +47,14 @@ public class ItemStackUtil {
         item = new ItemStack(Material.ARROW);
       }
     } else {
-      switch (projectile.getType()) {
-        case SNOWBALL:
-          item = new ItemStack(Material.SNOWBALL);
-          break;
-        case EGG:
-          item = new ItemStack(Material.EGG);
-          break;
-        case ENDER_PEARL:
-          item = new ItemStack(Material.ENDER_PEARL);
-          break;
-        case TRIDENT:
-          item = new ItemStack(Material.TRIDENT);
-          break;
-        default:
-          throw new IllegalArgumentException(
-              "Unsupported projectile type: " + projectile.getType());
-      }
+      item = switch (projectile.getType()) {
+        case SNOWBALL -> new ItemStack(Material.SNOWBALL);
+        case EGG -> new ItemStack(Material.EGG);
+        case ENDER_PEARL -> new ItemStack(Material.ENDER_PEARL);
+        case TRIDENT -> new ItemStack(Material.TRIDENT);
+        default -> throw new IllegalArgumentException(
+            "Unsupported projectile type: " + projectile.getType());
+      };
     }
 
     ItemMeta meta = item.getItemMeta();
