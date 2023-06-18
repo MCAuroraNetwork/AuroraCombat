@@ -5,8 +5,5 @@ public enum DamageType {
   MAGIC(),
   RANGED(),
   EXPLOSION_BLOCK(),
-  EXPLOSION_ENTITY();
-
-  DamageType() {
-  }
+  EXPLOSION_ENTITY()
 }

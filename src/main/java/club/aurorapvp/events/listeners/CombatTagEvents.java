@@ -58,15 +58,15 @@ public class CombatTagEvents implements Listener {
   public void onKilledByPlayer(PlayerKilledByPlayerEvent event) {
     for (String type : Rating.getTypes()) {
       if (Rating.isUpdating(event.getDamaged().getLocation(), type)) {
-        Rating.changeRating(event.getDamaged(), event.getDamager(), type);
+        Rating.changeRating(event.getDamaged(), event.getAttacker(), type);
       }
     }
   }
 
   @EventHandler
   public void onDamagedByPlayer(PlayerDamagedByPlayerEvent event) {
-    if (!event.getDamager().equals(event.getDamaged())) {
-      new CombatTag(event.getDamaged(), event.getDamager());
+    if (!event.getAttacker().equals(event.getDamaged())) {
+      new CombatTag(event.getDamaged(), event.getAttacker());
       lastDamage = event;
     }
   }

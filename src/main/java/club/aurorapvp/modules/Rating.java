@@ -88,6 +88,7 @@ public class Rating {
     return types.toArray(new String[0]);
   }
 
+  @SuppressWarnings("unused")
   public static void setUpdating(String type, boolean updating) {
     activeRatings.put(type, updating);
   }
@@ -106,7 +107,8 @@ public class Rating {
 
       if (set != null) {
         for (ProtectedRegion region : set.getRegions()) {
-          return !region.getFlag(RatingFlags.GLOBAL_RATINGS).equals(StateFlag.State.DENY) ||
+          return !Objects.equals(region.getFlag(RatingFlags.GLOBAL_RATINGS),
+              StateFlag.State.DENY) ||
               Objects.equals(region.getFlag(RatingFlags.REGION_RATING), type);
         }
       }
@@ -129,6 +131,7 @@ public class Rating {
         Config.get().getInt("elo.max-change") * -(0 + EloChange)));
   }
 
+  @SuppressWarnings("unused")
   public static void changeRating(Player p, int otherRating, String type) {
     Rating playerRating = Rating.getRating(p, type);
 
@@ -148,6 +151,7 @@ public class Rating {
     return null;
   }
 
+  @SuppressWarnings("unused")
   public static Rating getRating(int index, String type) {
     List<Rating> filteredRatings = ratings.stream()
         .filter(r -> r.getType().equals(type))
@@ -172,7 +176,7 @@ public class Rating {
     return ratingsList.toArray(new Rating[0]);
   }
 
-
+  @SuppressWarnings("unused")
   public static Rating[] getRatings() {
     return ratings.toArray(new Rating[0]);
   }

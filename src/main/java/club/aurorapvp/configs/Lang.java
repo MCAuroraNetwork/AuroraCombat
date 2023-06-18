@@ -66,6 +66,7 @@ public class Lang {
     }
   }
 
+  @SuppressWarnings("unused")
   public static String getString(String message) {
     String pathString = get().getString(message);
     for (String placeholder : PLACEHOLDERS.keySet()) {
@@ -110,6 +111,7 @@ public class Lang {
     return lang;
   }
 
+  @SuppressWarnings("ResultOfMethodCallIgnored")
   public static void reload() {
     if (!FILE.exists()) {
       try {

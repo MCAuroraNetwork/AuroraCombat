@@ -16,31 +16,31 @@ public class DeathMessage {
       case MELEE -> event.deathMessage(
           Lang.formatComponent("death-message.killed-by-player-slain",
                   event.getDamaged().getName(),
-                  event.getDamager().getName(),
+                  event.getAttacker().getName(),
                   MiniMessage.miniMessage().serialize(weapon.displayName()))
               .hoverEvent(hover));
       case EXPLOSION_ENTITY, EXPLOSION_BLOCK -> event.deathMessage(
           Lang.formatComponent("death-message.killed-by-player-explosion",
                   event.getDamaged().getName(),
-                  event.getDamager().getName(),
+                  event.getAttacker().getName(),
                   MiniMessage.miniMessage().serialize(weapon.displayName()))
               .hoverEvent(hover));
       case RANGED -> event.deathMessage(
           Lang.formatComponent("death-message.killed-by-player-shot",
                   event.getDamaged().getName(),
-                  event.getDamager().getName(),
+                  event.getAttacker().getName(),
                   MiniMessage.miniMessage().serialize(weapon.displayName()))
               .hoverEvent(hover));
       case MAGIC -> event.deathMessage(
           Lang.formatComponent("death-message.killed-by-player-magic",
                   event.getDamaged().getName(),
-                  event.getDamager().getName(),
+                  event.getAttacker().getName(),
                   MiniMessage.miniMessage().serialize(weapon.displayName()))
               .hoverEvent(hover));
       default -> event.deathMessage(
           Lang.formatComponent("death-message.killed-by-player-generic",
                   event.getDamaged().getName(),
-                  event.getDamager().getName(),
+                  event.getAttacker().getName(),
                   MiniMessage.miniMessage().serialize(weapon.displayName()))
               .hoverEvent(hover));
     }

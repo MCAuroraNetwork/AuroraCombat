@@ -32,7 +32,7 @@ public class PlayerDamagedByPlayerEvent extends Event implements Cancellable {
     return attacked;
   }
 
-  public Player getDamager() {
+  public Player getAttacker() {
     return attacker;
   }
 
@@ -50,6 +50,7 @@ public class PlayerDamagedByPlayerEvent extends Event implements Cancellable {
     this.isCancelled = isCancelled;
   }
 
+  @SuppressWarnings("unused")
   public static HandlerList getHandlerList() {
     return HANDLERS;
   }

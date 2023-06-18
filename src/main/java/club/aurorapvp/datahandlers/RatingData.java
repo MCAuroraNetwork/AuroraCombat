@@ -18,7 +18,7 @@ public class RatingData {
   }
 
   public int getRating() {
-    return container.get(key, PersistentDataType.INTEGER);
+    return container.getOrDefault(key, PersistentDataType.INTEGER, -1);
   }
 
   public void save() {

@@ -13,7 +13,7 @@ public class PlayerKilledByPlayerEvent extends PlayerDamagedByPlayerEvent implem
   private boolean isCancelled = false;
 
   public PlayerKilledByPlayerEvent(PlayerDamagedByPlayerEvent event, PlayerDeathEvent deathEvent) {
-    super(event.getDamageType(), event.getDamaged(), event.getDamager(), event.getWeapon());
+    super(event.getDamageType(), event.getDamaged(), event.getAttacker(), event.getWeapon());
     this.deathEvent = deathEvent;
     new DeathMessage(this);
   }
@@ -22,6 +22,7 @@ public class PlayerKilledByPlayerEvent extends PlayerDamagedByPlayerEvent implem
     deathEvent.deathMessage(message);
   }
 
+  @SuppressWarnings("unused")
   public PlayerDeathEvent getDeathEvent() {
     return deathEvent;
   }
@@ -36,6 +37,7 @@ public class PlayerKilledByPlayerEvent extends PlayerDamagedByPlayerEvent implem
     this.isCancelled = isCancelled;
   }
 
+  @SuppressWarnings("unused")
   public static HandlerList getHandlerList() {
     return HANDLERS;
   }

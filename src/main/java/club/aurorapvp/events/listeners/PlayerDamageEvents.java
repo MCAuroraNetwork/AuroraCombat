@@ -29,7 +29,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffectType;
 
 public class PlayerDamageEvents implements Listener {
-  private Player lastCrystalDamager;
+  private Player lastCrystalAttacker;
   private final HashSet<Projectile> firedProjectiles = new HashSet<>();
   private Player lastInteractedWithBlock;
   private BlockState lastExplodedBlock;
@@ -37,8 +37,8 @@ public class PlayerDamageEvents implements Listener {
   @EventHandler
   public void onEntityDamage(EntityDamageByEntityEvent event) {
     if (event.getEntity() instanceof EnderCrystal &&
-        event.getDamager() instanceof Player damager) {
-      this.lastCrystalDamager = damager;
+        event.getDamager() instanceof Player attacker) {
+      this.lastCrystalAttacker = attacker;
     }
 
     if (!(event.getEntity() instanceof Player damaged)) {
@@ -46,7 +46,7 @@ public class PlayerDamageEvents implements Listener {
     }
 
     if (event.getDamager() instanceof ThrownPotion thrownPotion) {
-      if (!(thrownPotion.getShooter() instanceof Player damager)) {
+      if (!(thrownPotion.getShooter() instanceof Player attacker)) {
         return;
       }
 
@@ -57,7 +57,7 @@ public class PlayerDamageEvents implements Listener {
             new PlayerOnPlayerDamageBuilder()
                 .damageType(DamageType.MAGIC)
                 .damaged(damaged)
-                .damager(damager)
+                .attacker(attacker)
                 .weapon(ItemStackUtil.toItemStack(thrownPotion))
                 .build());
       }
@@ -73,7 +73,7 @@ public class PlayerDamageEvents implements Listener {
             new PlayerOnPlayerDamageBuilder()
                 .damageType(DamageType.RANGED)
                 .damaged(damaged)
-                .damager((Player) projectile.getShooter())
+                .attacker((Player) projectile.getShooter())
                 .weapon(ItemStackUtil.toItemStack(projectile))
                 .build());
       }
@@ -81,29 +81,28 @@ public class PlayerDamageEvents implements Listener {
 
 
     if (event.getDamager() instanceof
-        EnderCrystal damager) {
+        EnderCrystal enderCrystal) {
       Bukkit.getPluginManager().callEvent(
           new PlayerOnPlayerDamageBuilder()
               .damageType(DamageType.EXPLOSION_ENTITY)
               .damaged(damaged)
-              .damager(this.lastCrystalDamager)
-              .weapon(ItemStackUtil.toItemStack(damager))
+              .attacker(this.lastCrystalAttacker)
+              .weapon(ItemStackUtil.toItemStack(enderCrystal))
               .build());
     }
 
     if (event.getDamager() instanceof
-        Player damager) {
+        Player attacker) {
       Bukkit.getPluginManager().callEvent(
           new PlayerOnPlayerDamageBuilder()
               .damageType(DamageType.MELEE)
               .damaged(damaged)
-              .damager(damager)
-              .weapon(damager.getInventory().getItemInMainHand())
+              .attacker(attacker)
+              .weapon(attacker.getInventory().getItemInMainHand())
               .build());
     }
   }
 
-  // TODO Potion damage
   @EventHandler
   public void onEntityDamage(EntityDamageByBlockEvent event) {
     if (!(event.getEntity() instanceof Player damaged)) {
@@ -117,7 +116,7 @@ public class PlayerDamageEvents implements Listener {
           new PlayerOnPlayerDamageBuilder()
               .damageType(DamageType.EXPLOSION_BLOCK)
               .damaged(damaged)
-              .damager(this.lastInteractedWithBlock)
+              .attacker(this.lastInteractedWithBlock)
               .weapon(new ItemStack(this.lastExplodedBlock.getType()))
               .build());
     }
@@ -178,10 +177,10 @@ public class PlayerDamageEvents implements Listener {
     }
   }
 
-  public static class PlayerOnPlayerDamageBuilder {
+  private static class PlayerOnPlayerDamageBuilder {
     private DamageType damageType;
     private Player damaged;
-    private Player damager;
+    private Player attacker;
     private ItemStack weapon;
 
     public PlayerOnPlayerDamageBuilder damageType(DamageType damageType) {
@@ -194,8 +193,8 @@ public class PlayerDamageEvents implements Listener {
       return this;
     }
 
-    public PlayerOnPlayerDamageBuilder damager(Player damager) {
-      this.damager = damager;
+    public PlayerOnPlayerDamageBuilder attacker(Player attacker) {
+      this.attacker = attacker;
       return this;
     }
 
@@ -205,7 +204,7 @@ public class PlayerDamageEvents implements Listener {
     }
 
     public PlayerDamagedByPlayerEvent build() {
-      return new PlayerDamagedByPlayerEvent(this.damageType, this.damaged, this.damager,
+      return new PlayerDamagedByPlayerEvent(this.damageType, this.damaged, this.attacker,
           this.weapon);
     }
   }
