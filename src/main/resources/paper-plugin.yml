@@ -5,10 +5,10 @@ api-version: 1.20
 authors: [ Villagers654 ]
 description: A combat plugin for the Aurora Network
 website: aurorapvp.club
+
 dependencies:
-  - name: PlaceholderAPI
-    required: false
-  - name: WorldGuard
-    required: false
-load-after:
-  - name: WorldGuard
+  server:
+    PlaceholderAPI:
+      required: false
+    WorldGuard:
+      required: false
