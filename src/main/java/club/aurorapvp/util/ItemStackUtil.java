@@ -2,12 +2,11 @@ package club.aurorapvp.util;
 
 import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
-import org.bukkit.block.BlockState;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.EnderCrystal;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Projectile;
 import org.bukkit.entity.SpectralArrow;
+import org.bukkit.entity.ThrownPotion;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
@@ -46,6 +45,8 @@ public class ItemStackUtil {
       } else {
         item = new ItemStack(Material.ARROW);
       }
+    } else if (projectile instanceof ThrownPotion thrownPotion) {
+      return thrownPotion.getItem();
     } else {
       item = switch (projectile.getType()) {
         case SNOWBALL -> new ItemStack(Material.SNOWBALL);

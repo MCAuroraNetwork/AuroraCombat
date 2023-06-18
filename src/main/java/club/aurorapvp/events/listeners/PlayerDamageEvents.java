@@ -16,6 +16,7 @@ import org.bukkit.block.data.type.RespawnAnchor;
 import org.bukkit.entity.EnderCrystal;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
+import org.bukkit.entity.ThrownPotion;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByBlockEvent;
@@ -25,6 +26,7 @@ import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.entity.ProjectileLaunchEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.PotionEffectType;
 
 public class PlayerDamageEvents implements Listener {
   private Player lastCrystalDamager;
@@ -41,6 +43,24 @@ public class PlayerDamageEvents implements Listener {
 
     if (!(event.getEntity() instanceof Player damaged)) {
       return;
+    }
+
+    if (event.getDamager() instanceof ThrownPotion thrownPotion) {
+      if (!(thrownPotion.getShooter() instanceof Player damager)) {
+        return;
+      }
+
+      if (thrownPotion.getEffects().stream().anyMatch(
+          effect -> effect.getType() == PotionEffectType.HARM ||
+              effect.getType() == PotionEffectType.POISON)) {
+        Bukkit.getPluginManager().callEvent(
+            new PlayerOnPlayerDamageBuilder()
+                .damageType(DamageType.MAGIC)
+                .damaged(damaged)
+                .damager(damager)
+                .weapon(ItemStackUtil.toItemStack(thrownPotion))
+                .build());
+      }
     }
 
     if (!(event.getDamager() instanceof Projectile projectile)) {
