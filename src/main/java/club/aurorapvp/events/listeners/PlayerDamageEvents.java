@@ -157,7 +157,7 @@ public class PlayerDamageEvents implements Listener {
         .runTaskLater(AuroraCombat.INSTANCE, () -> firedProjectiles.remove(event.getEntity()), 20L);
   }
 
-  @EventHandler
+  @EventHandler(ignoreCancelled = true)
   public void onFallDamage(EntityDamageEvent event) {
     if (!(event.getEntity() instanceof Player p)) {
       return;
