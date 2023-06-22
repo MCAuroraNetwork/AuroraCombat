@@ -1,10 +1,10 @@
-package club.aurorapvp.modules;
+package club.aurorapvp.auroracombat.modules;
 
-import club.aurorapvp.AuroraCombat;
-import club.aurorapvp.configs.Config;
-import club.aurorapvp.configs.Lang;
-import club.aurorapvp.datahandlers.RatingData;
-import club.aurorapvp.flags.RatingFlags;
+import club.aurorapvp.auroracombat.AuroraCombat;
+import club.aurorapvp.auroracombat.configs.Config;
+import club.aurorapvp.auroracombat.configs.Lang;
+import club.aurorapvp.auroracombat.datahandlers.RatingData;
+import club.aurorapvp.auroracombat.flags.RatingFlags;
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldguard.WorldGuard;
 import com.sk89q.worldguard.protection.ApplicableRegionSet;

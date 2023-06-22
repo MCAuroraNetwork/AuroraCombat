@@ -1,4 +1,4 @@
-package club.aurorapvp.util;
+package club.aurorapvp.auroracombat.util;
 
 import net.kyori.adventure.text.Component;
 import org.bukkit.Material;

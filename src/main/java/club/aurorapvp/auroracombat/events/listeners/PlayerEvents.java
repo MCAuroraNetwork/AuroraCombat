@@ -1,9 +1,9 @@
-package club.aurorapvp.events.listeners;
+package club.aurorapvp.auroracombat.events.listeners;
 
-import club.aurorapvp.configs.Config;
-import club.aurorapvp.modules.BlockFallDamage;
-import club.aurorapvp.modules.CombatTag;
-import club.aurorapvp.modules.Rating;
+import club.aurorapvp.auroracombat.configs.Config;
+import club.aurorapvp.auroracombat.modules.BlockFallDamage;
+import club.aurorapvp.auroracombat.modules.CombatTag;
+import club.aurorapvp.auroracombat.modules.Rating;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;

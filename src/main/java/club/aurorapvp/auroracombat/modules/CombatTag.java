@@ -1,8 +1,8 @@
-package club.aurorapvp.modules;
+package club.aurorapvp.auroracombat.modules;
 
-import club.aurorapvp.AuroraCombat;
-import club.aurorapvp.configs.Config;
-import club.aurorapvp.configs.Lang;
+import club.aurorapvp.auroracombat.AuroraCombat;
+import club.aurorapvp.auroracombat.configs.Config;
+import club.aurorapvp.auroracombat.configs.Lang;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;

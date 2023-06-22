@@ -1,6 +1,6 @@
-package club.aurorapvp.events.custom;
+package club.aurorapvp.auroracombat.events.custom;
 
-import club.aurorapvp.modules.DeathMessage;
+import club.aurorapvp.auroracombat.modules.DeathMessage;
 import net.kyori.adventure.text.Component;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.HandlerList;

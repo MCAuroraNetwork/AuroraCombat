@@ -1,7 +1,7 @@
-package club.aurorapvp.modules;
+package club.aurorapvp.auroracombat.modules;
 
-import club.aurorapvp.configs.Lang;
-import club.aurorapvp.events.custom.PlayerKilledByPlayerEvent;
+import club.aurorapvp.auroracombat.configs.Lang;
+import club.aurorapvp.auroracombat.events.custom.PlayerKilledByPlayerEvent;
 import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.inventory.ItemStack;

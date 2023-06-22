@@ -1,9 +1,9 @@
-package club.aurorapvp.events;
+package club.aurorapvp.auroracombat.events;
 
-import club.aurorapvp.AuroraCombat;
-import club.aurorapvp.events.listeners.PlayerDamageEvents;
-import club.aurorapvp.events.listeners.CombatTagEvents;
-import club.aurorapvp.events.listeners.PlayerEvents;
+import club.aurorapvp.auroracombat.AuroraCombat;
+import club.aurorapvp.auroracombat.events.listeners.PlayerDamageEvents;
+import club.aurorapvp.auroracombat.events.listeners.CombatTagEvents;
+import club.aurorapvp.auroracombat.events.listeners.PlayerEvents;
 import org.bukkit.Bukkit;
 
 public class Events {

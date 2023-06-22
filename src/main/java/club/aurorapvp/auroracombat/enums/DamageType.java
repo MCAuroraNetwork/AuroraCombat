@@ -1,4 +1,4 @@
-package club.aurorapvp.enums;
+package club.aurorapvp.auroracombat.enums;
 
 public enum DamageType {
   MELEE(),

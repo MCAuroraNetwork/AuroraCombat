@@ -1,7 +1,7 @@
-package club.aurorapvp.datahandlers;
+package club.aurorapvp.auroracombat.datahandlers;
 
-import club.aurorapvp.AuroraCombat;
-import club.aurorapvp.modules.Rating;
+import club.aurorapvp.auroracombat.AuroraCombat;
+import club.aurorapvp.auroracombat.modules.Rating;
 import org.bukkit.NamespacedKey;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;

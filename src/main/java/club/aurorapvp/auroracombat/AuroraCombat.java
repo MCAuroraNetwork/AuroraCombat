@@ -1,11 +1,11 @@
-package club.aurorapvp;
+package club.aurorapvp.auroracombat;
 
-import club.aurorapvp.configs.Config;
-import club.aurorapvp.configs.Lang;
-import club.aurorapvp.events.Events;
-import club.aurorapvp.flags.RatingFlags;
-import club.aurorapvp.modules.Rating;
-import club.aurorapvp.placeholders.Placeholders;
+import club.aurorapvp.auroracombat.configs.Config;
+import club.aurorapvp.auroracombat.configs.Lang;
+import club.aurorapvp.auroracombat.events.Events;
+import club.aurorapvp.auroracombat.flags.RatingFlags;
+import club.aurorapvp.auroracombat.modules.Rating;
+import club.aurorapvp.auroracombat.placeholders.Placeholders;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 

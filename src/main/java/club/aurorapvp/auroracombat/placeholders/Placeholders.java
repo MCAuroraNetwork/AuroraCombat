@@ -1,8 +1,8 @@
-package club.aurorapvp.placeholders;
+package club.aurorapvp.auroracombat.placeholders;
 
-import club.aurorapvp.AuroraCombat;
-import club.aurorapvp.modules.CombatTag;
-import club.aurorapvp.modules.Rating;
+import club.aurorapvp.auroracombat.AuroraCombat;
+import club.aurorapvp.auroracombat.modules.CombatTag;
+import club.aurorapvp.auroracombat.modules.Rating;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;

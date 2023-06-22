@@ -1,6 +1,6 @@
-package club.aurorapvp.events.custom;
+package club.aurorapvp.auroracombat.events.custom;
 
-import club.aurorapvp.enums.DamageType;
+import club.aurorapvp.auroracombat.enums.DamageType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;

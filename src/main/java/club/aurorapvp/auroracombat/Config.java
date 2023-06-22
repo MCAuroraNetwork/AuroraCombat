@@ -1,6 +1,6 @@
-package club.aurorapvp.configs;
+package club.aurorapvp.auroracombat.configs;
 
-import club.aurorapvp.AuroraCombat;
+import club.aurorapvp.auroracombat.AuroraCombat;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;

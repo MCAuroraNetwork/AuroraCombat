@@ -1,4 +1,4 @@
-package club.aurorapvp.modules;
+package club.aurorapvp.auroracombat.modules;
 
 import java.util.HashSet;
 import java.util.Set;

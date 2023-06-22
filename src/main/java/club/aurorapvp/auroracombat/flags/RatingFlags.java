@@ -1,6 +1,6 @@
-package club.aurorapvp.flags;
+package club.aurorapvp.auroracombat.flags;
 
-import club.aurorapvp.AuroraCombat;
+import club.aurorapvp.auroracombat.AuroraCombat;
 import com.sk89q.worldguard.WorldGuard;
 import com.sk89q.worldguard.protection.flags.StateFlag;
 import com.sk89q.worldguard.protection.flags.StringFlag;

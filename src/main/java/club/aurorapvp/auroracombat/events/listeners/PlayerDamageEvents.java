@@ -1,11 +1,11 @@
-package club.aurorapvp.events.listeners;
+package club.aurorapvp.auroracombat.events.listeners;
 
-import club.aurorapvp.AuroraCombat;
-import club.aurorapvp.configs.Config;
-import club.aurorapvp.enums.DamageType;
-import club.aurorapvp.events.custom.PlayerDamagedByPlayerEvent;
-import club.aurorapvp.modules.BlockFallDamage;
-import club.aurorapvp.util.ItemStackUtil;
+import club.aurorapvp.auroracombat.AuroraCombat;
+import club.aurorapvp.auroracombat.configs.Config;
+import club.aurorapvp.auroracombat.enums.DamageType;
+import club.aurorapvp.auroracombat.events.custom.PlayerDamagedByPlayerEvent;
+import club.aurorapvp.auroracombat.modules.BlockFallDamage;
+import club.aurorapvp.auroracombat.util.ItemStackUtil;
 import java.util.HashSet;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
