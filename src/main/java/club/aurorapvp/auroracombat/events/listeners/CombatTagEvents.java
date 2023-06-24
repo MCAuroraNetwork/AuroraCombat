@@ -21,7 +21,6 @@ public class CombatTagEvents implements Listener {
   public void onPlayerQuit(PlayerQuitEvent event) {
     if (CombatTag.isTagged(event.getPlayer())) {
       event.getPlayer().setHealth(0);
-      CombatTag.removeTags(event.getPlayer());
     }
   }
 

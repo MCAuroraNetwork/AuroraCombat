@@ -108,7 +108,7 @@ public class CombatTag {
     }.runTaskTimer(AuroraCombat.INSTANCE, 0, 20);
   }
 
-  public int timeRemaining() {
+  public int getTimeRemaining() {
     return (int) (timeStarted + 15000 - System.currentTimeMillis());
   }
 
@@ -154,8 +154,8 @@ public class CombatTag {
 
     for (CombatTag tag : tags) {
       if ((tag.getPlayerOne() == p || tag.getPlayerTwo() == p)) {
-        times.add(tag.timeRemaining());
-        tagTimes.put(tag.timeRemaining(), tag);
+        times.add(tag.getTimeRemaining());
+        tagTimes.put(tag.getTimeRemaining(), tag);
       }
     }
 

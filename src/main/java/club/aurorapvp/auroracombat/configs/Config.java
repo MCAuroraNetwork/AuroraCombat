@@ -18,7 +18,7 @@ public class Config {
   public static void generateDefaults() {
     final HashMap<String, Object> DEFAULTS = new HashMap<>();
 
-    DEFAULTS.put("elo.default-points", 1000);
+    DEFAULTS.put("elo.default-points", 400);
     DEFAULTS.put("elo.max-change", 32);
     DEFAULTS.put("combat-tag.duration", 15000);
     DEFAULTS.put("combat-tag.allow-commands", false);
