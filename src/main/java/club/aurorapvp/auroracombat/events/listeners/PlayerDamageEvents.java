@@ -45,6 +45,28 @@ public class PlayerDamageEvents implements Listener {
       return;
     }
 
+    if (event.getDamager() instanceof
+        EnderCrystal enderCrystal) {
+      Bukkit.getPluginManager().callEvent(
+          new PlayerOnPlayerDamageBuilder()
+              .damageType(DamageType.EXPLOSION_ENTITY)
+              .damaged(damaged)
+              .attacker(this.lastCrystalAttacker)
+              .weapon(ItemStackUtil.toItemStack(enderCrystal))
+              .build());
+    }
+
+    if (event.getDamager() instanceof
+        Player attacker) {
+      Bukkit.getPluginManager().callEvent(
+          new PlayerOnPlayerDamageBuilder()
+              .damageType(DamageType.MELEE)
+              .damaged(damaged)
+              .attacker(attacker)
+              .weapon(attacker.getInventory().getItemInMainHand())
+              .build());
+    }
+
     if (event.getDamager() instanceof ThrownPotion thrownPotion) {
       if (!(thrownPotion.getShooter() instanceof Player attacker)) {
         return;
@@ -77,29 +99,6 @@ public class PlayerDamageEvents implements Listener {
                 .weapon(ItemStackUtil.toItemStack(projectile))
                 .build());
       }
-    }
-
-
-    if (event.getDamager() instanceof
-        EnderCrystal enderCrystal) {
-      Bukkit.getPluginManager().callEvent(
-          new PlayerOnPlayerDamageBuilder()
-              .damageType(DamageType.EXPLOSION_ENTITY)
-              .damaged(damaged)
-              .attacker(this.lastCrystalAttacker)
-              .weapon(ItemStackUtil.toItemStack(enderCrystal))
-              .build());
-    }
-
-    if (event.getDamager() instanceof
-        Player attacker) {
-      Bukkit.getPluginManager().callEvent(
-          new PlayerOnPlayerDamageBuilder()
-              .damageType(DamageType.MELEE)
-              .damaged(damaged)
-              .attacker(attacker)
-              .weapon(attacker.getInventory().getItemInMainHand())
-              .build());
     }
   }
 
