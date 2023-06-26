@@ -1,9 +1,9 @@
 package club.aurorapvp.auroracombat;
 
-import club.aurorapvp.auroracombat.commands.Commands;
+import club.aurorapvp.auroracombat.commands.CommandManager;
 import club.aurorapvp.auroracombat.config.Config;
 import club.aurorapvp.auroracombat.config.Lang;
-import club.aurorapvp.auroracombat.events.Events;
+import club.aurorapvp.auroracombat.events.EventManager;
 import club.aurorapvp.auroracombat.flags.RatingFlags;
 import club.aurorapvp.auroracombat.modules.Rating;
 import club.aurorapvp.auroracombat.modules.Placeholders;
@@ -36,9 +36,9 @@ public final class AuroraCombat extends JavaPlugin {
   @Override
   public void onEnable() {
     // Setup classes
-    Events.init();
+    EventManager.init();
     Rating.init();
-    Commands.init();
+    CommandManager.init();
 
     // Check if soft depends are installed
     if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {

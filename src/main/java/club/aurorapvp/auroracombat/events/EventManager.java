@@ -6,7 +6,7 @@ import club.aurorapvp.auroracombat.events.listeners.CombatTagEventListener;
 import club.aurorapvp.auroracombat.events.listeners.PlayerEventListener;
 import org.bukkit.Bukkit;
 
-public class Events {
+public class EventManager {
   public static void init() {
     Bukkit.getPluginManager().registerEvents(new CombatTagEventListener(), AuroraCombat.INSTANCE);
     Bukkit.getPluginManager().registerEvents(new PlayerDamageEventListener(), AuroraCombat.INSTANCE);
