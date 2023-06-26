@@ -1,6 +1,6 @@
 package club.aurorapvp.auroracombat.events.listeners;
 
-import club.aurorapvp.auroracombat.configs.Config;
+import club.aurorapvp.auroracombat.config.Config;
 import club.aurorapvp.auroracombat.modules.BlockFallDamage;
 import club.aurorapvp.auroracombat.modules.CombatTag;
 import club.aurorapvp.auroracombat.modules.Rating;
@@ -10,7 +10,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.world.WorldSaveEvent;
 
-public class PlayerEvents implements Listener {
+public class PlayerEventListener implements Listener {
   @EventHandler
   public void onPlayerJoin(PlayerJoinEvent event) {
     Rating.register(event.getPlayer());

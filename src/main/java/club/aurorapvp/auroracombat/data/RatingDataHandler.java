@@ -1,4 +1,4 @@
-package club.aurorapvp.auroracombat.datahandlers;
+package club.aurorapvp.auroracombat.data;
 
 import club.aurorapvp.auroracombat.AuroraCombat;
 import club.aurorapvp.auroracombat.modules.Rating;
@@ -6,12 +6,12 @@ import org.bukkit.NamespacedKey;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
-public class RatingData {
+public class RatingDataHandler {
   private final PersistentDataContainer container;
   private final NamespacedKey key;
   private final Rating rating;
 
-  public RatingData(Rating rating) {
+  public RatingDataHandler(Rating rating) {
     this.rating = rating;
     this.container = rating.getPlayer().getPersistentDataContainer();
     this.key = new NamespacedKey(AuroraCombat.INSTANCE, "rating_" + rating.getType());

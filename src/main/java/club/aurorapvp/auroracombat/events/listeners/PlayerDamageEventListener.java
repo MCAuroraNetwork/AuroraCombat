@@ -1,7 +1,7 @@
 package club.aurorapvp.auroracombat.events.listeners;
 
 import club.aurorapvp.auroracombat.AuroraCombat;
-import club.aurorapvp.auroracombat.configs.Config;
+import club.aurorapvp.auroracombat.config.Config;
 import club.aurorapvp.auroracombat.enums.DamageType;
 import club.aurorapvp.auroracombat.events.custom.PlayerDamagedByPlayerEvent;
 import club.aurorapvp.auroracombat.modules.BlockFallDamage;
@@ -28,7 +28,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffectType;
 
-public class PlayerDamageEvents implements Listener {
+public class PlayerDamageEventListener implements Listener {
   private Player lastCrystalAttacker;
   private final HashSet<Projectile> firedProjectiles = new HashSet<>();
   private Player lastInteractedWithBlock;

@@ -1,7 +1,7 @@
 package club.aurorapvp.auroracombat.events.listeners;
 
-import club.aurorapvp.auroracombat.configs.Config;
-import club.aurorapvp.auroracombat.configs.Lang;
+import club.aurorapvp.auroracombat.config.Config;
+import club.aurorapvp.auroracombat.config.Lang;
 import club.aurorapvp.auroracombat.events.custom.PlayerDamagedByPlayerEvent;
 import club.aurorapvp.auroracombat.events.custom.PlayerKilledByPlayerEvent;
 import club.aurorapvp.auroracombat.modules.BlockFallDamage;
@@ -14,7 +14,7 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
-public class CombatTagEvents implements Listener {
+public class CombatTagEventListener implements Listener {
   private PlayerDamagedByPlayerEvent lastDamage;
 
   @EventHandler

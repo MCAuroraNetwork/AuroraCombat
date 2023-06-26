@@ -1,6 +1,6 @@
 package club.aurorapvp.auroracombat.modules;
 
-import club.aurorapvp.auroracombat.configs.Lang;
+import club.aurorapvp.auroracombat.config.Lang;
 import club.aurorapvp.auroracombat.events.custom.PlayerKilledByPlayerEvent;
 import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.minimessage.MiniMessage;

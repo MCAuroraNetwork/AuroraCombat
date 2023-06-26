@@ -1,5 +1,6 @@
-package club.aurorapvp.auroracombat;
+package club.aurorapvp.auroracombat.commands;
 
+import club.aurorapvp.auroracombat.AuroraCombat;
 import club.aurorapvp.auroracombat.commands.PluginCommands;
 import co.aikar.commands.PaperCommandManager;
 

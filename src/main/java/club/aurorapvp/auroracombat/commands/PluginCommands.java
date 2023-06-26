@@ -1,8 +1,8 @@
 package club.aurorapvp.auroracombat.commands;
 
 import club.aurorapvp.auroracombat.AuroraCombat;
-import club.aurorapvp.auroracombat.configs.Config;
-import club.aurorapvp.auroracombat.configs.Lang;
+import club.aurorapvp.auroracombat.config.Config;
+import club.aurorapvp.auroracombat.config.Lang;
 import club.aurorapvp.auroracombat.modules.Rating;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;

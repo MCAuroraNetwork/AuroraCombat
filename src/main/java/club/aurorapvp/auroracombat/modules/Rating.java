@@ -1,9 +1,9 @@
 package club.aurorapvp.auroracombat.modules;
 
 import club.aurorapvp.auroracombat.AuroraCombat;
-import club.aurorapvp.auroracombat.configs.Config;
-import club.aurorapvp.auroracombat.configs.Lang;
-import club.aurorapvp.auroracombat.datahandlers.RatingData;
+import club.aurorapvp.auroracombat.config.Config;
+import club.aurorapvp.auroracombat.config.Lang;
+import club.aurorapvp.auroracombat.data.RatingDataHandler;
 import club.aurorapvp.auroracombat.flags.RatingFlags;
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldguard.WorldGuard;
@@ -30,7 +30,7 @@ public class Rating {
   private final Player p;
   private int rating;
   private final String type;
-  private final RatingData data;
+  private final RatingDataHandler data;
 
   public static void init() {
     setupRating("default");
@@ -39,7 +39,7 @@ public class Rating {
   public Rating(Player p, String type) {
     this.p = p;
     this.type = type;
-    this.data = new RatingData(this);
+    this.data = new RatingDataHandler(this);
 
     if (this.exists()) {
       this.rating = data.getRating();

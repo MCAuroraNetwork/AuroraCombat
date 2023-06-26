@@ -1,4 +1,4 @@
-package club.aurorapvp.auroracombat.placeholders;
+package club.aurorapvp.auroracombat.modules;
 
 import club.aurorapvp.auroracombat.AuroraCombat;
 import club.aurorapvp.auroracombat.modules.CombatTag;
