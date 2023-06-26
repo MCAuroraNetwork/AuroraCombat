@@ -57,7 +57,11 @@ public class Rating {
   public void changePoints(int points) {
     rating = rating + points;
 
-    p.sendMessage(Lang.formatComponent("points-changed", points));
+    if (points < 0) {
+      p.sendMessage(Lang.formatComponent("points-decreased", points));
+    } else {
+      p.sendMessage(Lang.formatComponent("points-increased", points));
+    }
   }
 
   public Player getPlayer() {

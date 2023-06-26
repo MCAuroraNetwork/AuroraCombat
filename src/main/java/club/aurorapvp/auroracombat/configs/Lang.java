@@ -23,8 +23,10 @@ public class Lang {
     final HashMap<String, String> DEFAULTS = new HashMap<>();
 
     DEFAULTS.put("prefix", "~<gradient:#FFAA00:#FF55FF><bold>AuroraCombat ><reset>~");
-    DEFAULTS.put("points-changed",
-        "prefix <gradient:#FFAA00:#FF55FF>Your ELO changed by %s points!");
+    DEFAULTS.put("points-increased",
+        "prefix <gradient:#FFAA00:#FF55FF>Your ELO increased by %s points!");
+    DEFAULTS.put("points-decreased",
+        "prefix <gradient:#FFAA00:#FF55FF>Your ELO decreased by %s points!");
     DEFAULTS.put("tagged",
         "prefix <gradient:#FFAA00:#FF55FF>You have been tagged by %1$s for %2$s seconds!");
     DEFAULTS.put("tagged-action-bar",
