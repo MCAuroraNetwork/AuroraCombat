@@ -56,7 +56,8 @@ public class CombatTagEvents implements Listener {
   @EventHandler
   public void onKilledByPlayer(PlayerKilledByPlayerEvent event) {
     for (String type : Rating.getTypes()) {
-      if (Rating.isUpdating(event.getDamaged().getLocation(), type)) {
+      if (Rating.isUpdating(event.getDamaged().getLocation(), type) &&
+          CombatTag.canBeTagged(event.getDamaged())) {
         Rating.changeRating(event.getDamaged(), event.getAttacker(), type);
       }
     }
