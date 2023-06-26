@@ -1,5 +1,6 @@
 plugins {
     id 'java'
+    id "com.github.johnrengelman.shadow" version "7.1.2"
 }
 
 group = 'AuroraCombat'
@@ -21,15 +22,33 @@ repositories {
     maven {
         url = 'https://maven.enginehub.org/repo/'
     }
+    maven {
+        url = 'https://repo.aikar.co/content/groups/aikar/'
+    }
     flatDir {
         dirs '.'
     }
 }
 
 dependencies {
+    implementation 'co.aikar:acf-paper:0.5.1-SNAPSHOT'
+    implementation 'co.aikar:acf-paper:0.5.1-SNAPSHOT'
+
     compileOnly 'io.papermc.paper:paper-api:1.20-R0.1-SNAPSHOT'
     compileOnly 'com.sk89q.worldguard:worldguard-bukkit:7.0.9-SNAPSHOT'
     compileOnly 'me.clip:placeholderapi:2.11.1'
+}
+
+build {
+    dependsOn(shadowJar)
+}
+
+shadowJar {
+    minimize()
+    archiveFileName.set("${project.name}-${project.version}.jar")
+    relocate 'org.bstats', 'club.aurorapvp.shaded.bstats'
+    relocate 'co.aikar.commands', 'club.aurorapvp.shaded.acf'
+    relocate 'co.aikar.locales', 'club.aurorapvp.shaded.locales'
 }
 
 def targetJavaVersion = 17

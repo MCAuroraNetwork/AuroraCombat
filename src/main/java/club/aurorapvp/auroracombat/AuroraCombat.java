@@ -37,6 +37,7 @@ public final class AuroraCombat extends JavaPlugin {
     // Setup classes
     Events.init();
     Rating.init();
+    Commands.init();
 
     // Check if soft depends are installed
     if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {

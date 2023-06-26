@@ -6,6 +6,18 @@ authors: [ Villagers654 ]
 description: A combat plugin for the Aurora Network
 website: aurorapvp.club
 
+commands:
+  auroracombat:
+    description: AuroraCombat general plugin commands
+    permission: auroracombat.command.auroracombat
+
+permissions:
+  auroracombat.admin:
+    description: Enables use of AuroraDuels admin commands
+    default: op
+    children:
+      auroracombat.command.auroracombat: true
+
 dependencies:
   server:
     PlaceholderAPI:
