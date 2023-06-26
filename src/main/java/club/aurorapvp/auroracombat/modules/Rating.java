@@ -14,10 +14,8 @@ import com.sk89q.worldguard.protection.regions.RegionContainer;
 import com.sk89q.worldguard.protection.regions.RegionQuery;
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import org.bukkit.Location;
@@ -29,14 +27,13 @@ import org.bukkit.persistence.PersistentDataType;
 public class Rating {
   private static final Set<Rating> ratings = new HashSet<>();
   private static final Set<String> types = new HashSet<>();
-  private static final Map<String, Boolean> activeRatings = new HashMap<>();
   private final Player p;
   private int rating;
   private final String type;
   private final RatingData data;
 
   public static void init() {
-    setupRating("default", Config.get().getBoolean("rating.enable-default"));
+    setupRating("default");
   }
 
   public Rating(Player p, String type) {
@@ -79,18 +76,12 @@ public class Rating {
     return this.data.exists();
   }
 
-  public static void setupRating(String type, boolean updating) {
+  public static void setupRating(String type) {
     types.add(type);
-    activeRatings.put(type, updating);
   }
 
   public static String[] getTypes() {
     return types.toArray(new String[0]);
-  }
-
-  @SuppressWarnings("unused")
-  public static void setUpdating(String type, boolean updating) {
-    activeRatings.put(type, updating);
   }
 
   public static void saveAll() {
@@ -114,7 +105,7 @@ public class Rating {
       }
     }
 
-    return activeRatings.get(type);
+    return true;
   }
 
   public static void changeRating(Player deadPlayer, Player killer, String type) {
