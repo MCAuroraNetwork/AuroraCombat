@@ -24,6 +24,11 @@ public class PlayerDamagedByPlayerEvent extends Event implements Cancellable {
     this.weapon = weapon;
   }
 
+  @SuppressWarnings("unused")
+  public static HandlerList getHandlerList() {
+    return HANDLERS;
+  }
+
   public ItemStack getWeapon() {
     return weapon;
   }
@@ -48,11 +53,6 @@ public class PlayerDamagedByPlayerEvent extends Event implements Cancellable {
   @Override
   public void setCancelled(boolean isCancelled) {
     this.isCancelled = isCancelled;
-  }
-
-  @SuppressWarnings("unused")
-  public static HandlerList getHandlerList() {
-    return HANDLERS;
   }
 
   @Override

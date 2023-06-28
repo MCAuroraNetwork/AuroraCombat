@@ -12,6 +12,7 @@ public class DeathMessage {
     ItemStack weapon = event.getWeapon();
     HoverEvent<HoverEvent.ShowItem> hover = weapon.asHoverEvent();
 
+    // TODO get rid of italics
     switch (event.getDamageType()) {
       case MELEE -> event.deathMessage(
           Lang.formatComponent("death-message.killed-by-player-slain",

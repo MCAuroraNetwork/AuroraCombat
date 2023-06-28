@@ -48,6 +48,76 @@ public class CombatTag {
     }
   }
 
+  public static void removeTags(Player p) {
+    for (CombatTag tag : getTags(p)) {
+      tag.removeTag();
+    }
+  }
+
+  public static CombatTag[] getTags(Player p) {
+    List<CombatTag> tagList = new ArrayList<>();
+
+    for (CombatTag tag : tags) {
+      if ((tag.getPlayerOne() == p || tag.getPlayerTwo() == p)) {
+        tagList.add(tag);
+      }
+    }
+
+    CombatTag[] combatTags = new CombatTag[tagList.size()];
+
+    for (int i = 0; i < tagList.size(); i++) {
+      combatTags[i] = tagList.get(i);
+    }
+
+    return combatTags;
+  }
+
+  public static CombatTag getRecentTag(Player p) {
+    HashMap<Integer, CombatTag> tagTimes = new HashMap<>();
+    List<Integer> times = new ArrayList<>();
+
+    for (CombatTag tag : tags) {
+      if ((tag.getPlayerOne() == p || tag.getPlayerTwo() == p)) {
+        times.add(tag.getTimeRemaining());
+        tagTimes.put(tag.getTimeRemaining(), tag);
+      }
+    }
+
+    Collections.sort(times);
+
+    if (times.size() > 0) {
+      return tagTimes.get(times.get(0));
+    }
+    return null;
+  }
+
+  public static CombatTag getTag(Player p1, Player p2) {
+    for (CombatTag tag : tags) {
+      if ((tag.getPlayerOne() == p1 || tag.getPlayerOne() == p2) &&
+          (tag.getPlayerTwo() == p1 || tag.getPlayerTwo() == p2)) {
+        return tag;
+      }
+    }
+    return null;
+  }
+
+  public static boolean isTagged(Player p) {
+    for (CombatTag tag : tags) {
+      if (tag.getPlayerOne() == p || tag.getPlayerTwo() == p) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  public static void setTaggable(Player p, boolean taggable) {
+    taggablePlayers.put(p, taggable);
+  }
+
+  public static boolean canBeTagged(Player p) {
+    return taggablePlayers.get(p);
+  }
+
   public Player getPlayerOne() {
     return playerOne;
   }
@@ -122,75 +192,5 @@ public class CombatTag {
     playerTwo.sendMessage(Lang.formatComponent("tag-removed", playerOne.getName()));
     playerOne.sendActionBar(Lang.formatComponent("tag-removed-action-bar", playerTwo.getName()));
     playerTwo.sendActionBar(Lang.formatComponent("tag-removed-action-bar", playerOne.getName()));
-  }
-
-  public static void removeTags(Player p) {
-    for (CombatTag tag : getTags(p)) {
-      tag.removeTag();
-    }
-  }
-
-  public static CombatTag[] getTags(Player p) {
-    List<CombatTag> tagList = new ArrayList<>();
-
-    for (CombatTag tag : tags) {
-      if ((tag.getPlayerOne() == p || tag.getPlayerTwo() == p)) {
-        tagList.add(tag);
-      }
-    }
-
-    CombatTag[] combatTags = new CombatTag[tagList.size()];
-
-    for (int i = 0; i < tagList.size(); i++) {
-      combatTags[i] = tagList.get(i);
-    }
-
-    return combatTags;
-  }
-
-  public static CombatTag getRecentTag(Player p) {
-    HashMap<Integer, CombatTag> tagTimes = new HashMap<>();
-    List<Integer> times = new ArrayList<>();
-
-    for (CombatTag tag : tags) {
-      if ((tag.getPlayerOne() == p || tag.getPlayerTwo() == p)) {
-        times.add(tag.getTimeRemaining());
-        tagTimes.put(tag.getTimeRemaining(), tag);
-      }
-    }
-
-    Collections.sort(times);
-
-    if (times.size() > 0) {
-      return tagTimes.get(times.get(0));
-    }
-    return null;
-  }
-
-  public static CombatTag getTag(Player p1, Player p2) {
-    for (CombatTag tag : tags) {
-      if ((tag.getPlayerOne() == p1 || tag.getPlayerOne() == p2) &&
-          (tag.getPlayerTwo() == p1 || tag.getPlayerTwo() == p2)) {
-        return tag;
-      }
-    }
-    return null;
-  }
-
-  public static boolean isTagged(Player p) {
-    for (CombatTag tag : tags) {
-      if (tag.getPlayerOne() == p || tag.getPlayerTwo() == p) {
-        return true;
-      }
-    }
-    return false;
-  }
-
-  public static void setTaggable(Player p, boolean taggable) {
-    taggablePlayers.put(p, taggable);
-  }
-
-  public static boolean canBeTagged(Player p) {
-    return taggablePlayers.get(p);
   }
 }

@@ -18,6 +18,11 @@ public class PlayerKilledByPlayerEvent extends PlayerDamagedByPlayerEvent implem
     new DeathMessage(this);
   }
 
+  @SuppressWarnings("unused")
+  public static HandlerList getHandlerList() {
+    return HANDLERS;
+  }
+
   public void deathMessage(Component message) {
     deathEvent.deathMessage(message);
   }
@@ -35,11 +40,6 @@ public class PlayerKilledByPlayerEvent extends PlayerDamagedByPlayerEvent implem
   @Override
   public void setCancelled(boolean isCancelled) {
     this.isCancelled = isCancelled;
-  }
-
-  @SuppressWarnings("unused")
-  public static HandlerList getHandlerList() {
-    return HANDLERS;
   }
 
   @Override

@@ -5,8 +5,8 @@ import club.aurorapvp.auroracombat.config.Config;
 import club.aurorapvp.auroracombat.config.Lang;
 import club.aurorapvp.auroracombat.events.EventManager;
 import club.aurorapvp.auroracombat.flags.RatingFlags;
-import club.aurorapvp.auroracombat.modules.Rating;
 import club.aurorapvp.auroracombat.modules.Placeholders;
+import club.aurorapvp.auroracombat.modules.Rating;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -14,6 +14,10 @@ public final class AuroraCombat extends JavaPlugin {
   public static JavaPlugin INSTANCE;
   private static boolean worldGuardInstalled;
   private long startTime;
+
+  public static boolean isWorldGuardInstalled() {
+    return worldGuardInstalled;
+  }
 
   @Override
   public void onLoad() {
@@ -59,9 +63,5 @@ public final class AuroraCombat extends JavaPlugin {
     getLogger().info(
         "Aurora Combat Unloaded in " + Math.subtractExact(System.currentTimeMillis(), startTime) +
             "ms");
-  }
-
-  public static boolean isWorldGuardInstalled() {
-    return worldGuardInstalled;
   }
 }

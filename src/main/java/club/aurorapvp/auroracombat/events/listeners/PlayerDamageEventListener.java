@@ -29,8 +29,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffectType;
 
 public class PlayerDamageEventListener implements Listener {
-  private Player lastCrystalAttacker;
   private final HashSet<Projectile> firedProjectiles = new HashSet<>();
+  private Player lastCrystalAttacker;
   private Player lastInteractedWithBlock;
   private BlockState lastExplodedBlock;
 

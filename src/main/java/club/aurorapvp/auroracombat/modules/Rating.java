@@ -28,13 +28,9 @@ public class Rating {
   private static final Set<Rating> ratings = new HashSet<>();
   private static final Set<String> types = new HashSet<>();
   private final Player p;
-  private int rating;
   private final String type;
   private final RatingDataHandler data;
-
-  public static void init() {
-    setupRating("default");
-  }
+  private int rating;
 
   public Rating(Player p, String type) {
     this.p = p;
@@ -50,34 +46,8 @@ public class Rating {
     ratings.add(this);
   }
 
-  public int getPoints() {
-    return rating;
-  }
-
-  public void changePoints(int points) {
-    rating = rating + points;
-
-    if (points < 0) {
-      p.sendMessage(Lang.formatComponent("points-decreased", points));
-    } else {
-      p.sendMessage(Lang.formatComponent("points-increased", points));
-    }
-  }
-
-  public Player getPlayer() {
-    return p;
-  }
-
-  public String getType() {
-    return type;
-  }
-
-  public void save() {
-    this.data.save();
-  }
-
-  public boolean exists() {
-    return this.data.exists();
+  public static void init() {
+    setupRating("default");
   }
 
   public static void setupRating(String type) {
@@ -200,5 +170,35 @@ public class Rating {
 
   public static double getELOChange(int playerElo, int opponentElo) {
     return -(1 - 1.0 / (1 + Math.pow(10, (playerElo - opponentElo) / 400.0)));
+  }
+
+  public int getPoints() {
+    return rating;
+  }
+
+  public void changePoints(int points) {
+    rating = rating + points;
+
+    if (points < 0) {
+      p.sendMessage(Lang.formatComponent("points-decreased", points));
+    } else {
+      p.sendMessage(Lang.formatComponent("points-increased", points));
+    }
+  }
+
+  public Player getPlayer() {
+    return p;
+  }
+
+  public String getType() {
+    return type;
+  }
+
+  public void save() {
+    this.data.save();
+  }
+
+  public boolean exists() {
+    return this.data.exists();
   }
 }
