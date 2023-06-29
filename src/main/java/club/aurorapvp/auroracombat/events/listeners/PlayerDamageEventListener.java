@@ -67,7 +67,11 @@ public class PlayerDamageEventListener implements Listener {
               .build());
     }
 
-    if (event.getDamager() instanceof ThrownPotion thrownPotion) {
+    if (!(event.getDamager() instanceof Projectile projectile)) {
+      return;
+    }
+
+    if (projectile instanceof ThrownPotion thrownPotion) {
       if (!(thrownPotion.getShooter() instanceof Player attacker)) {
         return;
       }
@@ -83,10 +87,6 @@ public class PlayerDamageEventListener implements Listener {
                 .weapon(ItemStackUtil.toItemStack(thrownPotion))
                 .build());
       }
-    }
-
-    if (!(event.getDamager() instanceof Projectile projectile)) {
-      return;
     }
 
     for (Projectile firedProjectile : firedProjectiles) {

@@ -14,7 +14,6 @@ public class DeathMessage {
     ItemStack weapon = event.getWeapon();
     HoverEvent<HoverEvent.ShowItem> hover = weapon.asHoverEvent();
 
-    // Remove italics from the weapon's display name
     Component weaponName = weapon.displayName().decoration(TextDecoration.ITALIC, false);
 
     switch (event.getDamageType()) {
