@@ -71,22 +71,8 @@ public class PlayerDamageEventListener implements Listener {
       return;
     }
 
-    if (projectile instanceof ThrownPotion thrownPotion) {
-      if (!(thrownPotion.getShooter() instanceof Player attacker)) {
-        return;
-      }
-
-      if (thrownPotion.getEffects().stream().anyMatch(
-          effect -> effect.getType() == PotionEffectType.HARM ||
-              effect.getType() == PotionEffectType.POISON)) {
-        Bukkit.getPluginManager().callEvent(
-            new PlayerOnPlayerDamageBuilder()
-                .damageType(DamageType.MAGIC)
-                .damaged(damaged)
-                .attacker(attacker)
-                .weapon(ItemStackUtil.toItemStack(thrownPotion))
-                .build());
-      }
+    if (!(projectile.getShooter() instanceof Player attacker)) {
+      return;
     }
 
     for (Projectile firedProjectile : firedProjectiles) {
@@ -95,10 +81,26 @@ public class PlayerDamageEventListener implements Listener {
             new PlayerOnPlayerDamageBuilder()
                 .damageType(DamageType.RANGED)
                 .damaged(damaged)
-                .attacker((Player) projectile.getShooter())
+                .attacker(attacker)
                 .weapon(ItemStackUtil.toItemStack(projectile))
                 .build());
       }
+    }
+
+    if (!(projectile instanceof ThrownPotion thrownPotion)) {
+      return;
+    }
+
+    if (thrownPotion.getEffects().stream().anyMatch(
+        effect -> effect.getType() == PotionEffectType.HARM ||
+            effect.getType() == PotionEffectType.POISON)) {
+      Bukkit.getPluginManager().callEvent(
+          new PlayerOnPlayerDamageBuilder()
+              .damageType(DamageType.MAGIC)
+              .damaged(damaged)
+              .attacker(attacker)
+              .weapon(ItemStackUtil.toItemStack(thrownPotion))
+              .build());
     }
   }
 
