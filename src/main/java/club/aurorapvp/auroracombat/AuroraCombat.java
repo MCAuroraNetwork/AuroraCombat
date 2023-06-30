@@ -15,10 +15,6 @@ public final class AuroraCombat extends JavaPlugin {
   private static boolean worldGuardInstalled;
   private long startTime;
 
-  public static boolean isWorldGuardInstalled() {
-    return worldGuardInstalled;
-  }
-
   @Override
   public void onLoad() {
     startTime = System.currentTimeMillis();
@@ -52,6 +48,10 @@ public final class AuroraCombat extends JavaPlugin {
     getLogger().info(
         "Aurora Combat Loaded in " + Math.subtractExact(System.currentTimeMillis(), startTime) +
             "ms");
+  }
+
+  public static boolean isWorldGuardInstalled() {
+    return worldGuardInstalled;
   }
 
   @Override

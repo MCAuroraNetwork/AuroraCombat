@@ -6,6 +6,7 @@ import club.aurorapvp.auroracombat.modules.CombatTag;
 import club.aurorapvp.auroracombat.modules.Rating;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerChangedWorldEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.world.WorldSaveEvent;
@@ -19,6 +20,11 @@ public class PlayerEventListener implements Listener {
     if (Config.get().getBoolean("combat-tag.enable")) {
       CombatTag.setTaggable(event.getPlayer(), true);
     }
+  }
+
+  @EventHandler
+  public void onWorldChange(PlayerChangedWorldEvent event) {
+    BlockFallDamage.setInVulnerable(event.getPlayer());
   }
 
   @EventHandler
