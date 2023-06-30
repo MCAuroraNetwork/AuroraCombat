@@ -7,6 +7,7 @@ import club.aurorapvp.auroracombat.events.custom.PlayerKilledByPlayerEvent;
 import club.aurorapvp.auroracombat.modules.BlockFallDamage;
 import club.aurorapvp.auroracombat.modules.CombatTag;
 import club.aurorapvp.auroracombat.modules.Rating;
+import java.util.Objects;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -56,7 +57,8 @@ public class CombatTagEventListener implements Listener {
   @EventHandler
   public void onKilledByPlayer(PlayerKilledByPlayerEvent event) {
     for (String type : Rating.getTypes()) {
-      if (Rating.isUpdating(event.getDamaged().getLocation(), type) &&
+      if (Objects.requireNonNull(Rating.getRating(event.getDamaged(), type))
+          .isUpdating(event.getDamaged().getLocation()) &&
           CombatTag.canBeTagged(event.getDamaged())) {
         Rating.changeRating(event.getDamaged(), event.getAttacker(), type);
       }

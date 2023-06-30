@@ -14,8 +14,10 @@ import com.sk89q.worldguard.protection.regions.RegionContainer;
 import com.sk89q.worldguard.protection.regions.RegionQuery;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import org.bukkit.Location;
@@ -25,14 +27,14 @@ import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
 public class Rating {
-  private static final Set<Rating> ratings = new HashSet<>();
-  private static final Set<String> types = new HashSet<>();
+  private static final Map<Rating, Boolean> RATINGS = new HashMap<>();
+  private static final Map<String, Boolean> RATING_TYPES = new HashMap<>();
   private final Player p;
   private final String type;
   private final RatingDataHandler data;
   private int rating;
 
-  public Rating(Player p, String type) {
+  public Rating(Player p, String type, boolean updating) {
     this.p = p;
     this.type = type;
     this.data = new RatingDataHandler(this);
@@ -43,28 +45,37 @@ public class Rating {
       rating = Config.get().getInt("elo.default-points");
     }
 
-    ratings.add(this);
+    RATINGS.put(this, updating);
   }
 
   public static void init() {
-    setupRating("default");
+    setupRating("default", true);
   }
 
-  public static void setupRating(String type) {
-    types.add(type);
+  public static void setupRating(String type, boolean updating) {
+    RATING_TYPES.put(type, updating);
   }
 
   public static String[] getTypes() {
-    return types.toArray(new String[0]);
+    return RATING_TYPES.keySet().toArray(new String[0]);
   }
 
   public static void saveAll() {
-    for (Rating rating : ratings) {
+    for (Rating rating : RATINGS.keySet()) {
       rating.save();
     }
   }
 
-  public static boolean isUpdating(Location loc, String type) {
+  @SuppressWarnings("unused")
+  public void setUpdating(Rating rating, boolean updating) {
+    RATINGS.put(rating, updating);
+  }
+
+  public boolean isUpdating(Location loc) {
+    if (!RATINGS.get(this)) {
+      return false;
+    }
+
     if (AuroraCombat.isWorldGuardInstalled()) {
       RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
       RegionQuery query = container.createQuery();
@@ -108,7 +119,7 @@ public class Rating {
   }
 
   public static Rating getRating(Player p, String type) {
-    for (Rating rating : ratings) {
+    for (Rating rating : RATINGS.keySet()) {
       if (rating.getPlayer() == p && Objects.equals(rating.getType(), type)) {
         return rating;
       }
@@ -118,7 +129,7 @@ public class Rating {
 
   @SuppressWarnings("unused")
   public static Rating getRating(int index, String type) {
-    List<Rating> filteredRatings = ratings.stream()
+    List<Rating> filteredRatings = RATINGS.keySet().stream()
         .filter(r -> r.getType().equals(type))
         .sorted(Comparator.comparingInt(Rating::getPoints).reversed())
         .toList();
@@ -132,7 +143,7 @@ public class Rating {
 
   public static Rating[] getRatings(Player p) {
     List<Rating> ratingsList = new ArrayList<>();
-    for (Rating r : ratings) {
+    for (Rating r : RATINGS.keySet()) {
       if (r.getPlayer().equals(p)) {
         ratingsList.add(r);
       }
@@ -143,20 +154,20 @@ public class Rating {
 
   @SuppressWarnings("unused")
   public static Rating[] getRatings() {
-    return ratings.toArray(new Rating[0]);
+    return RATINGS.keySet().toArray(new Rating[0]);
   }
 
   public static void register(Player p) {
     PersistentDataContainer container = p.getPersistentDataContainer();
 
-    for (String type : types) {
+    for (String type : RATING_TYPES.keySet()) {
       NamespacedKey key = new NamespacedKey(AuroraCombat.INSTANCE, "rating_" + type);
 
       if (!container.has(key)) {
         container.set(key, PersistentDataType.INTEGER, Config.get().getInt("elo.default-points"));
       }
 
-      new Rating(p, type);
+      new Rating(p, type, RATING_TYPES.get(type));
     }
   }
 
@@ -165,7 +176,7 @@ public class Rating {
       rating.save();
     }
 
-    ratings.removeIf(rating -> rating.getPlayer().equals(p));
+    RATINGS.keySet().removeIf(rating -> rating.getPlayer().equals(p));
   }
 
   public static double getELOChange(int playerElo, int opponentElo) {
