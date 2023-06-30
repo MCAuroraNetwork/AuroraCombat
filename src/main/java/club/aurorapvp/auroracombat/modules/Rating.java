@@ -67,8 +67,8 @@ public class Rating {
   }
 
   @SuppressWarnings("unused")
-  public void setUpdating(Rating rating, boolean updating) {
-    RATINGS.put(rating, updating);
+  public void setUpdating(boolean updating) {
+    RATINGS.put(this, updating);
   }
 
   public boolean isUpdating(Location loc) {
