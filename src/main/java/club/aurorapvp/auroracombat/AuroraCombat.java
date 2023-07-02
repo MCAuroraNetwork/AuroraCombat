@@ -13,11 +13,10 @@ import org.bukkit.plugin.java.JavaPlugin;
 public final class AuroraCombat extends JavaPlugin {
   public static JavaPlugin INSTANCE;
   private static boolean worldGuardInstalled;
-  private long startTime;
 
   @Override
   public void onLoad() {
-    startTime = System.currentTimeMillis();
+    long startTime = System.currentTimeMillis();
 
     INSTANCE = this;
 
@@ -31,10 +30,16 @@ public final class AuroraCombat extends JavaPlugin {
         worldGuardInstalled = true;
       }
     }
+
+    getLogger().info(
+        "Aurora Combat Loaded in " + Math.subtractExact(System.currentTimeMillis(), startTime) +
+            "ms");
   }
 
   @Override
   public void onEnable() {
+    long startTime = System.currentTimeMillis();
+
     // Setup classes
     EventManager.init();
     Rating.init();
@@ -46,7 +51,7 @@ public final class AuroraCombat extends JavaPlugin {
     }
 
     getLogger().info(
-        "Aurora Combat Loaded in " + Math.subtractExact(System.currentTimeMillis(), startTime) +
+        "Aurora Combat Enabled in " + Math.subtractExact(System.currentTimeMillis(), startTime) +
             "ms");
   }
 
