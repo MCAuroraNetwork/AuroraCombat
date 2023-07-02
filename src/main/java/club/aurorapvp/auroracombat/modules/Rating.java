@@ -15,16 +15,10 @@ import com.sk89q.worldguard.protection.regions.RegionQuery;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
-import org.bukkit.Location;
-import org.bukkit.NamespacedKey;
-import org.bukkit.entity.Player;
-import org.bukkit.persistence.PersistentDataContainer;
-import org.bukkit.persistence.PersistentDataType;
+import org.bukkit.Location;import org.bukkit.entity.Player;
 
 public class Rating {
   private static final Map<Rating, Boolean> RATINGS = new HashMap<>();
@@ -158,15 +152,7 @@ public class Rating {
   }
 
   public static void register(Player p) {
-    PersistentDataContainer container = p.getPersistentDataContainer();
-
     for (String type : RATING_TYPES.keySet()) {
-      NamespacedKey key = new NamespacedKey(AuroraCombat.INSTANCE, "rating_" + type);
-
-      if (!container.has(key)) {
-        container.set(key, PersistentDataType.INTEGER, Config.get().getInt("elo.default-points"));
-      }
-
       new Rating(p, type, RATING_TYPES.get(type));
     }
   }
