@@ -1,6 +1,7 @@
 package club.aurorapvp.auroracombat.modules;
 
 import club.aurorapvp.auroracombat.AuroraCombat;
+import co.aikar.commands.bukkit.contexts.OnlinePlayer;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
@@ -33,23 +34,23 @@ public class Placeholders extends PlaceholderExpansion {
     return getResult(p, params);
   }
 
-  private String getResult(OfflinePlayer p, String params) {
-    if (!(p.isOnline())) {
+  private String getResult(OfflinePlayer player, String params) {
+    if (!(player instanceof Player p)) {
       return "Player offline";
     }
 
     if (params.startsWith("opponent")) {
-      CombatTag recentTag = CombatTag.getRecentTag((Player) p);
+      CombatTag recentTag = CombatTag.getRecentTag(p);
 
       if (recentTag == null) {
         return "None";
       }
 
-      return recentTag.getOpponent((Player) p).getName();
+      return recentTag.getOpponent(p).getName();
     }
 
     if (params.startsWith("rating_")) {
-      Rating rating = Rating.getRating((Player) p, params.replace("rating_", ""));
+      Rating rating = Rating.getRating(p, params.replace("rating_", ""));
 
       if (rating == null) {
         return "Rating not found";
@@ -57,6 +58,27 @@ public class Placeholders extends PlaceholderExpansion {
         return String.valueOf(rating.getPoints());
       }
 
+    }
+
+    if (params.startsWith("kills")) {
+      KillDeathTracker tracker = KillDeathTracker.getTracker(p);
+
+      assert tracker != null;
+      return String.valueOf(tracker.getKills());
+    }
+
+    if (params.startsWith("deaths")) {
+      KillDeathTracker tracker = KillDeathTracker.getTracker(p);
+
+      assert tracker != null;
+      return String.valueOf(tracker.getDeaths());
+    }
+
+    if (params.startsWith("kdr")) {
+      KillDeathTracker tracker = KillDeathTracker.getTracker(p);
+
+      assert tracker != null;
+      return String.valueOf(tracker.getKDR());
     }
 
     return null;
