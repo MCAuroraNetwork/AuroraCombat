@@ -32,7 +32,7 @@ public final class AuroraCombat extends JavaPlugin {
     }
 
     getLogger().info(
-        "Aurora Combat Loaded in " + Math.subtractExact(System.currentTimeMillis(), startTime) +
+        "AuroraCombat loaded in " + Math.subtractExact(System.currentTimeMillis(), startTime) +
             "ms");
   }
 
@@ -51,7 +51,7 @@ public final class AuroraCombat extends JavaPlugin {
     }
 
     getLogger().info(
-        "Aurora Combat Enabled in " + Math.subtractExact(System.currentTimeMillis(), startTime) +
+        "AuroraCombat enabled in " + Math.subtractExact(System.currentTimeMillis(), startTime) +
             "ms");
   }
 
@@ -66,7 +66,7 @@ public final class AuroraCombat extends JavaPlugin {
     Rating.saveAll();
 
     getLogger().info(
-        "Aurora Combat Unloaded in " + Math.subtractExact(System.currentTimeMillis(), startTime) +
+        "AuroraCombat disabled in " + Math.subtractExact(System.currentTimeMillis(), startTime) +
             "ms");
   }
 }
