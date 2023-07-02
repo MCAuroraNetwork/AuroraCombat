@@ -42,6 +42,9 @@ public class CombatTag {
       opponent.sendMessage(Lang.formatComponent("tagged", tagged.getName(),
           (Config.get().getInt("combat-tag.duration") / 1000)));
 
+      playerOne.setGlowing(true);
+      playerTwo.setGlowing(true);
+
       tags.add(this);
 
       resetTimer();
@@ -49,6 +52,8 @@ public class CombatTag {
   }
 
   public static void removeTags(Player p) {
+    p.setGlowing(false);
+
     for (CombatTag tag : getTags(p)) {
       tag.removeTag();
     }
