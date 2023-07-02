@@ -34,9 +34,10 @@ public class Rating {
     this.data = new RatingDataHandler(this);
 
     if (this.exists()) {
-      this.rating = data.getRating();
+      this.reload();
     } else {
       rating = Config.get().getInt("elo.default-points");
+      this.save();
     }
 
     RATINGS.put(this, updating);
@@ -44,6 +45,40 @@ public class Rating {
 
   public static void init() {
     setupRating("default", true);
+  }
+
+  public int getPoints() {
+    return rating;
+  }
+
+  public void changePoints(int points) {
+    rating = rating + points;
+
+    if (points < 0) {
+      p.sendMessage(Lang.formatComponent("points-decreased", points));
+    } else {
+      p.sendMessage(Lang.formatComponent("points-increased", points));
+    }
+  }
+
+  public Player getPlayer() {
+    return p;
+  }
+
+  public String getType() {
+    return type;
+  }
+
+  public void reload() {
+    this.rating = data.getRating();
+  }
+
+  public void save() {
+    this.data.save();
+  }
+
+  public boolean exists() {
+    return this.data.exists();
   }
 
   public static void setupRating(String type, boolean updating) {
@@ -167,35 +202,5 @@ public class Rating {
 
   public static double getELOChange(int playerElo, int opponentElo) {
     return -(1 - 1.0 / (1 + Math.pow(10, (playerElo - opponentElo) / 400.0)));
-  }
-
-  public int getPoints() {
-    return rating;
-  }
-
-  public void changePoints(int points) {
-    rating = rating + points;
-
-    if (points < 0) {
-      p.sendMessage(Lang.formatComponent("points-decreased", points));
-    } else {
-      p.sendMessage(Lang.formatComponent("points-increased", points));
-    }
-  }
-
-  public Player getPlayer() {
-    return p;
-  }
-
-  public String getType() {
-    return type;
-  }
-
-  public void save() {
-    this.data.save();
-  }
-
-  public boolean exists() {
-    return this.data.exists();
   }
 }
