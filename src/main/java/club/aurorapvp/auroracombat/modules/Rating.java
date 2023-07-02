@@ -83,8 +83,8 @@ public class Rating {
 
       if (set != null) {
         for (ProtectedRegion region : set.getRegions()) {
-          return !Objects.equals(region.getFlag(RatingFlags.GLOBAL_RATINGS),
-              StateFlag.State.DENY) ||
+          return Objects.equals(region.getFlag(RatingFlags.GLOBAL_RATINGS),
+              StateFlag.State.ALLOW) ||
               Objects.equals(region.getFlag(RatingFlags.REGION_RATING), type);
         }
       }
