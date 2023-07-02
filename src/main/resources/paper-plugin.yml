@@ -1,7 +1,7 @@
 name: AuroraCombat
 version: '${version}'
 main: club.aurorapvp.auroracombat.AuroraCombat
-api-version: '1.20'
+api-version: '1.19'
 authors: [ Villagers654 ]
 description: A combat plugin for the Aurora Network
 website: aurorapvp.club
@@ -19,8 +19,9 @@ permissions:
       auroracombat.command.auroracombat: true
 
 dependencies:
-  server:
-    PlaceholderAPI:
-      required: false
-    WorldGuard:
-      required: false
+  - name: PlaceholderAPI
+    required: false
+    bootstrap: false
+  - name: WorldGuard
+    required: false
+    bootstrap: false

@@ -66,7 +66,7 @@ public final class AuroraCombat extends JavaPlugin {
     Rating.saveAll();
 
     getLogger().info(
-        "Aurora Combat Unloaded in " + Math.subtractExact(System.currentTimeMillis(), startTime) +
+        "Aurora Combat Disabled in " + Math.subtractExact(System.currentTimeMillis(), startTime) +
             "ms");
   }
 }
