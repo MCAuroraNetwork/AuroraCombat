@@ -16,7 +16,7 @@ public class KillDeathTracker {
     this.p = p;
     data = new KillDeathDataHandler(this);
 
-    if (!this.exists()) {
+    if (this.exists()) {
       this.reload();
     } else {
       kills = 0;
