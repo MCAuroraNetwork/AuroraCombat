@@ -161,6 +161,15 @@ public class CombatTag {
                        Lang.formatComponent("tag-removed-action-bar", playerTwo.getName()));
                    playerTwo.sendActionBar(
                        Lang.formatComponent("tag-removed-action-bar", playerOne.getName()));
+
+                   if (!CombatTag.isTagged(playerOne)) {
+                     playerOne.setGlowing(false);
+                   }
+
+                   if (!CombatTag.isTagged(playerTwo)) {
+                     playerTwo.setGlowing(false);
+                   }
+
                    this.cancel();
                  }
                }, Config.get().getInt("combat-tag.duration")
