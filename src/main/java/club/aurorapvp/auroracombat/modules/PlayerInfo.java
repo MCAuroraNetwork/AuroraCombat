@@ -1,15 +1,12 @@
 package club.aurorapvp.auroracombat.modules;
 
-import club.aurorapvp.auroracombat.AuroraCombat;
-import club.aurorapvp.auroracombat.config.Lang;
 import java.util.HashSet;
 import java.util.Set;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.bukkit.scoreboard.Scoreboard;
-import org.bukkit.scoreboard.ScoreboardManager;
-import org.bukkit.scoreboard.Team;
 
+//TODO return to this hell
+/*
 public class PlayerInfo {
   private static final Set<PlayerInfo> PLAYER_INFOS = new HashSet<>();
   private final Player p;
@@ -17,11 +14,6 @@ public class PlayerInfo {
 
   public PlayerInfo(Player p) {
     this.p = p;
-
-    taskId =
-        Bukkit.getScheduler().scheduleSyncRepeatingTask(AuroraCombat.INSTANCE, () -> p.displayName(
-            Lang.formatComponent("player-health-and-ping", p.getName(), p.getHealth(),
-                p.getPing())), 0L, 20L);
 
     PLAYER_INFOS.add(this);
   }
@@ -43,4 +35,4 @@ public class PlayerInfo {
       }
     }
   }
-}
+}*/
