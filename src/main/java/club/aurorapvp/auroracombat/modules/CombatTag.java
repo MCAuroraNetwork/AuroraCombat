@@ -52,8 +52,6 @@ public class CombatTag {
   }
 
   public static void removeTags(Player p) {
-    p.setGlowing(false);
-
     for (CombatTag tag : getTags(p)) {
       tag.removeTag();
     }
@@ -206,5 +204,13 @@ public class CombatTag {
     playerTwo.sendMessage(Lang.formatComponent("tag-removed", playerOne.getName()));
     playerOne.sendActionBar(Lang.formatComponent("tag-removed-action-bar", playerTwo.getName()));
     playerTwo.sendActionBar(Lang.formatComponent("tag-removed-action-bar", playerOne.getName()));
+
+    if (!CombatTag.isTagged(playerOne)) {
+      playerOne.setGlowing(false);
+    }
+
+    if (!CombatTag.isTagged(playerTwo)) {
+      playerTwo.setGlowing(false);
+    }
   }
 }
