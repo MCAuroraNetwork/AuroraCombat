@@ -17,14 +17,11 @@ public class PlayerInfo {
 
   public PlayerInfo(Player p) {
     this.p = p;
-    ScoreboardManager manager = Bukkit.getScoreboardManager();
-    Scoreboard board = manager.getNewScoreboard();
-    Team team = board.registerNewTeam("playerInfo");
-    team.addPlayer(p);
-    p.setScoreboard(board);
 
-    taskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(AuroraCombat.INSTANCE, () -> team.suffix(
-        Lang.formatComponent("player-health-and-ping", p.getHealth(), p.getPing())), 0L, 20L);
+    taskId =
+        Bukkit.getScheduler().scheduleSyncRepeatingTask(AuroraCombat.INSTANCE, () -> p.displayName(
+            Lang.formatComponent("player-health-and-ping", p.getName(), p.getHealth(),
+                p.getPing())), 0L, 20L);
 
     PLAYER_INFOS.add(this);
   }
