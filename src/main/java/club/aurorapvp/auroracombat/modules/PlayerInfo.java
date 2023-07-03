@@ -10,6 +10,7 @@ import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.ScoreboardManager;
 import org.bukkit.scoreboard.Team;
 
+/*
 public class PlayerInfo {
   private static final Set<PlayerInfo> PLAYER_INFOS = new HashSet<>();
   private final Player p;
@@ -43,4 +44,4 @@ public class PlayerInfo {
       }
     }
   }
-}
+}*/
