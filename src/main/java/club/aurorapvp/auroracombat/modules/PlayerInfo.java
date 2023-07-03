@@ -23,7 +23,7 @@ public class PlayerInfo {
     team = board.registerNewTeam("playerInfo");
 
     taskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(AuroraCombat.INSTANCE, () -> team.suffix(
-        Lang.formatComponent("player-heath-and-ping", p.getHealth(), p.getPing())), 0L, 20L);
+        Lang.formatComponent("player-health-and-ping", p.getHealth(), p.getPing())), 0L, 20L);
 
     PLAYER_INFOS.add(this);
   }
