@@ -13,14 +13,14 @@ import org.bukkit.scoreboard.Team;
 public class PlayerInfo {
   private static final Set<PlayerInfo> PLAYER_INFOS = new HashSet<>();
   private final Player p;
-  private final Team team;
   private final int taskId;
 
   public PlayerInfo(Player p) {
     this.p = p;
     ScoreboardManager manager = Bukkit.getScoreboardManager();
     Scoreboard board = manager.getNewScoreboard();
-    team = board.registerNewTeam("playerInfo");
+    Team team = board.registerNewTeam("playerInfo");
+    team.addPlayer(p);
 
     taskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(AuroraCombat.INSTANCE, () -> team.suffix(
         Lang.formatComponent("player-health-and-ping", p.getHealth(), p.getPing())), 0L, 20L);
