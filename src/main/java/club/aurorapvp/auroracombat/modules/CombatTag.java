@@ -42,6 +42,10 @@ public class CombatTag {
       opponent.sendMessage(Lang.formatComponent("tagged", tagged.getName(),
           (Config.get().getInt("combat-tag.duration") / 1000)));
 
+      playerOne.setGlowing(true);
+      playerTwo.setGlowing(true);
+
+
       tags.add(this);
 
       resetTimer();
@@ -156,6 +160,15 @@ public class CombatTag {
                        Lang.formatComponent("tag-removed-action-bar", playerTwo.getName()));
                    playerTwo.sendActionBar(
                        Lang.formatComponent("tag-removed-action-bar", playerOne.getName()));
+
+                   if (!CombatTag.isTagged(playerOne)) {
+                     playerOne.setGlowing(false);
+                   }
+
+                   if (!CombatTag.isTagged(playerTwo)) {
+                     playerTwo.setGlowing(false);
+                   }
+
                    this.cancel();
                  }
                }, Config.get().getInt("combat-tag.duration")
@@ -192,5 +205,13 @@ public class CombatTag {
     playerTwo.sendMessage(Lang.formatComponent("tag-removed", playerOne.getName()));
     playerOne.sendActionBar(Lang.formatComponent("tag-removed-action-bar", playerTwo.getName()));
     playerTwo.sendActionBar(Lang.formatComponent("tag-removed-action-bar", playerOne.getName()));
+
+    if (!CombatTag.isTagged(playerOne)) {
+      playerOne.setGlowing(false);
+    }
+
+    if (!CombatTag.isTagged(playerTwo)) {
+      playerTwo.setGlowing(false);
+    }
   }
 }
