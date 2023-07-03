@@ -4,7 +4,6 @@ import club.aurorapvp.auroracombat.config.Config;
 import club.aurorapvp.auroracombat.modules.BlockFallDamage;
 import club.aurorapvp.auroracombat.modules.CombatTag;
 import club.aurorapvp.auroracombat.modules.KillDeathTracker;
-import club.aurorapvp.auroracombat.modules.PlayerInfo;
 import club.aurorapvp.auroracombat.modules.Rating;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -17,7 +16,6 @@ public class PlayerEventListener implements Listener {
   @EventHandler
   public void onPlayerJoin(PlayerJoinEvent event) {
     new KillDeathTracker(event.getPlayer());
-    new PlayerInfo(event.getPlayer());
     Rating.register(event.getPlayer());
     BlockFallDamage.setInVulnerable(event.getPlayer());
 
@@ -39,7 +37,6 @@ public class PlayerEventListener implements Listener {
 
   @EventHandler
   public void onPlayerQuit(PlayerQuitEvent event) {
-    PlayerInfo.removePlayer(event.getPlayer());
     Rating.unregister(event.getPlayer());
   }
 }
