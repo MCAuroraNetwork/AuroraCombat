@@ -46,7 +46,7 @@ public class Lang {
         "<gradient:#FFAA00:#FF55FF>%1$s was killed by %2$s using %2$s's magic %3$s");
     DEFAULTS.put("commands-disabled",
         "prefix <gradient:#FFAA00:#FF55FF>Commands are disabled in combat!");
-    DEFAULTS.put("player-health-and-ping", "<red>♡ %1$s<reset> <blue> %2$s ms");
+    DEFAULTS.put("player-health-and-ping", "%1$s <red>❤ %2$s<reset> <blue> %3$s ms");
 
     for (String path : DEFAULTS.keySet()) {
       if (!get().contains(path) || get().getString(path) == null) {
