@@ -22,6 +22,7 @@ public class KillDeathTracker {
     } else {
       kills = 0;
       deaths = 0;
+      killStreak = 0;
       this.save();
     }
 

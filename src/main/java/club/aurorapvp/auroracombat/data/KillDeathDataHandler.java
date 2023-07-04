@@ -8,15 +8,14 @@ import org.bukkit.persistence.PersistentDataType;
 
 public class KillDeathDataHandler {
   private final PersistentDataContainer container;
-  private final NamespacedKey killKey;
-  private final NamespacedKey deathKey;
+  private final NamespacedKey killKey = new NamespacedKey(AuroraCombat.INSTANCE, "kills");
+  private final NamespacedKey deathKey = new NamespacedKey(AuroraCombat.INSTANCE, "deaths");
+  private final NamespacedKey streakKey = new NamespacedKey(AuroraCombat.INSTANCE, "killstreak");
   private final KillDeathTracker tracker;
 
   public KillDeathDataHandler(KillDeathTracker tracker) {
     this.tracker = tracker;
     this.container = tracker.getPlayer().getPersistentDataContainer();
-    this.killKey = new NamespacedKey(AuroraCombat.INSTANCE, "kills");
-    this.deathKey = new NamespacedKey(AuroraCombat.INSTANCE, "deaths");
   }
 
   public int getKills() {
@@ -28,6 +27,7 @@ public class KillDeathDataHandler {
   }
 
   public void save() {
+    container.set(streakKey, PersistentDataType.INTEGER, tracker.getKillStreak());
     container.set(killKey, PersistentDataType.INTEGER, tracker.getKills());
     container.set(deathKey, PersistentDataType.INTEGER, tracker.getDeaths());
   }
