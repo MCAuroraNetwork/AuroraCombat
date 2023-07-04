@@ -26,7 +26,7 @@ public class Lang {
     DEFAULTS.put("points-increased",
         "prefix <gradient:#FFAA00:#FF55FF>Your %1$s ELO increased by %2$s points!");
     DEFAULTS.put("points-decreased",
-        "prefix <gradient:#FFAA00:#FF55FF>Your %1$s ELO increased by %2$s ELO decreased by %s points!");
+        "prefix <gradient:#FFAA00:#FF55FF>Your %1$s ELO decreased by %2$s points!");
     DEFAULTS.put("tagged",
         "prefix <gradient:#FFAA00:#FF55FF>You have been tagged by %1$s for %2$s seconds!");
     DEFAULTS.put("tagged-action-bar",
