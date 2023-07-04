@@ -10,6 +10,7 @@ public class KillDeathTracker {
   private final Player p;
   private int deaths;
   private int kills;
+  private int killStreak;
   private final KillDeathDataHandler data;
 
   public KillDeathTracker(Player p) {
@@ -39,6 +40,10 @@ public class KillDeathTracker {
     return this.kills;
   }
 
+  public int getKillStreak() {
+    return this.killStreak;
+  }
+
   public double getKDR() {
     if (deaths == 0) {
       return kills;
@@ -61,10 +66,12 @@ public class KillDeathTracker {
   }
 
   public void addDeath() {
+    this.killStreak = 0;
     this.deaths++;
   }
 
   public void addKill() {
+    this.killStreak++;
     this.kills++;
   }
 
