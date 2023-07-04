@@ -21,6 +21,7 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
+import net.kyori.adventure.bossbar.BossBar;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
@@ -30,6 +31,8 @@ public class CombatTag {
   private static final Map<Player, Boolean> taggablePlayers = new HashMap<>();
   private final Player playerOne;
   private final Player playerTwo;
+  private final BossBar[] playerOneBar = new BossBar[1];
+  private final BossBar[] playerTwoBar = new BossBar[1];
   private Timer t;
   private BukkitTask task;
   private Long timeStarted;
@@ -169,6 +172,8 @@ public class CombatTag {
     CombatTag tag = this;
 
     t = new Timer();
+
+    // TODO isn't this duplicate code of CombatTag#removeTag?
     t.schedule(new TimerTask() {
                  @Override
                  public void run() {
@@ -179,6 +184,9 @@ public class CombatTag {
                        Lang.formatComponent("tag-removed-action-bar", playerTwo.getName()));
                    playerTwo.sendActionBar(
                        Lang.formatComponent("tag-removed-action-bar", playerOne.getName()));
+
+                   playerOne.hideBossBar(playerOneBar[0]);
+                   playerTwo.hideBossBar(playerTwoBar[0]);
 
                    if (!CombatTag.isTagged(playerOne)) {
                      playerOne.setGlowing(false);
@@ -205,6 +213,34 @@ public class CombatTag {
               Lang.formatComponent("tagged-action-bar", playerTwo.getName(), seconds));
           playerTwo.sendActionBar(
               Lang.formatComponent("tagged-action-bar", playerOne.getName(), seconds));
+
+          if (playerOneBar[0] != null) {
+            playerOne.hideBossBar(playerOneBar[0]);
+          }
+
+          playerOneBar[0] = BossBar.bossBar(
+              Lang.formatComponent("opponent-bossbar", playerTwo.getName(), playerTwo.getHealth(),
+                  (int) playerTwo.getLocation().distance(playerOne.getLocation())),
+              1.0f,
+              BossBar.Color.RED,
+              BossBar.Overlay.PROGRESS
+          );
+
+          playerOne.showBossBar(playerOneBar[0]);
+
+          if (playerTwoBar[0] != null) {
+            playerTwo.hideBossBar(playerTwoBar[0]);
+          }
+
+          playerTwoBar[0] = BossBar.bossBar(
+              Lang.formatComponent("opponent-bossbar", playerOne.getName(), playerOne.getHealth(),
+                  (int) playerTwo.getLocation().distance(playerOne.getLocation())),
+              1.0f,
+              BossBar.Color.RED,
+              BossBar.Overlay.PROGRESS
+          );
+
+          playerTwo.showBossBar(playerTwoBar[0]);
         }
       }
     }.runTaskTimer(AuroraCombat.INSTANCE, 0, 20);
@@ -224,6 +260,9 @@ public class CombatTag {
     playerTwo.sendMessage(Lang.formatComponent("tag-removed", playerOne.getName()));
     playerOne.sendActionBar(Lang.formatComponent("tag-removed-action-bar", playerTwo.getName()));
     playerTwo.sendActionBar(Lang.formatComponent("tag-removed-action-bar", playerOne.getName()));
+
+    playerOne.hideBossBar(playerOneBar[0]);
+    playerTwo.hideBossBar(playerTwoBar[0]);
 
     if (!CombatTag.isTagged(playerOne)) {
       playerOne.setGlowing(false);

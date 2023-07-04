@@ -46,6 +46,7 @@ public class Lang {
         "<gradient:#FFAA00:#FF55FF>%1$s was killed by %2$s using %2$s's magic %3$s");
     DEFAULTS.put("commands-disabled",
         "prefix <gradient:#FFAA00:#FF55FF>Commands are disabled in combat!");
+    DEFAULTS.put("opponent-bossbar", "<gradient:#FFAA00:#FF55FF><bold>%1$s <reset><red>| %2$s❤ |<reset><blue> %3$s Blocks Away");
     //TODO DEFAULTS.put("player-health-and-ping", "%1$s | <red>%2$s<reset><blue> | %3$sms");
 
     for (String path : DEFAULTS.keySet()) {
