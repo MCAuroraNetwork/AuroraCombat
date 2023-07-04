@@ -54,10 +54,18 @@ public class Rating {
   public void changePoints(int points) {
     rating = rating + points;
 
+    String name = this.getType();
+
+    String[] words = name.split("_");
+    for(int i=0; i<words.length; i++) {
+      words[i] = words[i].substring(0, 1).toUpperCase() + words[i].substring(1);
+    }
+    name = String.join(" ", words);
+
     if (points < 0) {
-      p.sendMessage(Lang.formatComponent("points-decreased", points));
+      p.sendMessage(Lang.formatComponent("points-decreased", name, points));
     } else {
-      p.sendMessage(Lang.formatComponent("points-increased", points));
+      p.sendMessage(Lang.formatComponent("points-increased", name, points));
     }
   }
 

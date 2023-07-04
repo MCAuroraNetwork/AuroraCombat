@@ -24,9 +24,9 @@ public class Lang {
 
     DEFAULTS.put("prefix", "~<gradient:#FFAA00:#FF55FF><bold>AuroraCombat ><reset>~");
     DEFAULTS.put("points-increased",
-        "prefix <gradient:#FFAA00:#FF55FF>Your ELO increased by %s points!");
+        "prefix <gradient:#FFAA00:#FF55FF>Your %1$s ELO increased by %2$s points!");
     DEFAULTS.put("points-decreased",
-        "prefix <gradient:#FFAA00:#FF55FF>Your ELO decreased by %s points!");
+        "prefix <gradient:#FFAA00:#FF55FF>Your %1$s ELO increased by %2$s ELO decreased by %s points!");
     DEFAULTS.put("tagged",
         "prefix <gradient:#FFAA00:#FF55FF>You have been tagged by %1$s for %2$s seconds!");
     DEFAULTS.put("tagged-action-bar",
@@ -46,7 +46,8 @@ public class Lang {
         "<gradient:#FFAA00:#FF55FF>%1$s was killed by %2$s using %2$s's magic %3$s");
     DEFAULTS.put("commands-disabled",
         "prefix <gradient:#FFAA00:#FF55FF>Commands are disabled in combat!");
-    DEFAULTS.put("opponent-bossbar", "<gradient:#FFAA00:#FF55FF><bold>%1$s <reset><red>| %2$s❤ |<reset><blue> %3$s Blocks Away");
+    DEFAULTS.put("opponent-bossbar",
+        "<gradient:#FFAA00:#FF55FF><bold>%1$s <reset><red>| %2$s❤ |<reset><blue> %3$s Blocks Away");
     //TODO DEFAULTS.put("player-health-and-ping", "%1$s | <red>%2$s<reset><blue> | %3$sms");
 
     for (String path : DEFAULTS.keySet()) {
