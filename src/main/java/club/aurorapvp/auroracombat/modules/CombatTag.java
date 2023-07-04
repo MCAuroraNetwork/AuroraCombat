@@ -219,7 +219,8 @@ public class CombatTag {
           }
 
           playerOneBar[0] = BossBar.bossBar(
-              Lang.formatComponent("opponent-bossbar", playerTwo.getName(), playerTwo.getHealth(),
+              Lang.formatComponent("opponent-bossbar", playerTwo.getName(),
+                  (int) playerTwo.getHealth(),
                   (int) playerTwo.getLocation().distance(playerOne.getLocation())),
               1.0f,
               BossBar.Color.RED,
@@ -233,8 +234,9 @@ public class CombatTag {
           }
 
           playerTwoBar[0] = BossBar.bossBar(
-              Lang.formatComponent("opponent-bossbar", playerOne.getName(), playerOne.getHealth(),
-                  (int) playerTwo.getLocation().distance(playerOne.getLocation())),
+              Lang.formatComponent("opponent-bossbar", playerOne.getName(),
+                  (int) playerOne.getHealth(),
+                  (int) playerOne.getLocation().distance(playerTwo.getLocation())),
               1.0f,
               BossBar.Color.RED,
               BossBar.Overlay.PROGRESS
