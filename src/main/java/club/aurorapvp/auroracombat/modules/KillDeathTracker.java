@@ -40,6 +40,7 @@ public class KillDeathTracker {
     return this.kills;
   }
 
+  // TODO kill streak milestone and loss messages
   public int getKillStreak() {
     return this.killStreak;
   }
