@@ -3,6 +3,14 @@ package club.aurorapvp.auroracombat.modules;
 import club.aurorapvp.auroracombat.AuroraCombat;
 import club.aurorapvp.auroracombat.config.Config;
 import club.aurorapvp.auroracombat.config.Lang;
+import club.aurorapvp.auroracombat.flags.CombatTagFlags;
+import com.sk89q.worldedit.bukkit.BukkitAdapter;
+import com.sk89q.worldguard.WorldGuard;
+import com.sk89q.worldguard.protection.ApplicableRegionSet;
+import com.sk89q.worldguard.protection.flags.StateFlag;
+import com.sk89q.worldguard.protection.regions.ProtectedRegion;
+import com.sk89q.worldguard.protection.regions.RegionContainer;
+import com.sk89q.worldguard.protection.regions.RegionQuery;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -30,7 +38,7 @@ public class CombatTag {
     this.playerOne = tagged;
     this.playerTwo = opponent;
 
-    if (!(canBeTagged(tagged) && canBeTagged(opponent))) {
+    if (!canBeTagged(tagged) || !canBeTagged(opponent)) {
       return;
     }
 
@@ -118,6 +126,18 @@ public class CombatTag {
   }
 
   public static boolean canBeTagged(Player p) {
+    if (AuroraCombat.isWorldGuardInstalled()) {
+      RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
+      RegionQuery query = container.createQuery();
+      ApplicableRegionSet set = query.getApplicableRegions(BukkitAdapter.adapt(p.getLocation()));
+
+      if (set != null) {
+        for (ProtectedRegion region : set.getRegions()) {
+          return Objects.equals(region.getFlag(CombatTagFlags.TAGS_ENABLED), StateFlag.State.ALLOW);
+        }
+      }
+    }
+
     return taggablePlayers.get(p);
   }
 
