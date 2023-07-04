@@ -78,7 +78,7 @@ public class Placeholders extends PlaceholderExpansion {
       KillDeathTracker tracker = KillDeathTracker.getTracker(p);
 
       assert tracker != null;
-      return String.valueOf(tracker.getKDR());
+      return String.valueOf(Math.round(tracker.getKDR() * 1000d) / 1000d);
     }
 
     return null;
