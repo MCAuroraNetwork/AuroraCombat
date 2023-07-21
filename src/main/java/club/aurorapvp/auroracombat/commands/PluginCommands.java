@@ -11,6 +11,7 @@ import co.aikar.commands.annotation.Description;
 import co.aikar.commands.annotation.Subcommand;
 
 @CommandAlias("auroracombat")
+@CommandPermission("auroracombat.command.auroracombat")
 public class PluginCommands extends BaseCommand {
   @Subcommand("reload")
   @CommandPermission("auroracombat.admin")
