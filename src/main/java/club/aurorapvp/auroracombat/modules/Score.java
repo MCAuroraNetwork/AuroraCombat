@@ -48,9 +48,9 @@ public class Score {
     name = String.join(" ", words);
 
     if (points < 0) {
-      p.sendMessage(Lang.formatComponent("points-decreased", name, points));
+      p.sendMessage(Lang.formatComponent("points-decreased", name, amount));
     } else {
-      p.sendMessage(Lang.formatComponent("points-increased", name, points));
+      p.sendMessage(Lang.formatComponent("points-increased", name, amount));
     }
   }
 
