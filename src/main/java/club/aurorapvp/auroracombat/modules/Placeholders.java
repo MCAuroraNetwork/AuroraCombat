@@ -1,7 +1,6 @@
 package club.aurorapvp.auroracombat.modules;
 
 import club.aurorapvp.auroracombat.AuroraCombat;
-import co.aikar.commands.bukkit.contexts.OnlinePlayer;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
@@ -50,14 +49,13 @@ public class Placeholders extends PlaceholderExpansion {
     }
 
     if (params.startsWith("rating_")) {
-      Rating rating = Rating.getRating(p, params.replace("rating_", ""));
+      Rating rating = Rating.getRating(params.replace("rating_", ""));
 
       if (rating == null) {
         return "Rating not found";
       } else {
-        return String.valueOf(rating.getPoints());
+        return String.valueOf(rating.getScore(p).getPoints());
       }
-
     }
 
     if (params.startsWith("killstreak")) {

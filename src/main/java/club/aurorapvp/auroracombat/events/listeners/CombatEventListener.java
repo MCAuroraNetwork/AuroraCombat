@@ -16,7 +16,7 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
-public class CombatTagEventListener implements Listener {
+public class CombatEventListener implements Listener {
   private PlayerDamagedByPlayerEvent lastDamage;
 
   @EventHandler
@@ -57,10 +57,9 @@ public class CombatTagEventListener implements Listener {
 
   @EventHandler
   public void onKilledByPlayer(PlayerKilledByPlayerEvent event) {
-    for (String type : Rating.getTypes()) {
-      if (Objects.requireNonNull(Rating.getRating(event.getDead(), type))
-          .isUpdating(event.getDead().getLocation())) {
-        Rating.changeRating(event.getDead(), event.getKiller(), type);
+    for (Rating rating : Rating.getRatings()) {
+      if (rating.isEnabled(event.getDead().getLocation())) {
+        rating.updateElo(event.getDead(), event.getKiller());
 
         Objects.requireNonNull(KillDeathTracker.getTracker(event.getDead())).addDeath();
         Objects.requireNonNull(KillDeathTracker.getTracker(event.getKiller())).addKill();

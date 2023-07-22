@@ -2,8 +2,6 @@ package club.aurorapvp.auroracombat.modules;
 
 import club.aurorapvp.auroracombat.AuroraCombat;
 import club.aurorapvp.auroracombat.config.Config;
-import club.aurorapvp.auroracombat.config.Lang;
-import club.aurorapvp.auroracombat.data.RatingDataHandler;
 import club.aurorapvp.auroracombat.flags.RatingFlags;
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldguard.WorldGuard;
@@ -12,203 +10,158 @@ import com.sk89q.worldguard.protection.flags.StateFlag;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import com.sk89q.worldguard.protection.regions.RegionContainer;
 import com.sk89q.worldguard.protection.regions.RegionQuery;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import org.bukkit.Location;import org.bukkit.entity.Player;
+import java.util.*;
+import org.bukkit.Location;
+import org.bukkit.entity.Player;
 
 public class Rating {
-  private static final Map<Rating, Boolean> RATINGS = new HashMap<>();
-  private static final Map<String, Boolean> RATING_TYPES = new HashMap<>();
-  private final Player p;
-  private final String type;
-  private final RatingDataHandler data;
-  private int rating;
+  private static final Set<Rating> RATINGS = new HashSet<>();
+  private final String name;
+  private final RatingType type;
+  private final Set<Score> SCORES = new HashSet<>();
+  private boolean enabled;
 
-  public Rating(Player p, String type, boolean updating) {
-    this.p = p;
+  public Rating(String name, RatingType type, boolean enabled) {
+    this.name = name;
     this.type = type;
-    this.data = new RatingDataHandler(this);
+    this.enabled = enabled;
 
-    if (this.exists()) {
-      this.reload();
-    } else {
-      rating = Config.get().getInt("elo.default-points");
-      this.save();
-    }
-
-    RATINGS.put(this, updating);
+    RATINGS.add(this);
   }
 
   public static void init() {
-    setupRating("default", true);
+    new Rating("default", RatingType.GLOBAL, true);
   }
 
-  public int getPoints() {
-    return rating;
+  public String getName() {
+    return name;
   }
 
-  public void changePoints(int points) {
-    rating = rating + points;
-
-    String name = this.getType();
-
-    String[] words = name.split("_");
-    for(int i=0; i<words.length; i++) {
-      words[i] = words[i].substring(0, 1).toUpperCase() + words[i].substring(1);
-    }
-    name = String.join(" ", words);
-
-    if (points < 0) {
-      p.sendMessage(Lang.formatComponent("points-decreased", name, points));
-    } else {
-      p.sendMessage(Lang.formatComponent("points-increased", name, points));
-    }
-  }
-
-  public Player getPlayer() {
-    return p;
-  }
-
-  public String getType() {
+  public RatingType getType() {
     return type;
   }
 
-  public void reload() {
-    this.rating = data.getRating();
+  public boolean isEnabled() {
+    return enabled;
+  }
+  
+  public Set<Score> getScores() {
+    return SCORES;
   }
 
-  public void save() {
-    this.data.save();
-  }
-
-  public boolean exists() {
-    return this.data.exists();
-  }
-
-  public static void setupRating(String type, boolean updating) {
-    RATING_TYPES.put(type, updating);
-  }
-
-  public static String[] getTypes() {
-    return RATING_TYPES.keySet().toArray(new String[0]);
+  public void setEnabled(boolean enabled) {
+    this.enabled = enabled;
   }
 
   public static void saveAll() {
-    for (Rating rating : RATINGS.keySet()) {
-      rating.save();
+    for (Rating rating : RATINGS) {
+      for (Score score : rating.getScores()) {
+        score.save();
+      }
     }
   }
 
-  @SuppressWarnings("unused")
-  public void setUpdating(boolean updating) {
-    RATINGS.put(this, updating);
-  }
-
-  public boolean isUpdating(Location loc) {
-    if (!RATINGS.get(this)) {
+  public boolean isEnabled(Location loc) {
+    if (!this.isEnabled()) {
       return false;
     }
 
-    if (AuroraCombat.isWorldGuardInstalled()) {
-      RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
-      RegionQuery query = container.createQuery();
-      ApplicableRegionSet set = query.getApplicableRegions(BukkitAdapter.adapt(loc));
-
-      if (set != null) {
-        for (ProtectedRegion region : set.getRegions()) {
-          return Objects.equals(region.getFlag(RatingFlags.GLOBAL_RATINGS),
-              StateFlag.State.ALLOW) ||
-              Objects.equals(region.getFlag(RatingFlags.REGION_RATING), type);
-        }
-      }
+    if (!AuroraCombat.isWorldGuardInstalled()) {
+      return true;
     }
 
+    RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
+    RegionQuery query = container.createQuery();
+    ApplicableRegionSet set = query.getApplicableRegions(BukkitAdapter.adapt(loc));
+
+    for (ProtectedRegion region : set.getRegions()) {
+      return (Objects.equals(region.getFlag(RatingFlags.GLOBAL_RATINGS), StateFlag.State.ALLOW)
+              && this.getType() == RatingType.GLOBAL)
+          || (Objects.equals(region.getFlag(RatingFlags.REGION_RATING), name)
+              && this.getType() == RatingType.REGION);
+    }
+    
     return true;
   }
 
-  public static void changeRating(Player deadPlayer, Player killer, String type) {
-    Rating playerRating = Rating.getRating(deadPlayer, type);
-    Rating killerRating = Rating.getRating(killer, type);
+  public Score getScore(Player p) {
+    for (Score score : SCORES) {
+      if (score.getPlayer() == p) {
+        return score;
+      }
+    }
 
-    assert playerRating != null;
-    assert killerRating != null;
-    double EloChange = Rating.getELOChange(playerRating.getPoints(), killerRating.getPoints());
-
-    playerRating.changePoints((int) Math.round(
-        Config.get().getInt("elo.max-change") * EloChange));
-    killerRating.changePoints((int) Math.round(
-        Config.get().getInt("elo.max-change") * -(0 + EloChange)));
+    return null;
   }
 
   @SuppressWarnings("unused")
-  public static void changeRating(Player p, int otherRating, String type) {
-    Rating playerRating = Rating.getRating(p, type);
+  public Score getScoreAt(int index) {
+    List<Score> filteredScores =
+        SCORES.stream().sorted(Comparator.comparingInt(Score::getPoints).reversed()).toList();
 
-    assert playerRating != null;
-    double EloChange = Rating.getELOChange(playerRating.getPoints(), otherRating);
+    if (index > 0 && index <= filteredScores.size()) {
+      return filteredScores.get(index - 1);
+    }
 
-    playerRating.changePoints((int) Math.round(
-        Config.get().getInt("elo.max-change") * EloChange));
+    return null;
   }
 
-  public static Rating getRating(Player p, String type) {
-    for (Rating rating : RATINGS.keySet()) {
-      if (rating.getPlayer() == p && Objects.equals(rating.getType(), type)) {
+  public void loadScore(Player p) {
+    SCORES.add(new Score(p, this));
+  }
+
+  public void unloadScore(Player p) {
+    this.getScore(p).save();
+    
+    SCORES.removeIf(s -> s.getPlayer().equals(p));
+  }
+
+  public void updateElo(Player deadPlayer, Player killer) {
+    Score deadScore = this.getScore(deadPlayer);
+    Score killerScore = this.getScore(killer);
+    
+    assert deadScore != null;
+    assert killerScore != null;
+    double EloChange = Rating.getELOChange(deadScore.getPoints(), killerScore.getPoints());
+
+    deadScore.changePoints((int) Math.round(Config.get().getInt("elo.max-change") * EloChange));
+    killerScore.changePoints(
+        (int) Math.round(Config.get().getInt("elo.max-change") * -(0 + EloChange)));
+  }
+  
+  public static Rating getRating(String name) {
+    for (Rating rating : RATINGS) {
+      if (Objects.equals(rating.getName(), name)) {
         return rating;
       }
     }
+    
     return null;
   }
-
-  @SuppressWarnings("unused")
-  public static Rating getRating(int index, String type) {
-    List<Rating> filteredRatings = RATINGS.keySet().stream()
-        .filter(r -> r.getType().equals(type))
-        .sorted(Comparator.comparingInt(Rating::getPoints).reversed())
-        .toList();
-
-    if (index > 0 && index <= filteredRatings.size()) {
-      return filteredRatings.get(index - 1);
-    }
-
-    return null;
-  }
-
-  public static Rating[] getRatings(Player p) {
-    List<Rating> ratingsList = new ArrayList<>();
-    for (Rating r : RATINGS.keySet()) {
-      if (r.getPlayer().equals(p)) {
-        ratingsList.add(r);
-      }
-    }
-
-    return ratingsList.toArray(new Rating[0]);
-  }
-
-  @SuppressWarnings("unused")
-  public static Rating[] getRatings() {
-    return RATINGS.keySet().toArray(new Rating[0]);
+  
+  public static Set<Rating> getRatings() {
+    return RATINGS;
   }
 
   public static void register(Player p) {
-    for (String type : RATING_TYPES.keySet()) {
-      new Rating(p, type, RATING_TYPES.get(type));
+    for (Rating rating : RATINGS) {
+      rating.loadScore(p);
     }
   }
 
   public static void unregister(Player p) {
-    for (Rating rating : Rating.getRatings(p)) {
-      rating.save();
+    for (Rating rating : RATINGS) {
+      rating.unloadScore(p);
     }
-
-    RATINGS.keySet().removeIf(rating -> rating.getPlayer().equals(p));
   }
 
   public static double getELOChange(int playerElo, int opponentElo) {
     return -(1 - 1.0 / (1 + Math.pow(10, (playerElo - opponentElo) / 400.0)));
+  }
+
+  public enum RatingType {
+    GLOBAL,
+    REGION,
+    CUSTOM
   }
 }
