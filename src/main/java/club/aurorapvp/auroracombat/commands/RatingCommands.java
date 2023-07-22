@@ -16,9 +16,9 @@ public class RatingCommands extends BaseCommand {
   @SuppressWarnings("unused")
   public void onCreate(Player p, String name, String global) {
     if (Boolean.parseBoolean(global)) {
-      new Rating(name, Rating.RatingType.GLOBAL, true);
+      new Rating(name, Rating.RatingType.GLOBAL, true).create();
     } else {
-      new Rating(name, Rating.RatingType.REGION, true);
+      new Rating(name, Rating.RatingType.REGION, true).create();
     }
 
     p.sendMessage(Lang.getComponent("rating-created"));

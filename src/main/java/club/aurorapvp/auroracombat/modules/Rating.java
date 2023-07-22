@@ -10,8 +10,11 @@ import com.sk89q.worldguard.protection.flags.StateFlag;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import com.sk89q.worldguard.protection.regions.RegionContainer;
 import com.sk89q.worldguard.protection.regions.RegionQuery;
+import java.io.File;
+import java.io.IOException;
 import java.util.*;
 import org.bukkit.Location;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
 public class Rating {
@@ -84,6 +87,41 @@ public class Rating {
     return true;
   }
 
+  // TODO this is very... direct
+  @SuppressWarnings("ResultOfMethodCallIgnored")
+  public void create() {
+    File file = new File(AuroraCombat.INSTANCE.getDataFolder(), "ratings.yml");
+
+    if (!file.exists()) {
+      try {
+        file.getParentFile().mkdirs();
+        file.createNewFile();
+      } catch (IOException e) {
+        AuroraCombat.INSTANCE.getLogger().severe("Failed to generate ratings file");
+      }
+    }
+
+    YamlConfiguration yaml = YamlConfiguration.loadConfiguration(file);
+    
+    List<String> ratings;
+    
+    if (yaml.contains("ratings")) {
+      ratings = yaml.getStringList("ratings");
+    } else {
+      ratings = new ArrayList<>();
+    }
+    
+    ratings.add(this.getName());
+    
+    yaml.set("ratings", ratings);
+
+    try {
+      yaml.save(file);
+    } catch (IOException e) {
+      AuroraCombat.INSTANCE.getLogger().severe("Failed to save ratings file");
+    }
+  }
+  
   public Score getScore(Player p) {
     for (Score score : SCORES) {
       if (score.getPlayer() == p) {
