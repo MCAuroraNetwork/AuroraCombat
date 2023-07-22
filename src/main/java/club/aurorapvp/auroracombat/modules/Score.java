@@ -45,6 +45,7 @@ public class Score {
     for (int i = 0; i < words.length; i++) {
       words[i] = words[i].substring(0, 1).toUpperCase() + words[i].substring(1);
     }
+
     name = String.join(" ", words);
 
     if (points < 0) {

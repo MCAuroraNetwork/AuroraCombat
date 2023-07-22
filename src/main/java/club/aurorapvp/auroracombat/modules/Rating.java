@@ -111,13 +111,17 @@ public class Rating {
     }
 
     if (!AuroraCombat.isWorldGuardInstalled()) {
-      return true;
+      return this.type != RatingType.REGION;
     }
 
     RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
     RegionQuery query = container.createQuery();
     ApplicableRegionSet set = query.getApplicableRegions(BukkitAdapter.adapt(loc));
 
+    if (set.size() == 0) {
+      return this.type != RatingType.REGION; 
+    }
+    
     for (ProtectedRegion region : set.getRegions()) {
       return (Objects.equals(region.getFlag(RatingFlags.GLOBAL_RATINGS), StateFlag.State.ALLOW)
               && this.getType() == RatingType.GLOBAL)
@@ -125,7 +129,7 @@ public class Rating {
               && this.getType() == RatingType.REGION);
     }
 
-    return true;
+    return false;
   }
 
   // TODO this is very... direct
