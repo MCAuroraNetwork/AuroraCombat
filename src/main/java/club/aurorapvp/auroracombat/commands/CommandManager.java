@@ -7,6 +7,7 @@ public class CommandManager {
   public static PaperCommandManager MANAGER = new PaperCommandManager(AuroraCombat.INSTANCE);
 
   public static void init() {
+    MANAGER.registerCommand(new RatingCommands());
     MANAGER.registerCommand(new PluginCommands());
   }
 }
