@@ -34,6 +34,46 @@ public class Rating {
 
   public static void init() {
     new Rating("default", RatingType.GLOBAL, true);
+
+    File file = new File(AuroraCombat.INSTANCE.getDataFolder(), "ratings.yml");
+
+    if (!file.exists()) {
+      return;
+    }
+
+    YamlConfiguration yaml = YamlConfiguration.loadConfiguration(file);
+
+    List<String> ratings;
+
+    if (yaml.contains("ratings.global")) {
+      ratings = yaml.getStringList("ratings.global");
+    } else {
+      ratings = new ArrayList<>();
+    }
+
+    for (String str : ratings) {
+      new Rating(str, RatingType.GLOBAL, true);
+    }
+
+    if (yaml.contains("ratings.region")) {
+      ratings = yaml.getStringList("ratings.region");
+    } else {
+      ratings = new ArrayList<>();
+    }
+
+    for (String str : ratings) {
+      new Rating(str, RatingType.REGION, true);
+    }
+
+    if (yaml.contains("ratings.custom")) {
+      ratings = yaml.getStringList("ratings.custom");
+    } else {
+      ratings = new ArrayList<>();
+    }
+
+    for (String str : ratings) {
+      new Rating(str, RatingType.CUSTOM, true);
+    }
   }
 
   public String getName() {
@@ -52,6 +92,7 @@ public class Rating {
     return SCORES;
   }
 
+  @SuppressWarnings("unused")
   public void setEnabled(boolean enabled) {
     this.enabled = enabled;
   }
@@ -88,6 +129,7 @@ public class Rating {
   }
 
   // TODO this is very... direct
+  // TODO save if the rating is enabled or not
   @SuppressWarnings("ResultOfMethodCallIgnored")
   public void create() {
     File file = new File(AuroraCombat.INSTANCE.getDataFolder(), "ratings.yml");
@@ -102,25 +144,25 @@ public class Rating {
     }
 
     YamlConfiguration yaml = YamlConfiguration.loadConfiguration(file);
-    
+
     String type = null;
-    
+
     switch (this.type) {
       case GLOBAL -> type = "global";
       case REGION -> type = "region";
       case CUSTOM -> type = "custom";
     }
-    
+
     List<String> ratings;
-    
+
     if (yaml.contains("ratings." + type)) {
       ratings = yaml.getStringList("ratings." + type);
     } else {
       ratings = new ArrayList<>();
     }
-    
+
     ratings.add(this.getName());
-    
+
     yaml.set("ratings." + type, ratings);
 
     try {
@@ -129,7 +171,7 @@ public class Rating {
       AuroraCombat.INSTANCE.getLogger().severe("Failed to save ratings file");
     }
   }
-  
+
   public Score getScore(Player p) {
     for (Score score : SCORES) {
       if (score.getPlayer() == p) {
