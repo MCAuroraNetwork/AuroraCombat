@@ -103,17 +103,25 @@ public class Rating {
 
     YamlConfiguration yaml = YamlConfiguration.loadConfiguration(file);
     
+    String type = null;
+    
+    switch (this.type) {
+      case GLOBAL -> type = "global";
+      case REGION -> type = "region";
+      case CUSTOM -> type = "custom";
+    }
+    
     List<String> ratings;
     
-    if (yaml.contains("ratings")) {
-      ratings = yaml.getStringList("ratings");
+    if (yaml.contains("ratings." + type)) {
+      ratings = yaml.getStringList("ratings." + type);
     } else {
       ratings = new ArrayList<>();
     }
     
     ratings.add(this.getName());
     
-    yaml.set("ratings", ratings);
+    yaml.set("ratings." + type, ratings);
 
     try {
       yaml.save(file);
