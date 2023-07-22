@@ -48,10 +48,12 @@ public class CombatTag {
     if (getTag(tagged, opponent) != null) {
       Objects.requireNonNull(getTag(tagged, opponent)).resetTimer();
     } else {
-      tagged.sendMessage(Lang.formatComponent("tagged", opponent.getName(),
-          (Config.get().getInt("combat-tag.duration") / 1000)));
-      opponent.sendMessage(Lang.formatComponent("tagged", tagged.getName(),
-          (Config.get().getInt("combat-tag.duration") / 1000)));
+      tagged.sendMessage(
+          Lang.formatComponent(
+              "tagged", opponent.getName(), (Config.get().getInt("combat-tag.duration") / 1000)));
+      opponent.sendMessage(
+          Lang.formatComponent(
+              "tagged", tagged.getName(), (Config.get().getInt("combat-tag.duration") / 1000)));
 
       playerOne.setGlowing(true);
       playerTwo.setGlowing(true);
@@ -107,8 +109,8 @@ public class CombatTag {
 
   public static CombatTag getTag(Player p1, Player p2) {
     for (CombatTag tag : tags) {
-      if ((tag.getPlayerOne() == p1 || tag.getPlayerOne() == p2) &&
-          (tag.getPlayerTwo() == p1 || tag.getPlayerTwo() == p2)) {
+      if ((tag.getPlayerOne() == p1 || tag.getPlayerOne() == p2)
+          && (tag.getPlayerTwo() == p1 || tag.getPlayerTwo() == p2)) {
         return tag;
       }
     }
@@ -174,78 +176,84 @@ public class CombatTag {
     t = new Timer();
 
     // TODO isn't this duplicate code of CombatTag#removeTag?
-    t.schedule(new TimerTask() {
-                 @Override
-                 public void run() {
-                   tags.remove(tag);
-                   playerOne.sendMessage(Lang.formatComponent("tag-removed", playerTwo.getName()));
-                   playerTwo.sendMessage(Lang.formatComponent("tag-removed", playerOne.getName()));
-                   playerOne.sendActionBar(
-                       Lang.formatComponent("tag-removed-action-bar", playerTwo.getName()));
-                   playerTwo.sendActionBar(
-                       Lang.formatComponent("tag-removed-action-bar", playerOne.getName()));
+    t.schedule(
+        new TimerTask() {
+          @Override
+          public void run() {
+            tags.remove(tag);
+            playerOne.sendMessage(Lang.formatComponent("tag-removed", playerTwo.getName()));
+            playerTwo.sendMessage(Lang.formatComponent("tag-removed", playerOne.getName()));
+            playerOne.sendActionBar(
+                Lang.formatComponent("tag-removed-action-bar", playerTwo.getName()));
+            playerTwo.sendActionBar(
+                Lang.formatComponent("tag-removed-action-bar", playerOne.getName()));
 
-                   playerOne.hideBossBar(playerOneBar[0]);
-                   playerTwo.hideBossBar(playerTwoBar[0]);
-
-                   if (!CombatTag.isTagged(playerOne)) {
-                     playerOne.setGlowing(false);
-                   }
-
-                   if (!CombatTag.isTagged(playerTwo)) {
-                     playerTwo.setGlowing(false);
-                   }
-
-                   this.cancel();
-                 }
-               }, Config.get().getInt("combat-tag.duration")
-    );
-
-    task = new BukkitRunnable() {
-      int seconds = Config.get().getInt("combat-tag.duration") / 1000;
-
-      @Override
-      public void run() {
-        if ((seconds -= 1) == 0) {
-          this.cancel();
-        } else {
-          playerOne.sendActionBar(
-              Lang.formatComponent("tagged-action-bar", playerTwo.getName(), seconds));
-          playerTwo.sendActionBar(
-              Lang.formatComponent("tagged-action-bar", playerOne.getName(), seconds));
-
-          if (playerOneBar[0] != null) {
             playerOne.hideBossBar(playerOneBar[0]);
-          }
-
-          playerOneBar[0] = BossBar.bossBar(
-              Lang.formatComponent("opponent-bossbar", playerTwo.getName(),
-                  (int) playerTwo.getHealth(),
-                  (int) playerTwo.getLocation().distance(playerOne.getLocation())),
-              1.0f,
-              BossBar.Color.RED,
-              BossBar.Overlay.PROGRESS
-          );
-
-          playerOne.showBossBar(playerOneBar[0]);
-
-          if (playerTwoBar[0] != null) {
             playerTwo.hideBossBar(playerTwoBar[0]);
+
+            if (!CombatTag.isTagged(playerOne)) {
+              playerOne.setGlowing(false);
+            }
+
+            if (!CombatTag.isTagged(playerTwo)) {
+              playerTwo.setGlowing(false);
+            }
+
+            this.cancel();
           }
+        },
+        Config.get().getInt("combat-tag.duration"));
 
-          playerTwoBar[0] = BossBar.bossBar(
-              Lang.formatComponent("opponent-bossbar", playerOne.getName(),
-                  (int) playerOne.getHealth(),
-                  (int) playerOne.getLocation().distance(playerTwo.getLocation())),
-              1.0f,
-              BossBar.Color.RED,
-              BossBar.Overlay.PROGRESS
-          );
+    task =
+        new BukkitRunnable() {
+          int seconds = Config.get().getInt("combat-tag.duration") / 1000;
 
-          playerTwo.showBossBar(playerTwoBar[0]);
-        }
-      }
-    }.runTaskTimer(AuroraCombat.INSTANCE, 0, 20);
+          @Override
+          public void run() {
+            if ((seconds -= 1) == 0) {
+              this.cancel();
+            } else {
+              playerOne.sendActionBar(
+                  Lang.formatComponent("tagged-action-bar", playerTwo.getName(), seconds));
+              playerTwo.sendActionBar(
+                  Lang.formatComponent("tagged-action-bar", playerOne.getName(), seconds));
+
+              if (playerOneBar[0] != null) {
+                playerOne.hideBossBar(playerOneBar[0]);
+              }
+
+              playerOneBar[0] =
+                  BossBar.bossBar(
+                      Lang.formatComponent(
+                          "opponent-bossbar",
+                          playerTwo.getName(),
+                          (int) playerTwo.getHealth(),
+                          (int) playerTwo.getLocation().distance(playerOne.getLocation())),
+                      1.0f,
+                      BossBar.Color.RED,
+                      BossBar.Overlay.PROGRESS);
+
+              playerOne.showBossBar(playerOneBar[0]);
+
+              if (playerTwoBar[0] != null) {
+                playerTwo.hideBossBar(playerTwoBar[0]);
+              }
+
+              playerTwoBar[0] =
+                  BossBar.bossBar(
+                      Lang.formatComponent(
+                          "opponent-bossbar",
+                          playerOne.getName(),
+                          (int) playerOne.getHealth(),
+                          (int) playerOne.getLocation().distance(playerTwo.getLocation())),
+                      1.0f,
+                      BossBar.Color.RED,
+                      BossBar.Overlay.PROGRESS);
+
+              playerTwo.showBossBar(playerTwoBar[0]);
+            }
+          }
+        }.runTaskTimer(AuroraCombat.INSTANCE, 0, 20);
   }
 
   public int getTimeRemaining() {

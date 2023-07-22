@@ -48,14 +48,15 @@ public class ItemStackUtil {
     } else if (projectile instanceof ThrownPotion thrownPotion) {
       return thrownPotion.getItem();
     } else {
-      item = switch (projectile.getType()) {
-        case SNOWBALL -> new ItemStack(Material.SNOWBALL);
-        case EGG -> new ItemStack(Material.EGG);
-        case ENDER_PEARL -> new ItemStack(Material.ENDER_PEARL);
-        case TRIDENT -> new ItemStack(Material.TRIDENT);
-        default -> throw new IllegalArgumentException(
-            "Unsupported projectile type: " + projectile.getType());
-      };
+      item =
+          switch (projectile.getType()) {
+            case SNOWBALL -> new ItemStack(Material.SNOWBALL);
+            case EGG -> new ItemStack(Material.EGG);
+            case ENDER_PEARL -> new ItemStack(Material.ENDER_PEARL);
+            case TRIDENT -> new ItemStack(Material.TRIDENT);
+            default -> throw new IllegalArgumentException(
+                "Unsupported projectile type: " + projectile.getType());
+          };
     }
 
     ItemMeta meta = item.getItemMeta();

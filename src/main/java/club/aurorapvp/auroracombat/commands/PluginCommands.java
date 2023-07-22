@@ -24,7 +24,8 @@ public class PluginCommands extends BaseCommand {
     Lang.reload();
     Rating.saveAll();
 
-    AuroraCombat.INSTANCE.getLogger().info(
-        "AuroraCombat reloaded in " + (System.currentTimeMillis() - startTime) + "ms");
+    AuroraCombat.INSTANCE
+        .getLogger()
+        .info("AuroraCombat reloaded in " + (System.currentTimeMillis() - startTime) + "ms");
   }
 }

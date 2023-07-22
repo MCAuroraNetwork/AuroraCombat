@@ -28,8 +28,8 @@ public class CombatEventListener implements Listener {
 
   @EventHandler
   public void onCommandRun(PlayerCommandPreprocessEvent event) {
-    if (CombatTag.isTagged(event.getPlayer()) &&
-        !Config.get().getBoolean("combat-tag.allow-commands")) {
+    if (CombatTag.isTagged(event.getPlayer())
+        && !Config.get().getBoolean("combat-tag.allow-commands")) {
       event.getPlayer().sendMessage(Lang.getComponent("commands-disabled"));
 
       event.setCancelled(true);
@@ -49,8 +49,7 @@ public class CombatEventListener implements Listener {
     }
 
     if (event.getPlayer().equals(lastDamage.getDamaged())) {
-      Bukkit.getPluginManager()
-          .callEvent(new PlayerKilledByPlayerEvent(lastDamage, event));
+      Bukkit.getPluginManager().callEvent(new PlayerKilledByPlayerEvent(lastDamage, event));
       lastDamage = null;
     }
   }

@@ -9,8 +9,7 @@ import org.bukkit.Bukkit;
 public class EventManager {
   public static void init() {
     Bukkit.getPluginManager().registerEvents(new CombatEventListener(), AuroraCombat.INSTANCE);
-    Bukkit.getPluginManager()
-        .registerEvents(new DamageEventListener(), AuroraCombat.INSTANCE);
+    Bukkit.getPluginManager().registerEvents(new DamageEventListener(), AuroraCombat.INSTANCE);
     Bukkit.getPluginManager().registerEvents(new PlayerEventListener(), AuroraCombat.INSTANCE);
   }
 }

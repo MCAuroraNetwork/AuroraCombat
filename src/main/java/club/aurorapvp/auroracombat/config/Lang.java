@@ -23,32 +23,43 @@ public class Lang {
     final HashMap<String, String> DEFAULTS = new HashMap<>();
 
     DEFAULTS.put("prefix", "~<gradient:#FFAA00:#FF55FF><bold>AuroraCombat ><reset>~");
-    DEFAULTS.put("points-increased",
+    DEFAULTS.put(
+        "points-increased",
         "prefix <gradient:#FFAA00:#FF55FF>Your %1$s ELO increased by %2$s points!");
-    DEFAULTS.put("points-decreased",
+    DEFAULTS.put(
+        "points-decreased",
         "prefix <gradient:#FFAA00:#FF55FF>Your %1$s ELO decreased by %2$s points!");
-    DEFAULTS.put("tagged",
+    DEFAULTS.put(
+        "tagged",
         "prefix <gradient:#FFAA00:#FF55FF>You have been tagged by %1$s for %2$s seconds!");
-    DEFAULTS.put("tagged-action-bar",
+    DEFAULTS.put(
+        "tagged-action-bar",
         "<gradient:#FFAA00:#FF55FF>You are tagged by %1$s for %2$s more seconds");
     DEFAULTS.put("tag-removed", "prefix <gradient:#FFAA00:#FF55FF>You are no longer tagged by %s!");
-    DEFAULTS.put("tag-removed-action-bar",
-        "<gradient:#FFAA00:#FF55FF>You are no longer tagged by %s!");
-    DEFAULTS.put("death-message.killed-by-player-generic",
+    DEFAULTS.put(
+        "tag-removed-action-bar", "<gradient:#FFAA00:#FF55FF>You are no longer tagged by %s!");
+    DEFAULTS.put(
+        "death-message.killed-by-player-generic",
         "<gradient:#FFAA00:#FF55FF>%1$s was killed by %2$s");
-    DEFAULTS.put("death-message.killed-by-player-explosion",
+    DEFAULTS.put(
+        "death-message.killed-by-player-explosion",
         "<gradient:#FFAA00:#FF55FF>%1$s was blown up by %2$s using %3$s");
-    DEFAULTS.put("death-message.killed-by-player-slain",
+    DEFAULTS.put(
+        "death-message.killed-by-player-slain",
         "<gradient:#FFAA00:#FF55FF>%1$s was slain by %2$s using %3$s");
-    DEFAULTS.put("death-message.killed-by-player-shot",
+    DEFAULTS.put(
+        "death-message.killed-by-player-shot",
         "<gradient:#FFAA00:#FF55FF>%1$s was shot by %2$s using %3$s");
-    DEFAULTS.put("death-message.killed-by-player-magic",
+    DEFAULTS.put(
+        "death-message.killed-by-player-magic",
         "<gradient:#FFAA00:#FF55FF>%1$s was killed by %2$s using %2$s's magic %3$s");
-    DEFAULTS.put("commands-disabled",
-        "prefix <gradient:#FFAA00:#FF55FF>Commands are disabled in combat!");
-    DEFAULTS.put("opponent-bossbar",
+    DEFAULTS.put(
+        "commands-disabled", "prefix <gradient:#FFAA00:#FF55FF>Commands are disabled in combat!");
+    DEFAULTS.put("rating-created", "prefix <gradient:#FFAA00:#FF55FF>Rating created!");
+    DEFAULTS.put(
+        "opponent-bossbar",
         "<gradient:#FFAA00:#FF55FF><bold>%1$s <reset><red>| %2$s❤ |<reset><blue> %3$s Blocks Away");
-    //TODO DEFAULTS.put("player-health-and-ping", "%1$s | <red>%2$s<reset><blue> | %3$sms");
+    // TODO DEFAULTS.put("player-health-and-ping", "%1$s | <red>%2$s<reset><blue> | %3$sms");
 
     for (String path : DEFAULTS.keySet()) {
       if (!get().contains(path) || get().getString(path) == null) {
@@ -63,10 +74,10 @@ public class Lang {
     }
 
     for (Object path : get().getKeys(false).toArray()) {
-      if (Objects.requireNonNull(get().getString((String) path)).startsWith("~") &&
-          Objects.requireNonNull(get().getString((String) path)).endsWith("~")) {
-        PLACEHOLDERS.put((String) path, Objects.requireNonNull(get().getString((String) path))
-            .replace("~", ""));
+      if (Objects.requireNonNull(get().getString((String) path)).startsWith("~")
+          && Objects.requireNonNull(get().getString((String) path)).endsWith("~")) {
+        PLACEHOLDERS.put(
+            (String) path, Objects.requireNonNull(get().getString((String) path)).replace("~", ""));
       }
     }
   }
@@ -77,8 +88,7 @@ public class Lang {
     for (String placeholder : PLACEHOLDERS.keySet()) {
       assert pathString != null;
       if (pathString.contains(placeholder)) {
-        pathString = pathString.replace(placeholder,
-            PLACEHOLDERS.get(placeholder));
+        pathString = pathString.replace(placeholder, PLACEHOLDERS.get(placeholder));
       }
     }
     return pathString;
@@ -89,8 +99,7 @@ public class Lang {
     assert pathString != null;
     for (String placeholder : PLACEHOLDERS.keySet()) {
       if (pathString.contains(placeholder)) {
-        pathString = pathString.replace(placeholder,
-            PLACEHOLDERS.get(placeholder));
+        pathString = pathString.replace(placeholder, PLACEHOLDERS.get(placeholder));
       }
     }
 
@@ -105,8 +114,7 @@ public class Lang {
 
     for (String placeholder : PLACEHOLDERS.keySet()) {
       if (pathString.contains(placeholder)) {
-        pathString = pathString.replace(placeholder,
-            PLACEHOLDERS.get(placeholder));
+        pathString = pathString.replace(placeholder, PLACEHOLDERS.get(placeholder));
       }
     }
     return MiniMessage.miniMessage().deserialize(pathString);

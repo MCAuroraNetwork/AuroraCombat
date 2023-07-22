@@ -1,11 +1,7 @@
 package club.aurorapvp.auroracombat.modules;
 
-import java.util.HashSet;
-import java.util.Set;
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
 
-//TODO return to this hell
+// TODO return to this hell
 /*
 public class PlayerInfo {
   private static final Set<PlayerInfo> PLAYER_INFOS = new HashSet<>();

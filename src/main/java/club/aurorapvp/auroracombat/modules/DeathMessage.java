@@ -18,31 +18,36 @@ public class DeathMessage {
 
     switch (event.getDamageType()) {
       case MELEE -> event.deathMessage(
-          Lang.formatComponent("death-message.killed-by-player-slain",
+          Lang.formatComponent(
+                  "death-message.killed-by-player-slain",
                   event.getDamaged().getName(),
                   event.getAttacker().getName(),
                   MiniMessage.miniMessage().serialize(weaponName))
               .hoverEvent(hover));
       case EXPLOSION_ENTITY, EXPLOSION_BLOCK -> event.deathMessage(
-          Lang.formatComponent("death-message.killed-by-player-explosion",
+          Lang.formatComponent(
+                  "death-message.killed-by-player-explosion",
                   event.getDamaged().getName(),
                   event.getAttacker().getName(),
                   MiniMessage.miniMessage().serialize(weaponName))
               .hoverEvent(hover));
       case RANGED -> event.deathMessage(
-          Lang.formatComponent("death-message.killed-by-player-shot",
+          Lang.formatComponent(
+                  "death-message.killed-by-player-shot",
                   event.getDamaged().getName(),
                   event.getAttacker().getName(),
                   MiniMessage.miniMessage().serialize(weaponName))
               .hoverEvent(hover));
       case MAGIC -> event.deathMessage(
-          Lang.formatComponent("death-message.killed-by-player-magic",
+          Lang.formatComponent(
+                  "death-message.killed-by-player-magic",
                   event.getDamaged().getName(),
                   event.getAttacker().getName(),
                   MiniMessage.miniMessage().serialize(weaponName))
               .hoverEvent(hover));
       default -> event.deathMessage(
-          Lang.formatComponent("death-message.killed-by-player-generic",
+          Lang.formatComponent(
+                  "death-message.killed-by-player-generic",
                   event.getDamaged().getName(),
                   event.getAttacker().getName(),
                   MiniMessage.miniMessage().serialize(weaponName))

@@ -44,7 +44,7 @@ public class Rating {
   public boolean isEnabled() {
     return enabled;
   }
-  
+
   public Set<Score> getScores() {
     return SCORES;
   }
@@ -80,7 +80,7 @@ public class Rating {
           || (Objects.equals(region.getFlag(RatingFlags.REGION_RATING), name)
               && this.getType() == RatingType.REGION);
     }
-    
+
     return true;
   }
 
@@ -112,14 +112,14 @@ public class Rating {
 
   public void unloadScore(Player p) {
     this.getScore(p).save();
-    
+
     SCORES.removeIf(s -> s.getPlayer().equals(p));
   }
 
   public void updateElo(Player deadPlayer, Player killer) {
     Score deadScore = this.getScore(deadPlayer);
     Score killerScore = this.getScore(killer);
-    
+
     assert deadScore != null;
     assert killerScore != null;
     double EloChange = Rating.getELOChange(deadScore.getPoints(), killerScore.getPoints());
@@ -128,17 +128,17 @@ public class Rating {
     killerScore.changePoints(
         (int) Math.round(Config.get().getInt("elo.max-change") * -(0 + EloChange)));
   }
-  
+
   public static Rating getRating(String name) {
     for (Rating rating : RATINGS) {
       if (Objects.equals(rating.getName(), name)) {
         return rating;
       }
     }
-    
+
     return null;
   }
-  
+
   public static Set<Rating> getRatings() {
     return RATINGS;
   }

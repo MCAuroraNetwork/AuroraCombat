@@ -33,7 +33,7 @@ public class KillDeathDataHandler {
   }
 
   public boolean exists() {
-    return container.get(deathKey, PersistentDataType.INTEGER) != null &&
-        container.get(killKey, PersistentDataType.INTEGER) != null;
+    return container.get(deathKey, PersistentDataType.INTEGER) != null
+        && container.get(killKey, PersistentDataType.INTEGER) != null;
   }
 }
