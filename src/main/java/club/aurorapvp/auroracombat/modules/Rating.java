@@ -36,43 +36,29 @@ public class Rating {
     new Rating("default", RatingType.GLOBAL, true);
 
     File file = new File(AuroraCombat.INSTANCE.getDataFolder(), "ratings.yml");
-
     if (!file.exists()) {
       return;
     }
 
     YamlConfiguration yaml = YamlConfiguration.loadConfiguration(file);
 
+    // Define two arrays for the keys and corresponding rating types
+    String[] yamlKeys = {"ratings.global", "ratings.region", "ratings.custom"};
+    RatingType[] ratingTypes = {RatingType.GLOBAL, RatingType.REGION, RatingType.CUSTOM};
+
     List<String> ratings;
 
-    if (yaml.contains("ratings.global")) {
-      ratings = yaml.getStringList("ratings.global");
-    } else {
-      ratings = new ArrayList<>();
-    }
+    // Apply the same processing to each key
+    for (int i = 0; i < yamlKeys.length; i++) {
+      if (yaml.contains(yamlKeys[i])) {
+        ratings = yaml.getStringList(yamlKeys[i]);
+      } else {
+        ratings = new ArrayList<>();
+      }
 
-    for (String str : ratings) {
-      new Rating(str, RatingType.GLOBAL, true);
-    }
-
-    if (yaml.contains("ratings.region")) {
-      ratings = yaml.getStringList("ratings.region");
-    } else {
-      ratings = new ArrayList<>();
-    }
-
-    for (String str : ratings) {
-      new Rating(str, RatingType.REGION, true);
-    }
-
-    if (yaml.contains("ratings.custom")) {
-      ratings = yaml.getStringList("ratings.custom");
-    } else {
-      ratings = new ArrayList<>();
-    }
-
-    for (String str : ratings) {
-      new Rating(str, RatingType.CUSTOM, true);
+      for (String str : ratings) {
+        new Rating(str, ratingTypes[i], true);
+      }
     }
   }
 
@@ -119,9 +105,9 @@ public class Rating {
     ApplicableRegionSet set = query.getApplicableRegions(BukkitAdapter.adapt(loc));
 
     if (set.size() == 0) {
-      return this.type != RatingType.REGION; 
+      return this.type != RatingType.REGION;
     }
-    
+
     for (ProtectedRegion region : set.getRegions()) {
       return (Objects.equals(region.getFlag(RatingFlags.GLOBAL_RATINGS), StateFlag.State.ALLOW)
               && this.getType() == RatingType.GLOBAL)
