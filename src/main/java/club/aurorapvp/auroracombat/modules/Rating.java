@@ -105,11 +105,11 @@ public class Rating {
     if (!this.isEnabled()) {
       return false;
     }
-    
+
     if (ENABLED_PLAYERS.contains(p)) {
       return true;
     }
-    
+
     if (!AuroraCombat.isWorldGuardInstalled()) {
       return this.getType() != RatingType.REGION;
     }
@@ -219,6 +219,20 @@ public class Rating {
     deadScore.changePoints((int) Math.round(Config.get().getInt("elo.max-change") * EloChange));
     killerScore.changePoints(
         (int) Math.round(Config.get().getInt("elo.max-change") * -(0 + EloChange)));
+  }
+
+  @SuppressWarnings("unused")
+  public void updateElo(Player p, int referencePoints, boolean winner) {
+    Score score = this.getScore(p);
+
+    double EloChange = Rating.getELOChange(score.getPoints(), referencePoints);
+
+    if (winner) {
+      score.changePoints(
+          (int) Math.round(Config.get().getInt("elo.max-change") * -(0 + EloChange)));
+    } else {
+      score.changePoints((int) Math.round(Config.get().getInt("elo.max-change") * EloChange));
+    }
   }
 
   public static Rating getRating(String name) {
