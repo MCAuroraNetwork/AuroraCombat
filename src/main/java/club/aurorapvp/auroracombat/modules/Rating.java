@@ -84,12 +84,12 @@ public class Rating {
   }
 
   @SuppressWarnings("unused")
-  public void setPlayerEnabled(Player p) {
+  public void setEnabledPlayer(Player p) {
     ENABLED_PLAYERS.add(p);
   }
 
   @SuppressWarnings("unused")
-  public void setPlayerDisabled(Player p) {
+  public void setDisabledPlayer(Player p) {
     ENABLED_PLAYERS.add(p);
   }
 
