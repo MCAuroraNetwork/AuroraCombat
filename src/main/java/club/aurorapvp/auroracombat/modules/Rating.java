@@ -13,7 +13,6 @@ import com.sk89q.worldguard.protection.regions.RegionQuery;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
-import org.bukkit.Location;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
@@ -22,6 +21,7 @@ public class Rating {
   private final String name;
   private final RatingType type;
   private final Set<Score> SCORES = new HashSet<>();
+  private final Set<Player> ENABLED_PLAYERS = new HashSet<>();
   private boolean enabled;
 
   public Rating(String name, RatingType type, boolean enabled) {
@@ -83,6 +83,16 @@ public class Rating {
     this.enabled = enabled;
   }
 
+  @SuppressWarnings("unused")
+  public void setPlayerEnabled(Player p) {
+    ENABLED_PLAYERS.add(p);
+  }
+
+  @SuppressWarnings("unused")
+  public void setPlayerDisabled(Player p) {
+    ENABLED_PLAYERS.add(p);
+  }
+
   public static void saveAll() {
     for (Rating rating : RATINGS) {
       for (Score score : rating.getScores()) {
@@ -91,12 +101,12 @@ public class Rating {
     }
   }
 
-  public boolean isEnabled(Location loc) {
+  public boolean isEnabled(Player p) {
     if (!this.isEnabled()) {
       return false;
     }
-
-    if (this.getType() == RatingType.CUSTOM) {
+    
+    if (ENABLED_PLAYERS.contains(p)) {
       return true;
     }
     
@@ -106,7 +116,7 @@ public class Rating {
 
     RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
     RegionQuery query = container.createQuery();
-    ApplicableRegionSet set = query.getApplicableRegions(BukkitAdapter.adapt(loc));
+    ApplicableRegionSet set = query.getApplicableRegions(BukkitAdapter.adapt(p.getLocation()));
 
     if (set.size() == 0) {
       return this.getType() != RatingType.REGION;
