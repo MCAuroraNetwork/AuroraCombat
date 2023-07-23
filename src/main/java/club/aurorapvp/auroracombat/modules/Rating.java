@@ -96,8 +96,12 @@ public class Rating {
       return false;
     }
 
+    if (this.getType() == RatingType.CUSTOM) {
+      return true;
+    }
+    
     if (!AuroraCombat.isWorldGuardInstalled()) {
-      return this.type != RatingType.REGION;
+      return this.getType() != RatingType.REGION;
     }
 
     RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
@@ -105,7 +109,7 @@ public class Rating {
     ApplicableRegionSet set = query.getApplicableRegions(BukkitAdapter.adapt(loc));
 
     if (set.size() == 0) {
-      return this.type != RatingType.REGION;
+      return this.getType() != RatingType.REGION;
     }
 
     for (ProtectedRegion region : set.getRegions()) {
