@@ -42,13 +42,11 @@ public class Rating {
 
     YamlConfiguration yaml = YamlConfiguration.loadConfiguration(file);
 
-    // Define two arrays for the keys and corresponding rating types
     String[] yamlKeys = {"ratings.global", "ratings.region", "ratings.custom"};
     RatingType[] ratingTypes = {RatingType.GLOBAL, RatingType.REGION, RatingType.CUSTOM};
 
     List<String> ratings;
 
-    // Apply the same processing to each key
     for (int i = 0; i < yamlKeys.length; i++) {
       if (yaml.contains(yamlKeys[i])) {
         ratings = yaml.getStringList(yamlKeys[i]);
@@ -150,7 +148,6 @@ public class Rating {
     YamlConfiguration yaml = YamlConfiguration.loadConfiguration(file);
 
     String type = null;
-
     switch (this.type) {
       case GLOBAL -> type = "global";
       case REGION -> type = "region";
@@ -158,21 +155,22 @@ public class Rating {
     }
 
     List<String> ratings;
-
     if (yaml.contains("ratings." + type)) {
       ratings = yaml.getStringList("ratings." + type);
     } else {
       ratings = new ArrayList<>();
     }
 
-    ratings.add(this.getName());
+    String newRating = this.getName();
+    if (!ratings.contains(newRating)){
+      ratings.add(newRating);
+      yaml.set("ratings." + type, ratings);
 
-    yaml.set("ratings." + type, ratings);
-
-    try {
-      yaml.save(file);
-    } catch (IOException e) {
-      AuroraCombat.INSTANCE.getLogger().severe("Failed to save ratings file");
+      try {
+        yaml.save(file);
+      } catch (IOException e) {
+        AuroraCombat.INSTANCE.getLogger().severe("Failed to save ratings file");
+      }
     }
   }
 
