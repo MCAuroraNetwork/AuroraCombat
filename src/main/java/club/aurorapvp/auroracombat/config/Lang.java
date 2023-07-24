@@ -59,7 +59,7 @@ public class Lang {
     DEFAULTS.put(
         "opponent-bossbar",
         "<gradient:#FFAA00:#FF55FF><bold>%1$s <reset><red>| %2$s❤ |<reset><blue> %3$s Blocks Away");
-    // TODO DEFAULTS.put("player-health-and-ping", "%1$s | <red>%2$s<reset><blue> | %3$sms");
+    DEFAULTS.put("player-health-and-ping", "<reset><red>❤ |<reset><blue> %s" + "ms");
 
     for (String path : DEFAULTS.keySet()) {
       if (!get().contains(path) || get().getString(path) == null) {

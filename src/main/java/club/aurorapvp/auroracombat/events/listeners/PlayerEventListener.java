@@ -1,10 +1,7 @@
 package club.aurorapvp.auroracombat.events.listeners;
 
 import club.aurorapvp.auroracombat.config.Config;
-import club.aurorapvp.auroracombat.modules.BlockFallDamage;
-import club.aurorapvp.auroracombat.modules.CombatTag;
-import club.aurorapvp.auroracombat.modules.KillDeathTracker;
-import club.aurorapvp.auroracombat.modules.Rating;
+import club.aurorapvp.auroracombat.modules.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerChangedWorldEvent;
