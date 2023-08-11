@@ -162,7 +162,7 @@ public class Rating {
     }
 
     String newRating = this.getName();
-    if (!ratings.contains(newRating)){
+    if (!ratings.contains(newRating)) {
       ratings.add(newRating);
       yaml.set("ratings." + type, ratings);
 
