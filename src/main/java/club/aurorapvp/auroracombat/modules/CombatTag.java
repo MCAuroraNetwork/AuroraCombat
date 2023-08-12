@@ -34,7 +34,8 @@ public class CombatTag {
   private final BossBar[] playerOneBar = new BossBar[1];
   private final BossBar[] playerTwoBar = new BossBar[1];
   private Timer t;
-  private BukkitTask task;
+  private BukkitTask bossbarTask;
+  private BukkitTask countdownTask;
   private Long timeStarted;
 
   public CombatTag(Player tagged, Player opponent) {
@@ -163,12 +164,9 @@ public class CombatTag {
   }
 
   public void resetTimer() {
-    if (t != null) {
-      t.cancel();
-    }
-    if (task != null) {
-      task.cancel();
-    }
+    t.cancel();
+    bossbarTask.cancel();
+    countdownTask.cancel();
 
     timeStarted = System.currentTimeMillis();
     CombatTag tag = this;
@@ -187,7 +185,24 @@ public class CombatTag {
         },
         Config.get().getInt("combat-tag.duration"));
 
-    task =
+    countdownTask =
+        new BukkitRunnable() {
+          int seconds = Config.get().getInt("combat-tag.duration") / 1000;
+
+          @Override
+          public void run() {
+            playerOne.sendActionBar(
+                Lang.formatComponent("tagged-action-bar", playerTwo.getName(), seconds + 1));
+            playerTwo.sendActionBar(
+                Lang.formatComponent("tagged-action-bar", playerOne.getName(), seconds));
+
+            if ((seconds -= 1) == 0) {
+              this.cancel();
+            }
+          }
+        }.runTaskTimer(AuroraCombat.INSTANCE, 0, 20L);
+
+    bossbarTask =
         new BukkitRunnable() {
           int seconds = Config.get().getInt("combat-tag.duration") / 1000;
 
@@ -238,7 +253,7 @@ public class CombatTag {
               playerTwo.showBossBar(playerTwoBar[0]);
             }
           }
-        }.runTaskTimer(AuroraCombat.INSTANCE, 0, 1);
+        }.runTaskTimer(AuroraCombat.INSTANCE, 0, 1L);
   }
 
   public int getTimeRemaining() {
@@ -247,7 +262,7 @@ public class CombatTag {
 
   public void removeTag() {
     t.cancel();
-    task.cancel();
+    bossbarTask.cancel();
 
     tags.remove(this);
 
