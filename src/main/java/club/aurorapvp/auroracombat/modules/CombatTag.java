@@ -208,49 +208,44 @@ public class CombatTag {
 
           @Override
           public void run() {
+            if (playerOneBar[0] != null) {
+              playerOne.hideBossBar(playerOneBar[0]);
+            }
+
+            playerOneBar[0] =
+                BossBar.bossBar(
+                    Lang.formatComponent(
+                        "opponent-bossbar",
+                        playerTwo.getName(),
+                        (int) playerTwo.getHealth(),
+                        (int) playerTwo.getLocation().distance(playerOne.getLocation()),
+                        playerTwo.getPing()),
+                    1.0f,
+                    BossBar.Color.RED,
+                    BossBar.Overlay.PROGRESS);
+
+            playerOne.showBossBar(playerOneBar[0]);
+
+            if (playerTwoBar[0] != null) {
+              playerTwo.hideBossBar(playerTwoBar[0]);
+            }
+
+            playerTwoBar[0] =
+                BossBar.bossBar(
+                    Lang.formatComponent(
+                        "opponent-bossbar",
+                        playerOne.getName(),
+                        (int) playerOne.getHealth(),
+                        (int) playerOne.getLocation().distance(playerTwo.getLocation()),
+                        playerOne.getPing()),
+                    1.0f,
+                    BossBar.Color.RED,
+                    BossBar.Overlay.PROGRESS);
+
+            playerTwo.showBossBar(playerTwoBar[0]);
+
             if ((seconds -= 1) == 0) {
               this.cancel();
-            } else {
-              playerOne.sendActionBar(
-                  Lang.formatComponent("tagged-action-bar", playerTwo.getName(), seconds));
-              playerTwo.sendActionBar(
-                  Lang.formatComponent("tagged-action-bar", playerOne.getName(), seconds));
-
-              if (playerOneBar[0] != null) {
-                playerOne.hideBossBar(playerOneBar[0]);
-              }
-
-              playerOneBar[0] =
-                  BossBar.bossBar(
-                      Lang.formatComponent(
-                          "opponent-bossbar",
-                          playerTwo.getName(),
-                          (int) playerTwo.getHealth(),
-                          (int) playerTwo.getLocation().distance(playerOne.getLocation()),
-                          playerTwo.getPing()),
-                      1.0f,
-                      BossBar.Color.RED,
-                      BossBar.Overlay.PROGRESS);
-
-              playerOne.showBossBar(playerOneBar[0]);
-
-              if (playerTwoBar[0] != null) {
-                playerTwo.hideBossBar(playerTwoBar[0]);
-              }
-
-              playerTwoBar[0] =
-                  BossBar.bossBar(
-                      Lang.formatComponent(
-                          "opponent-bossbar",
-                          playerOne.getName(),
-                          (int) playerOne.getHealth(),
-                          (int) playerOne.getLocation().distance(playerTwo.getLocation()),
-                          playerOne.getPing()),
-                      1.0f,
-                      BossBar.Color.RED,
-                      BossBar.Overlay.PROGRESS);
-
-              playerTwo.showBossBar(playerTwoBar[0]);
             }
           }
         }.runTaskTimer(AuroraCombat.INSTANCE, 0, 1L);
