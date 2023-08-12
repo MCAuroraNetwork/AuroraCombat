@@ -211,7 +211,8 @@ public class CombatTag {
                           "opponent-bossbar",
                           playerTwo.getName(),
                           (int) playerTwo.getHealth(),
-                          (int) playerTwo.getLocation().distance(playerOne.getLocation())),
+                          (int) playerTwo.getLocation().distance(playerOne.getLocation()),
+                          playerTwo.getPing()),
                       1.0f,
                       BossBar.Color.RED,
                       BossBar.Overlay.PROGRESS);
@@ -228,7 +229,8 @@ public class CombatTag {
                           "opponent-bossbar",
                           playerOne.getName(),
                           (int) playerOne.getHealth(),
-                          (int) playerOne.getLocation().distance(playerTwo.getLocation())),
+                          (int) playerOne.getLocation().distance(playerTwo.getLocation()),
+                          playerOne.getPing()),
                       1.0f,
                       BossBar.Color.RED,
                       BossBar.Overlay.PROGRESS);
@@ -236,7 +238,7 @@ public class CombatTag {
               playerTwo.showBossBar(playerTwoBar[0]);
             }
           }
-        }.runTaskTimer(AuroraCombat.INSTANCE, 0, 20);
+        }.runTaskTimer(AuroraCombat.INSTANCE, 0, 1);
   }
 
   public int getTimeRemaining() {
