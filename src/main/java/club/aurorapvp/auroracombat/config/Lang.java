@@ -58,7 +58,7 @@ public class Lang {
     DEFAULTS.put("rating-created", "prefix <gradient:#FFAA00:#FF55FF>Rating created!");
     DEFAULTS.put(
         "opponent-bossbar",
-        "<gradient:#FFAA00:#FF55FF><bold>%1$s <reset><red>| %2$s❤ |<reset><blue> %3$s Blocks Away");
+        "<gradient:#FFAA00:#FF55FF><bold>%1$s <reset><red>| %2$s❤ |<reset><aqua> %3$sm |<reset><yellow> %4$sms");
     DEFAULTS.put("player-health-and-ping", "<reset><red>❤ |<reset><blue> %s" + "ms");
 
     for (String path : DEFAULTS.keySet()) {
