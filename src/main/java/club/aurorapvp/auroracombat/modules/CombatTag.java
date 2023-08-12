@@ -180,24 +180,7 @@ public class CombatTag {
         new TimerTask() {
           @Override
           public void run() {
-            tags.remove(tag);
-            playerOne.sendMessage(Lang.formatComponent("tag-removed", playerTwo.getName()));
-            playerTwo.sendMessage(Lang.formatComponent("tag-removed", playerOne.getName()));
-            playerOne.sendActionBar(
-                Lang.formatComponent("tag-removed-action-bar", playerTwo.getName()));
-            playerTwo.sendActionBar(
-                Lang.formatComponent("tag-removed-action-bar", playerOne.getName()));
-
-            playerOne.hideBossBar(playerOneBar[0]);
-            playerTwo.hideBossBar(playerTwoBar[0]);
-
-            if (!CombatTag.isTagged(playerOne)) {
-              playerOne.setGlowing(false);
-            }
-
-            if (!CombatTag.isTagged(playerTwo)) {
-              playerTwo.setGlowing(false);
-            }
+            tag.removeTag();
 
             this.cancel();
           }
