@@ -49,7 +49,7 @@ public class CombatEventListener implements Listener {
     }
 
     if (event.getPlayer().equals(lastDamage.getDamaged())) {
-      Bukkit.getPluginManager().callEvent(new PlayerKilledByPlayerEvent(lastDamage, event));
+      new PlayerKilledByPlayerEvent(lastDamage, event).callEvent();
       lastDamage = null;
     }
   }

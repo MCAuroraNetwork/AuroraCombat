@@ -14,7 +14,6 @@ public class PlayerDamagedByPlayerEvent extends Event {
   private final Player attacked;
   private final Player attacker;
   private final ItemStack weapon;
-  private boolean isCancelled = false;
 
   public PlayerDamagedByPlayerEvent(
       DamageType damageType, Player attacked, Player attacker, ItemStack weapon) {

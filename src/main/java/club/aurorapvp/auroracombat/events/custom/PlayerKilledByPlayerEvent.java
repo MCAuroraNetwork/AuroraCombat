@@ -12,7 +12,6 @@ public class PlayerKilledByPlayerEvent extends PlayerDamagedByPlayerEvent {
   private static final HandlerList HANDLERS = new HandlerList();
   private final PlayerDeathEvent deathEvent;
   private final Player killer;
-  private boolean isCancelled = false;
 
   public PlayerKilledByPlayerEvent(PlayerDamagedByPlayerEvent event, PlayerDeathEvent deathEvent) {
     super(event.getDamageType(), event.getDamaged(), event.getAttacker(), event.getWeapon());
