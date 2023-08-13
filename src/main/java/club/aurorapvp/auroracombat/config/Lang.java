@@ -36,7 +36,7 @@ public class Lang {
         "new-kill", "prefix <bold><green>+1 Death<reset><green>, %1$s Kills, Killstreak: %2$s");
     DEFAULTS.put(
         "new-death",
-        "prefix <bold><green>+1 Death<reset><green>, %1$s Deaths, Lost %2$s Killstreak");
+        "prefix <red><green>+1 Death<reset><red>, %1$s Deaths, Lost %2$s Killstreak");
     DEFAULTS.put("death-message.killed-by-player-generic", "<red>%1$s killed by %2$s");
     DEFAULTS.put(
         "death-message.killed-by-player-explosion", "<red>%1$s blown up by %2$s with %3$s");
