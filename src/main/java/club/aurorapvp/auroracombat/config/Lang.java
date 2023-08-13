@@ -22,43 +22,20 @@ public class Lang {
   public static void generateDefaults() {
     final HashMap<String, String> DEFAULTS = new HashMap<>();
 
-    DEFAULTS.put("prefix", "~<gradient:#FFAA00:#FF55FF><bold>AuroraCombat ><reset>~");
-    DEFAULTS.put(
-        "points-increased",
-        "prefix <gradient:#FFAA00:#FF55FF>Your %1$s ELO increased by %2$s points!");
-    DEFAULTS.put(
-        "points-decreased",
-        "prefix <gradient:#FFAA00:#FF55FF>Your %1$s ELO decreased by %2$s points!");
-    DEFAULTS.put(
-        "tagged",
-        "prefix <gradient:#FFAA00:#FF55FF>You have been tagged by %1$s for %2$s seconds!");
-    DEFAULTS.put(
-        "tagged-action-bar",
-        "<gradient:#FFAA00:#FF55FF>You are tagged by %1$s for %2$s more seconds");
-    DEFAULTS.put("tag-removed", "prefix <gradient:#FFAA00:#FF55FF>You are no longer tagged by %s!");
-    DEFAULTS.put(
-        "tag-removed-action-bar", "<gradient:#FFAA00:#FF55FF>You are no longer tagged by %s!");
-    DEFAULTS.put(
-        "death-message.killed-by-player-generic",
-        "<gradient:#FFAA00:#FF55FF>%1$s was killed by %2$s");
-    DEFAULTS.put(
-        "death-message.killed-by-player-explosion",
-        "<gradient:#FFAA00:#FF55FF>%1$s was blown up by %2$s using %3$s");
-    DEFAULTS.put(
-        "death-message.killed-by-player-slain",
-        "<gradient:#FFAA00:#FF55FF>%1$s was slain by %2$s using %3$s");
-    DEFAULTS.put(
-        "death-message.killed-by-player-shot",
-        "<gradient:#FFAA00:#FF55FF>%1$s was shot by %2$s using %3$s");
-    DEFAULTS.put(
-        "death-message.killed-by-player-magic",
-        "<gradient:#FFAA00:#FF55FF>%1$s was killed by %2$s using %2$s's magic %3$s");
-    DEFAULTS.put(
-        "commands-disabled", "prefix <gradient:#FFAA00:#FF55FF>Commands are disabled in combat!");
-    DEFAULTS.put("rating-created", "prefix <gradient:#FFAA00:#FF55FF>Rating created!");
-    DEFAULTS.put(
-        "opponent-bossbar",
-        "<gradient:#FFAA00:#FF55FF><bold>%1$s <reset><red>| %2$s❤ |<reset><aqua> %3$sm |<reset><yellow> %4$sms");
+    DEFAULTS.put("points-increased", "prefix <aqua>%1$s ELO + %2$s points");
+    DEFAULTS.put("points-decreased", "prefix <aqua>%1$s ELO - %2$s points");
+    DEFAULTS.put("tagged", "prefix <aqua>Tagged by %1$s for %2$s sec");
+    DEFAULTS.put("tagged-action-bar", "<aqua>Tagged by %1$s for %2$s sec");
+    DEFAULTS.put("tag-removed", "prefix <aqua>Untagged by %s");
+    DEFAULTS.put("tag-removed-action-bar", "<aqua>Untagged by %s");
+    DEFAULTS.put("death-message.killed-by-player-generic", "<aqua>%1$s killed by %2$s");
+    DEFAULTS.put("death-message.killed-by-player-explosion", "<aqua>%1$s blown up by %2$s with %3$s");
+    DEFAULTS.put("death-message.killed-by-player-slain", "<aqua>%1$s slain by %2$s with %3$s");
+    DEFAULTS.put("death-message.killed-by-player-shot", "<aqua>%1$s shot by %2$s with %3$s");
+    DEFAULTS.put("death-message.killed-by-player-magic", "<aqua>%1$s killed by %2$s's magic %3$s");
+    DEFAULTS.put("commands-disabled", "prefix <aqua>Commands disabled in combat");
+    DEFAULTS.put("rating-created", "prefix <aqua>Rating created");
+    DEFAULTS.put("opponent-bossbar", "<aqua><bold>%1$s <reset><red>| %2$s❤ |<reset><aqua> %3$sm |<reset><yellow> %4$sms");
     DEFAULTS.put("player-health-and-ping", "<reset><red>❤ |<reset><blue> %s" + "ms");
 
     for (String path : DEFAULTS.keySet()) {
