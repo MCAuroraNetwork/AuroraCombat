@@ -8,7 +8,7 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.jetbrains.annotations.NotNull;
 
-public class PlayerKilledByPlayerEvent extends PlayerDamagedByPlayerEvent implements Cancellable {
+public class PlayerKilledByPlayerEvent extends PlayerDamagedByPlayerEvent {
   private static final HandlerList HANDLERS = new HandlerList();
   private final PlayerDeathEvent deathEvent;
   private final Player killer;
@@ -41,16 +41,6 @@ public class PlayerKilledByPlayerEvent extends PlayerDamagedByPlayerEvent implem
   @SuppressWarnings("unused")
   public PlayerDeathEvent getDeathEvent() {
     return deathEvent;
-  }
-
-  @Override
-  public boolean isCancelled() {
-    return this.isCancelled;
-  }
-
-  @Override
-  public void setCancelled(boolean isCancelled) {
-    this.isCancelled = isCancelled;
   }
 
   @Override
