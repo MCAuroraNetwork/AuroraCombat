@@ -33,7 +33,7 @@ public class Lang {
     DEFAULTS.put("tag-removed", "prefix <aqua>Untagged by %s");
     DEFAULTS.put("tag-removed-action-bar", "<aqua>Untagged by %s");
     DEFAULTS.put(
-        "new-kill", "prefix <bold><green>+1 Death<reset><green>, %1$s Kills, Killstreak: %2$s");
+        "new-kill", "prefix <bold><green>+1 Kill<reset><green>, %1$s Kills, Killstreak: %2$s");
     DEFAULTS.put(
         "new-death",
         "prefix <red><green>+1 Death<reset><red>, %1$s Deaths, Lost %2$s Killstreak");
