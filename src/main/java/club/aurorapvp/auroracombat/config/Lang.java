@@ -23,12 +23,20 @@ public class Lang {
     final HashMap<String, String> DEFAULTS = new HashMap<>();
 
     DEFAULTS.put("prefix", "~<gradient:#FFAA00:#FF55FF><bold>AuroraCombat ><reset>~");
-    DEFAULTS.put("points-increased", "prefix <green>You killed %1$s (%2$s)! %3$s ELO <bold>+%4$s points");
-    DEFAULTS.put("points-decreased", "prefix <red>You were killed by %1$s (%2$s). %3$s ELO <bold>-%4$s points");
+    DEFAULTS.put(
+        "points-increased", "prefix <green>You killed %1$s (%2$s)! %3$s ELO <bold>+%4$s points");
+    DEFAULTS.put(
+        "points-decreased",
+        "prefix <red>You were killed by %1$s (%2$s). %3$s ELO <bold>-%4$s points");
     DEFAULTS.put("tagged", "prefix <aqua>Tagged by %1$s for %2$s sec");
     DEFAULTS.put("tagged-action-bar", "<aqua>Tagged by %1$s for %2$s sec");
     DEFAULTS.put("tag-removed", "prefix <aqua>Untagged by %s");
     DEFAULTS.put("tag-removed-action-bar", "<aqua>Untagged by %s");
+    DEFAULTS.put(
+        "new-kill", "prefix <bold><green>+1 Death<reset><green>, %1$s Kills, Killstreak: %2$s");
+    DEFAULTS.put(
+        "new-death",
+        "prefix <bold><green>+1 Death<reset><green>, %1$s Deaths, Lost %2$s Killstreak");
     DEFAULTS.put("death-message.killed-by-player-generic", "<red>%1$s killed by %2$s");
     DEFAULTS.put(
         "death-message.killed-by-player-explosion", "<red>%1$s blown up by %2$s with %3$s");

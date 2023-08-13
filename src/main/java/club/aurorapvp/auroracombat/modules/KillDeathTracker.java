@@ -1,5 +1,6 @@
 package club.aurorapvp.auroracombat.modules;
 
+import club.aurorapvp.auroracombat.config.Lang;
 import club.aurorapvp.auroracombat.data.KillDeathDataHandler;
 import java.util.HashSet;
 import java.util.Set;
@@ -68,13 +69,18 @@ public class KillDeathTracker {
   }
 
   public void addDeath() {
-    this.killStreak = 0;
     this.deaths++;
+
+    p.sendMessage(Lang.formatComponent("new-death", deaths, killStreak));
+
+    this.killStreak = 0;
   }
 
   public void addKill() {
     this.killStreak++;
     this.kills++;
+
+    p.sendMessage(Lang.formatComponent("new-kill", kills, killStreak));
   }
 
   public static void saveAll() {
