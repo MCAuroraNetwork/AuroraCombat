@@ -2,6 +2,7 @@ package club.aurorapvp.auroracombat.modules;
 
 import club.aurorapvp.auroracombat.AuroraCombat;
 import club.aurorapvp.auroracombat.config.Config;
+import club.aurorapvp.auroracombat.config.Lang;
 import club.aurorapvp.auroracombat.flags.RatingFlags;
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldguard.WorldGuard;
@@ -217,6 +218,22 @@ public class Rating {
     deadScore.changePoints((int) Math.round(Config.get().getInt("elo.max-change") * EloChange));
     killerScore.changePoints(
         (int) Math.round(Config.get().getInt("elo.max-change") * -(0 + EloChange)));
+
+    String name = this.getName();
+
+    String[] words = name.split("_");
+    for (int i = 0; i < words.length; i++) {
+      words[i] = words[i].substring(0, 1).toUpperCase() + words[i].substring(1);
+    }
+
+    name = String.join(" ", words);
+
+    deadPlayer.sendMessage(
+        Lang.formatComponent(
+            "points-decreased", killer.getName(), killerScore.getPoints(), name, EloChange));
+    killer.sendMessage(
+        Lang.formatComponent(
+            "points-increased", deadPlayer.getName(), deadScore.getPoints(), name, EloChange));
   }
 
   @SuppressWarnings("unused")
