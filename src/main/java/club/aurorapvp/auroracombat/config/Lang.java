@@ -22,6 +22,7 @@ public class Lang {
   public static void generateDefaults() {
     final HashMap<String, String> DEFAULTS = new HashMap<>();
 
+    DEFAULTS.put("prefix", "~<gradient:#FFAA00:#FF55FF><bold>AuroraCombat ><reset>~");
     DEFAULTS.put("points-increased", "prefix <aqua>%1$s ELO + %2$s points");
     DEFAULTS.put("points-decreased", "prefix <aqua>%1$s ELO - %2$s points");
     DEFAULTS.put("tagged", "prefix <aqua>Tagged by %1$s for %2$s sec");
