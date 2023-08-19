@@ -18,7 +18,7 @@ public class ProjectileListener implements Listener {
       return;
     }
 
-    if (!(event.getEntity().getShooter() instanceof Player p)) {
+    if (!(event.getEntity().getShooter() instanceof Player player)) {
       return;
     }
 
@@ -40,12 +40,12 @@ public class ProjectileListener implements Listener {
       }
 
       if (position.distance(event.getEntity().getLocation()) >= maxDistance) {
-        p.setCooldown(Material.ENDER_PEARL, Config.get().getInt("misc.ender-pearl-cooldown.time") * 20);
+        player.setCooldown(Material.ENDER_PEARL, Config.get().getInt("misc.ender-pearl-cooldown.time") * 20);
       }
     }
 
     if (position.distance(event.getEntity().getLocation()) >= maxDistance) {
-      p.setCooldown(Material.ENDER_PEARL, Config.get().getInt("misc.ender-pearl-cooldown.time") * 20);
+      player.setCooldown(Material.ENDER_PEARL, Config.get().getInt("misc.ender-pearl-cooldown.time") * 20);
     }
   }
 }

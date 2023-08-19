@@ -65,17 +65,17 @@ public class CombatTag {
     }
   }
 
-  public static void removeTags(Player p) {
-    for (CombatTag tag : getTags(p)) {
+  public static void removeTags(Player player) {
+    for (CombatTag tag : getTags(player)) {
       tag.removeTag();
     }
   }
 
-  public static CombatTag[] getTags(Player p) {
+  public static CombatTag[] getTags(Player player) {
     List<CombatTag> tagList = new ArrayList<>();
 
     for (CombatTag tag : tags) {
-      if ((tag.getPlayerOne() == p || tag.getPlayerTwo() == p)) {
+      if ((tag.getPlayerOne() == player || tag.getPlayerTwo() == player)) {
         tagList.add(tag);
       }
     }
@@ -89,12 +89,12 @@ public class CombatTag {
     return combatTags;
   }
 
-  public static CombatTag getRecentTag(Player p) {
+  public static CombatTag getRecentTag(Player player) {
     HashMap<Integer, CombatTag> tagTimes = new HashMap<>();
     List<Integer> times = new ArrayList<>();
 
     for (CombatTag tag : tags) {
-      if ((tag.getPlayerOne() == p || tag.getPlayerTwo() == p)) {
+      if ((tag.getPlayerOne() == player || tag.getPlayerTwo() == player)) {
         times.add(tag.getTimeRemaining());
         tagTimes.put(tag.getTimeRemaining(), tag);
       }
@@ -118,24 +118,24 @@ public class CombatTag {
     return null;
   }
 
-  public static boolean isTagged(Player p) {
+  public static boolean isTagged(Player player) {
     for (CombatTag tag : tags) {
-      if (tag.getPlayerOne() == p || tag.getPlayerTwo() == p) {
+      if (tag.getPlayerOne() == player || tag.getPlayerTwo() == player) {
         return true;
       }
     }
     return false;
   }
 
-  public static void setTaggable(Player p, boolean taggable) {
-    taggablePlayers.put(p, taggable);
+  public static void setTaggable(Player player, boolean taggable) {
+    taggablePlayers.put(player, taggable);
   }
 
-  public static boolean canBeTagged(Player p) {
+  public static boolean canBeTagged(Player player) {
     if (AuroraCombat.isWorldGuardInstalled()) {
       RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
       RegionQuery query = container.createQuery();
-      ApplicableRegionSet set = query.getApplicableRegions(BukkitAdapter.adapt(p.getLocation()));
+      ApplicableRegionSet set = query.getApplicableRegions(BukkitAdapter.adapt(player.getLocation()));
 
       if (set != null) {
         for (ProtectedRegion region : set.getRegions()) {
@@ -144,7 +144,7 @@ public class CombatTag {
       }
     }
 
-    return taggablePlayers.get(p);
+    return taggablePlayers.get(player);
   }
 
   public Player getPlayerOne() {
@@ -155,8 +155,8 @@ public class CombatTag {
     return playerTwo;
   }
 
-  public Player getOpponent(Player p) {
-    if (p == playerOne) {
+  public Player getOpponent(Player player) {
+    if (player == playerOne) {
       return playerTwo;
     } else {
       return playerOne;

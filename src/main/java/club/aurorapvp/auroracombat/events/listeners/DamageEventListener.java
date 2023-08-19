@@ -167,7 +167,7 @@ public class DamageEventListener implements Listener {
 
   @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
   public void onFallDamage(EntityDamageEvent event) {
-    if (!(event.getEntity() instanceof Player p)) {
+    if (!(event.getEntity() instanceof Player player)) {
       return;
     }
 
@@ -179,9 +179,9 @@ public class DamageEventListener implements Listener {
       return;
     }
 
-    if (!BlockFallDamage.shouldTakeDamage(p)) {
+    if (!BlockFallDamage.shouldTakeDamage(player)) {
       event.setCancelled(true);
-      BlockFallDamage.setVulnerable(p);
+      BlockFallDamage.setVulnerable(player);
     }
   }
 

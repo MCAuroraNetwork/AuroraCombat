@@ -83,13 +83,13 @@ public class Rating {
   }
 
   @SuppressWarnings("unused")
-  public void setEnabledPlayer(Player p) {
-    ENABLED_PLAYERS.add(p);
+  public void setEnabledPlayer(Player player) {
+    ENABLED_PLAYERS.add(player);
   }
 
   @SuppressWarnings("unused")
-  public void setDisabledPlayer(Player p) {
-    ENABLED_PLAYERS.add(p);
+  public void setDisabledPlayer(Player player) {
+    ENABLED_PLAYERS.add(player);
   }
 
   public static void saveAll() {
@@ -100,12 +100,12 @@ public class Rating {
     }
   }
 
-  public boolean isEnabled(Player p) {
+  public boolean isEnabled(Player player) {
     if (!this.isEnabled()) {
       return false;
     }
 
-    if (ENABLED_PLAYERS.contains(p)) {
+    if (ENABLED_PLAYERS.contains(player)) {
       return true;
     }
 
@@ -115,7 +115,7 @@ public class Rating {
 
     RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
     RegionQuery query = container.createQuery();
-    ApplicableRegionSet set = query.getApplicableRegions(BukkitAdapter.adapt(p.getLocation()));
+    ApplicableRegionSet set = query.getApplicableRegions(BukkitAdapter.adapt(player.getLocation()));
 
     if (set.size() == 0) {
       return this.getType() != RatingType.REGION;
@@ -175,9 +175,9 @@ public class Rating {
     }
   }
 
-  public Score getScore(Player p) {
+  public Score getScore(Player player) {
     for (Score score : SCORES) {
-      if (score.getPlayer() == p) {
+      if (score.getPlayer() == player) {
         return score;
       }
     }
@@ -197,14 +197,14 @@ public class Rating {
     return null;
   }
 
-  public void loadScore(Player p) {
-    SCORES.add(new Score(p, this));
+  public void loadScore(Player player) {
+    SCORES.add(new Score(player, this));
   }
 
-  public void unloadScore(Player p) {
-    this.getScore(p).save();
+  public void unloadScore(Player player) {
+    this.getScore(player).save();
 
-    SCORES.removeIf(s -> s.getPlayer().equals(p));
+    SCORES.removeIf(s -> s.getPlayer().equals(player));
   }
 
   public void updateElo(Player deadPlayer, Player killer) {
@@ -237,8 +237,8 @@ public class Rating {
   }
 
   @SuppressWarnings("unused")
-  public void updateElo(Player p, int referencePoints, boolean winner) {
-    Score score = this.getScore(p);
+  public void updateElo(Player player, int referencePoints, boolean winner) {
+    Score score = this.getScore(player);
 
     double EloChange = Rating.getELOChange(score.getPoints(), referencePoints);
 
@@ -264,15 +264,15 @@ public class Rating {
     return RATINGS;
   }
 
-  public static void register(Player p) {
+  public static void register(Player player) {
     for (Rating rating : RATINGS) {
-      rating.loadScore(p);
+      rating.loadScore(player);
     }
   }
 
-  public static void unregister(Player p) {
+  public static void unregister(Player player) {
     for (Rating rating : RATINGS) {
-      rating.unloadScore(p);
+      rating.unloadScore(player);
     }
   }
 

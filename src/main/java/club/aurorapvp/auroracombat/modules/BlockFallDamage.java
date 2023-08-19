@@ -7,15 +7,15 @@ import org.bukkit.entity.Player;
 public class BlockFallDamage {
   private static final Set<Player> inVulnerable = new HashSet<>();
 
-  public static boolean shouldTakeDamage(Player p) {
-    return !inVulnerable.contains(p);
+  public static boolean shouldTakeDamage(Player player) {
+    return !inVulnerable.contains(player);
   }
 
-  public static void setInVulnerable(Player p) {
-    inVulnerable.add(p);
+  public static void setInVulnerable(Player player) {
+    inVulnerable.add(player);
   }
 
-  public static void setVulnerable(Player p) {
-    inVulnerable.remove(p);
+  public static void setVulnerable(Player player) {
+    inVulnerable.remove(player);
   }
 }

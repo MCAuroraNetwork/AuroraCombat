@@ -14,13 +14,13 @@ public class RatingCommands extends BaseCommand {
   @Syntax("[name] [global: true|false]")
   @Description("Creates a new rating")
   @SuppressWarnings("unused")
-  public void onCreate(Player p, String name, String global) {
+  public void onCreate(Player player, String name, String global) {
     if (Boolean.parseBoolean(global)) {
       new Rating(name, Rating.RatingType.GLOBAL, true).create();
     } else {
       new Rating(name, Rating.RatingType.REGION, true).create();
     }
 
-    p.sendMessage(Lang.getComponent("rating-created"));
+    player.sendMessage(Lang.getComponent("rating-created"));
   }
 }

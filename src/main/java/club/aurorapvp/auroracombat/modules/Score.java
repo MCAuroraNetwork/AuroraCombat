@@ -5,13 +5,13 @@ import club.aurorapvp.auroracombat.data.ScoreDataHandler;
 import org.bukkit.entity.Player;
 
 public class Score {
-  private final Player p;
+  private final Player player;
   private final Rating rating;
   private final ScoreDataHandler data;
   private int points;
 
-  public Score(Player p, Rating rating) {
-    this.p = p;
+  public Score(Player player, Rating rating) {
+    this.player = player;
     this.rating = rating;
     this.data = new ScoreDataHandler(this);
 
@@ -24,7 +24,7 @@ public class Score {
   }
 
   public Player getPlayer() {
-    return p;
+    return player;
   }
 
   public Rating getRating() {

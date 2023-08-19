@@ -8,14 +8,14 @@ import org.bukkit.entity.Player;
 
 public class KillDeathTracker {
   private static final Set<KillDeathTracker> TRACKERS = new HashSet<>();
-  private final Player p;
+  private final Player player;
   private int deaths;
   private int kills;
   private int killStreak;
   private final KillDeathDataHandler data;
 
-  public KillDeathTracker(Player p) {
-    this.p = p;
+  public KillDeathTracker(Player player) {
+    this.player = player;
     data = new KillDeathDataHandler(this);
 
     if (this.exists()) {
@@ -31,7 +31,7 @@ public class KillDeathTracker {
   }
 
   public Player getPlayer() {
-    return p;
+    return player;
   }
 
   public int getDeaths() {
@@ -71,7 +71,7 @@ public class KillDeathTracker {
   public void addDeath() {
     this.deaths++;
 
-    p.sendMessage(Lang.formatComponent("new-death", deaths, killStreak));
+    player.sendMessage(Lang.formatComponent("new-death", deaths, killStreak));
 
     this.killStreak = 0;
   }
@@ -80,7 +80,7 @@ public class KillDeathTracker {
     this.killStreak++;
     this.kills++;
 
-    p.sendMessage(Lang.formatComponent("new-kill", kills, killStreak));
+    player.sendMessage(Lang.formatComponent("new-kill", kills, killStreak));
   }
 
   public static void saveAll() {
@@ -89,9 +89,9 @@ public class KillDeathTracker {
     }
   }
 
-  public static KillDeathTracker getTracker(Player p) {
+  public static KillDeathTracker getTracker(Player player) {
     for (KillDeathTracker tracker : TRACKERS) {
-      if (tracker.getPlayer() == p) {
+      if (tracker.getPlayer() == player) {
         return tracker;
       }
     }

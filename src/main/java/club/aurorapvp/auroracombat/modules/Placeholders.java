@@ -29,23 +29,23 @@ public class Placeholders extends PlaceholderExpansion {
   }
 
   @Override
-  public String onRequest(OfflinePlayer p, @NotNull String params) {
-    return getResult(p, params);
+  public String onRequest(OfflinePlayer player, @NotNull String params) {
+    return getResult(player, params);
   }
 
-  private String getResult(OfflinePlayer player, String params) {
-    if (!(player instanceof Player p)) {
+  private String getResult(OfflinePlayer offlinePlayer, String params) {
+    if (!(offlinePlayer instanceof Player player)) {
       return "Player offline";
     }
 
     if (params.startsWith("opponent")) {
-      CombatTag recentTag = CombatTag.getRecentTag(p);
+      CombatTag recentTag = CombatTag.getRecentTag(player);
 
       if (recentTag == null) {
         return "None";
       }
 
-      return recentTag.getOpponent(p).getName();
+      return recentTag.getOpponent(player).getName();
     }
 
     if (params.startsWith("rating_")) {
@@ -54,33 +54,33 @@ public class Placeholders extends PlaceholderExpansion {
       if (rating == null) {
         return "Rating not found";
       } else {
-        return String.valueOf(rating.getScore(p).getPoints());
+        return String.valueOf(rating.getScore(player).getPoints());
       }
     }
 
     if (params.startsWith("killstreak")) {
-      KillDeathTracker tracker = KillDeathTracker.getTracker(p);
+      KillDeathTracker tracker = KillDeathTracker.getTracker(player);
 
       assert tracker != null;
       return String.valueOf(tracker.getKillStreak());
     }
 
     if (params.startsWith("kills")) {
-      KillDeathTracker tracker = KillDeathTracker.getTracker(p);
+      KillDeathTracker tracker = KillDeathTracker.getTracker(player);
 
       assert tracker != null;
       return String.valueOf(tracker.getKills());
     }
 
     if (params.startsWith("deaths")) {
-      KillDeathTracker tracker = KillDeathTracker.getTracker(p);
+      KillDeathTracker tracker = KillDeathTracker.getTracker(player);
 
       assert tracker != null;
       return String.valueOf(tracker.getDeaths());
     }
 
     if (params.startsWith("kdr")) {
-      KillDeathTracker tracker = KillDeathTracker.getTracker(p);
+      KillDeathTracker tracker = KillDeathTracker.getTracker(player);
 
       assert tracker != null;
       return String.valueOf(Math.round(tracker.getKDR() * 1000d) / 1000d);
