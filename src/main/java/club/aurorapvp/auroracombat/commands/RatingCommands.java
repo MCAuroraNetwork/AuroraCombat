@@ -11,7 +11,7 @@ import org.bukkit.entity.Player;
 public class RatingCommands extends BaseCommand {
 
   @Subcommand("create")
-  @Syntax("[name] [global: true|false]")
+  @Syntax("<name> <true|false>")
   @Description("Creates a new rating")
   @SuppressWarnings("unused")
   public void onCreate(Player player, String name, String global) {
