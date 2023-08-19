@@ -29,7 +29,7 @@ public class Lang {
         "points-decreased",
         "prefix <red>You were killed by %1$s (%2$s). %3$s ELO <bold>-%4$s points");
     DEFAULTS.put("tagged", "prefix <aqua>Tagged by %1$s for %2$s sec");
-    DEFAULTS.put("tagged-action-bar", "<aqua>Tagged by %1$s for %2$s sec");
+    DEFAULTS.put("tagged-action-bar", "<aqua>Tagged by %1$s!<reset> %2$s");
     DEFAULTS.put("tag-removed", "prefix <aqua>Untagged by %s");
     DEFAULTS.put("tag-removed-action-bar", "<aqua>Untagged by %s");
     DEFAULTS.put(

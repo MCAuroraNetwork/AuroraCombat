@@ -135,7 +135,8 @@ public class CombatTag {
     if (AuroraCombat.isWorldGuardInstalled()) {
       RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
       RegionQuery query = container.createQuery();
-      ApplicableRegionSet set = query.getApplicableRegions(BukkitAdapter.adapt(player.getLocation()));
+      ApplicableRegionSet set =
+          query.getApplicableRegions(BukkitAdapter.adapt(player.getLocation()));
 
       if (set != null) {
         for (ProtectedRegion region : set.getRegions()) {
@@ -187,14 +188,22 @@ public class CombatTag {
 
     countdownTask =
         new BukkitRunnable() {
-          int seconds = Config.get().getInt("combat-tag.duration") / 1000;
+          final int totalSeconds = Config.get().getInt("combat-tag.duration") / 1000;
+          int seconds = totalSeconds;
 
           @Override
           public void run() {
+            int greenBars = (int) Math.round((double) seconds / totalSeconds * 15);
+            int redBars = 15 - greenBars;
+
+            String progressBar = "<green>" + "|".repeat(greenBars) + "<red>" + "|".repeat(redBars);
+
             playerOne.sendActionBar(
-                Lang.formatComponent("tagged-action-bar", playerTwo.getName(), seconds + 1));
+                        Lang.formatComponent(
+                            "tagged-action-bar", playerTwo.getName(), progressBar));
             playerTwo.sendActionBar(
-                Lang.formatComponent("tagged-action-bar", playerOne.getName(), seconds));
+                        Lang.formatComponent(
+                            "tagged-action-bar", playerOne.getName(), progressBar));
 
             if ((seconds -= 1) == 0) {
               this.cancel();
