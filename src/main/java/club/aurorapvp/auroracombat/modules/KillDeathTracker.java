@@ -4,6 +4,8 @@ import club.aurorapvp.auroracombat.config.Lang;
 import club.aurorapvp.auroracombat.data.KillDeathDataHandler;
 import java.util.HashMap;
 import java.util.Map;
+
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 public class KillDeathTracker {
@@ -42,7 +44,6 @@ public class KillDeathTracker {
     return this.kills;
   }
 
-  // TODO kill streak milestone and loss messages
   public int getKillStreak() {
     return this.killStreak;
   }
@@ -72,6 +73,10 @@ public class KillDeathTracker {
     this.deaths++;
 
     player.sendMessage(Lang.formatComponent("new-death", deaths, killStreak));
+
+    if (killStreak > 10) {
+      Bukkit.broadcast(Lang.formatComponent("killstreak-lost", player, killStreak));
+    }
 
     this.killStreak = 0;
   }
