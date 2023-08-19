@@ -14,6 +14,8 @@ import com.sk89q.worldguard.protection.regions.RegionQuery;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
+import java.util.logging.Level;
+
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
@@ -142,7 +144,7 @@ public class Rating {
         file.getParentFile().mkdirs();
         file.createNewFile();
       } catch (IOException e) {
-        AuroraCombat.INSTANCE.getLogger().severe("Failed to generate ratings file");
+        AuroraCombat.INSTANCE.getLogger().log(Level.SEVERE, "Failed to generate ratings file", e);
       }
     }
 
@@ -170,7 +172,7 @@ public class Rating {
       try {
         yaml.save(file);
       } catch (IOException e) {
-        AuroraCombat.INSTANCE.getLogger().severe("Failed to save ratings file");
+        AuroraCombat.INSTANCE.getLogger().log(Level.SEVERE, "Failed to save ratings file", e);
       }
     }
   }

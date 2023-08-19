@@ -5,6 +5,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Objects;
+import java.util.logging.Level;
+
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -60,7 +62,7 @@ public class Lang {
     try {
       get().save(FILE);
     } catch (IOException e) {
-      AuroraCombat.INSTANCE.getLogger().severe("Failed to save lang file");
+      AuroraCombat.INSTANCE.getLogger().log(Level.SEVERE, "Failed to save lang file", e);
     }
 
     for (Object path : get().getKeys(false).toArray()) {
@@ -121,7 +123,7 @@ public class Lang {
         FILE.getParentFile().mkdirs();
         FILE.createNewFile();
       } catch (IOException e) {
-        AuroraCombat.INSTANCE.getLogger().severe("Failed to generate lang file");
+        AuroraCombat.INSTANCE.getLogger().log(Level.SEVERE, "Failed to generate lang file", e);
       }
     }
     lang = YamlConfiguration.loadConfiguration(FILE);

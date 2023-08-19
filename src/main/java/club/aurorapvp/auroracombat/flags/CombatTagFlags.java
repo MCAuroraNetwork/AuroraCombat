@@ -6,6 +6,9 @@ import com.sk89q.worldguard.protection.flags.StateFlag;
 import com.sk89q.worldguard.protection.flags.registry.FlagConflictException;
 import com.sk89q.worldguard.protection.flags.registry.FlagRegistry;
 
+import java.util.Arrays;
+import java.util.logging.Level;
+
 public class CombatTagFlags {
   public static StateFlag TAGS_ENABLED;
 
@@ -17,7 +20,7 @@ public class CombatTagFlags {
       registry.register(flag);
       TAGS_ENABLED = flag;
     } catch (FlagConflictException e) {
-      AuroraCombat.INSTANCE.getLogger().severe("Unable to register Tags Enabled flag");
+      AuroraCombat.INSTANCE.getLogger().log(Level.SEVERE, "Unable to register Tags Enabled flag", e);
     }
   }
 }
