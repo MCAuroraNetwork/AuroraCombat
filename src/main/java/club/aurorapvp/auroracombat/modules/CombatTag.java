@@ -102,7 +102,7 @@ public class CombatTag {
 
     Collections.sort(times);
 
-    if (times.size() > 0) {
+    if (!times.isEmpty()) {
       return tagTimes.get(times.get(0));
     }
     return null;
