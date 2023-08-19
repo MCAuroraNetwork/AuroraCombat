@@ -24,6 +24,7 @@ public class Config {
     DEFAULTS.put("combat-tag.allow-commands", false);
     DEFAULTS.put("combat-tag.enable", true);
     DEFAULTS.put("misc.fall-damage.enable-first", false);
+    DEFAULTS.put("misc.min-killstreak-to-announce", 10);
     DEFAULTS.put("misc.ender-pearl-cooldown.enabled", false);
     DEFAULTS.put("misc.ender-pearl-cooldown.max-distance", 20);
     DEFAULTS.put("misc.ender-pearl-cooldown.time", 10);
