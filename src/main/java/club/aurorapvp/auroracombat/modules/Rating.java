@@ -18,10 +18,10 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
 public class Rating {
-  private static final Set<Rating> RATINGS = new HashSet<>();
+  private static final Map<String, Rating> RATINGS = new HashMap<>();
   private final String name;
   private final RatingType type;
-  private final Set<Score> SCORES = new HashSet<>();
+  private final Map<Player, Score> scores = new HashMap<>();
   private final Set<Player> ENABLED_PLAYERS = new HashSet<>();
   private boolean enabled;
 
@@ -30,7 +30,7 @@ public class Rating {
     this.type = type;
     this.enabled = enabled;
 
-    RATINGS.add(this);
+    RATINGS.put(name, this);
   }
 
   public static void init() {
@@ -74,7 +74,7 @@ public class Rating {
   }
 
   public Set<Score> getScores() {
-    return SCORES;
+    return new HashSet<>(scores.values());
   }
 
   @SuppressWarnings("unused")
@@ -93,7 +93,7 @@ public class Rating {
   }
 
   public static void saveAll() {
-    for (Rating rating : RATINGS) {
+    for (Rating rating : RATINGS.values()) {
       for (Score score : rating.getScores()) {
         score.save();
       }
@@ -176,35 +176,19 @@ public class Rating {
   }
 
   public Score getScore(Player player) {
-    for (Score score : SCORES) {
-      if (score.getPlayer() == player) {
-        return score;
-      }
-    }
-
-    return null;
+    return scores.get(player);
   }
 
   @SuppressWarnings("unused")
   public Score getScoreAt(int index) {
     List<Score> filteredScores =
-        SCORES.stream().sorted(Comparator.comparingInt(Score::getPoints).reversed()).toList();
+        scores.values().stream().sorted(Comparator.comparingInt(Score::getPoints).reversed()).toList();
 
     if (index > 0 && index <= filteredScores.size()) {
       return filteredScores.get(index - 1);
     }
 
     return null;
-  }
-
-  public void loadScore(Player player) {
-    SCORES.add(new Score(player, this));
-  }
-
-  public void unloadScore(Player player) {
-    this.getScore(player).save();
-
-    SCORES.removeIf(s -> s.getPlayer().equals(player));
   }
 
   public void updateElo(Player deadPlayer, Player killer) {
@@ -251,28 +235,22 @@ public class Rating {
   }
 
   public static Rating getRating(String name) {
-    for (Rating rating : RATINGS) {
-      if (Objects.equals(rating.getName(), name)) {
-        return rating;
-      }
-    }
-
-    return null;
+    return RATINGS.get(name);
   }
 
   public static Set<Rating> getRatings() {
-    return RATINGS;
+    return new HashSet<>(RATINGS.values());
   }
 
   public static void register(Player player) {
-    for (Rating rating : RATINGS) {
-      rating.loadScore(player);
+    for (Rating rating : RATINGS.values()) {
+      rating.scores.put(player, new Score(player, rating));
     }
   }
 
   public static void unregister(Player player) {
-    for (Rating rating : RATINGS) {
-      rating.unloadScore(player);
+    for (Rating rating : RATINGS.values()) {
+      rating.scores.remove(player);
     }
   }
 

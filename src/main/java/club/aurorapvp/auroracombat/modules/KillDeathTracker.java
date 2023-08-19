@@ -2,12 +2,12 @@ package club.aurorapvp.auroracombat.modules;
 
 import club.aurorapvp.auroracombat.config.Lang;
 import club.aurorapvp.auroracombat.data.KillDeathDataHandler;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.HashMap;
+import java.util.Map;
 import org.bukkit.entity.Player;
 
 public class KillDeathTracker {
-  private static final Set<KillDeathTracker> TRACKERS = new HashSet<>();
+  private static final Map<Player, KillDeathTracker> TRACKERS = new HashMap<>();
   private final Player player;
   private int deaths;
   private int kills;
@@ -27,7 +27,7 @@ public class KillDeathTracker {
       this.save();
     }
 
-    TRACKERS.add(this);
+    TRACKERS.put(player, this);
   }
 
   public Player getPlayer() {
@@ -84,17 +84,12 @@ public class KillDeathTracker {
   }
 
   public static void saveAll() {
-    for (KillDeathTracker tracker : TRACKERS) {
+    for (KillDeathTracker tracker : TRACKERS.values()) {
       tracker.save();
     }
   }
 
   public static KillDeathTracker getTracker(Player player) {
-    for (KillDeathTracker tracker : TRACKERS) {
-      if (tracker.getPlayer() == player) {
-        return tracker;
-      }
-    }
-    return null;
+    return TRACKERS.getOrDefault(player, new KillDeathTracker(player));
   }
 }

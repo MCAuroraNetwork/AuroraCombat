@@ -12,9 +12,7 @@ import org.bukkit.event.world.WorldSaveEvent;
 public class PlayerEventListener implements Listener {
   @EventHandler
   public void onPlayerJoin(PlayerJoinEvent event) {
-    new KillDeathTracker(event.getPlayer());
     Rating.register(event.getPlayer());
-    BlockFallDamage.setInVulnerable(event.getPlayer());
 
     if (Config.get().getBoolean("combat-tag.enable")) {
       CombatTag.setTaggable(event.getPlayer(), true);
