@@ -9,5 +9,6 @@ public class CommandManager {
   public static void init() {
     MANAGER.registerCommand(new RatingCommands());
     MANAGER.registerCommand(new PluginCommands());
+    MANAGER.registerCommand(new StatsCommand());
   }
 }

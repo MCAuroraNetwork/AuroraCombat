@@ -9,7 +9,6 @@ import org.bukkit.entity.Player;
 @CommandAlias("ratings")
 @CommandPermission("auroracombat.command.ratings")
 public class RatingCommands extends BaseCommand {
-
   @Subcommand("create")
   @Syntax("<name> <true|false>")
   @Description("Creates a new rating")
