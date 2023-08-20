@@ -13,12 +13,19 @@ import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import com.sk89q.worldguard.protection.regions.RegionContainer;
 import com.sk89q.worldguard.protection.regions.RegionQuery;
 import java.io.File;
-import java.util.*;
-
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
 public class Rating {
+
   private static final Map<String, Rating> RATINGS = new HashMap<>();
   private final String name;
   private final RatingType type;
@@ -136,9 +143,9 @@ public class Rating {
 
     for (ProtectedRegion region : set.getRegions()) {
       return (Objects.equals(region.getFlag(RatingFlags.GLOBAL_RATINGS), StateFlag.State.ALLOW)
-              && this.getType() == RatingType.GLOBAL)
+          && this.getType() == RatingType.GLOBAL)
           || (Objects.equals(region.getFlag(RatingFlags.REGION_RATING), name)
-              && this.getType() == RatingType.REGION);
+          && this.getType() == RatingType.REGION);
     }
 
     return false;
@@ -151,7 +158,8 @@ public class Rating {
   @SuppressWarnings("unused")
   public Score getScoreAt(int index) {
     List<Score> filteredScores =
-        scores.values().stream().sorted(Comparator.comparingInt(Score::getPoints).reversed()).toList();
+        scores.values().stream().sorted(Comparator.comparingInt(Score::getPoints).reversed())
+            .toList();
 
     if (index > 0 && index <= filteredScores.size()) {
       return filteredScores.get(index - 1);
@@ -182,10 +190,12 @@ public class Rating {
 
     deadPlayer.sendMessage(
         Lang.formatComponent(
-            "points-decreased", killer.getName(), killerScore.getPoints(), this.getFriendlyName(), EloChange));
+            "points-decreased", killer.getName(), killerScore.getPoints(), this.getFriendlyName(),
+            EloChange));
     killer.sendMessage(
         Lang.formatComponent(
-            "points-increased", deadPlayer.getName(), deadScore.getPoints(), this.getFriendlyName(), EloChange));
+            "points-increased", deadPlayer.getName(), deadScore.getPoints(), this.getFriendlyName(),
+            EloChange));
   }
 
   @SuppressWarnings("unused")

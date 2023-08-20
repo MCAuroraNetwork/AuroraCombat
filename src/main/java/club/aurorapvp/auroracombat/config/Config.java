@@ -5,10 +5,10 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.logging.Level;
-
 import org.bukkit.configuration.file.YamlConfiguration;
 
 public class Config {
+
   private static final File FILE = new File(AuroraCombat.INSTANCE.getDataFolder(), "config.yml");
   private static YamlConfiguration config;
 

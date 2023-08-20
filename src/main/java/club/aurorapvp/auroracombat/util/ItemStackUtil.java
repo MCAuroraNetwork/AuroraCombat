@@ -13,6 +13,7 @@ import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionEffect;
 
 public class ItemStackUtil {
+
   public static ItemStack toItemStack(EnderCrystal enderCrystal) {
     Component displayName = enderCrystal.name();
 

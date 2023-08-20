@@ -7,6 +7,7 @@ import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
 public class KillDeathDataHandler {
+
   private final PersistentDataContainer container;
   private final NamespacedKey killKey = new NamespacedKey(AuroraCombat.INSTANCE, "kills");
   private final NamespacedKey deathKey = new NamespacedKey(AuroraCombat.INSTANCE, "deaths");

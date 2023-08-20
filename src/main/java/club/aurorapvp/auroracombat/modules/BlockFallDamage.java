@@ -4,6 +4,7 @@ import java.util.HashMap;
 import org.bukkit.entity.Player;
 
 public class BlockFallDamage {
+
   private static final HashMap<Player, Boolean> inVulnerable = new HashMap<>();
 
   public static boolean shouldTakeDamage(Player player) {

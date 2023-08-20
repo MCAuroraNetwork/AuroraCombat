@@ -14,6 +14,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class AuroraCombat extends JavaPlugin {
+
   public static AuroraCombat INSTANCE;
   private static boolean worldGuardInstalled;
 

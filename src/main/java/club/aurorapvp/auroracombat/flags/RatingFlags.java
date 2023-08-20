@@ -6,10 +6,10 @@ import com.sk89q.worldguard.protection.flags.StateFlag;
 import com.sk89q.worldguard.protection.flags.StringFlag;
 import com.sk89q.worldguard.protection.flags.registry.FlagConflictException;
 import com.sk89q.worldguard.protection.flags.registry.FlagRegistry;
-
 import java.util.logging.Level;
 
 public class RatingFlags {
+
   public static StateFlag GLOBAL_RATINGS;
   public static StringFlag REGION_RATING;
 
@@ -21,7 +21,8 @@ public class RatingFlags {
       registry.register(flag);
       GLOBAL_RATINGS = flag;
     } catch (FlagConflictException e) {
-      AuroraCombat.INSTANCE.getLogger().log(Level.SEVERE, "Unable to register Global Rating flag", e);
+      AuroraCombat.INSTANCE.getLogger()
+          .log(Level.SEVERE, "Unable to register Global Rating flag", e);
     }
 
     try {
@@ -29,7 +30,8 @@ public class RatingFlags {
       registry.register(flag);
       REGION_RATING = flag;
     } catch (FlagConflictException e) {
-      AuroraCombat.INSTANCE.getLogger().log(Level.SEVERE, "Unable to register Regional Rating flag", e);
+      AuroraCombat.INSTANCE.getLogger()
+          .log(Level.SEVERE, "Unable to register Regional Rating flag", e);
     }
   }
 }

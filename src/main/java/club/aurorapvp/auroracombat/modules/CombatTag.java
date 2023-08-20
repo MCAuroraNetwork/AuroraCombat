@@ -27,6 +27,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
 public class CombatTag {
+
   private static final Set<CombatTag> tags = new HashSet<>();
   private static final Map<Player, Boolean> taggablePlayers = new HashMap<>();
   private final Player playerOne;
@@ -198,11 +199,11 @@ public class CombatTag {
             String progressBar = "<green>" + "|".repeat(greenBars) + "<red>" + "|".repeat(redBars);
 
             playerOne.sendActionBar(
-                        Lang.formatComponent(
-                            "tagged-action-bar", playerTwo.getName(), progressBar));
+                Lang.formatComponent(
+                    "tagged-action-bar", playerTwo.getName(), progressBar));
             playerTwo.sendActionBar(
-                        Lang.formatComponent(
-                            "tagged-action-bar", playerOne.getName(), progressBar));
+                Lang.formatComponent(
+                    "tagged-action-bar", playerOne.getName(), progressBar));
 
             if ((seconds -= 1) == 0) {
               this.cancel();

@@ -13,6 +13,7 @@ import co.aikar.commands.annotation.Subcommand;
 @CommandAlias("auroracombat")
 @CommandPermission("auroracombat.command.auroracombat")
 public class PluginCommands extends BaseCommand {
+
   @Subcommand("reload")
   @CommandPermission("auroracombat.command.auroracombat.reload")
   @Description("Reloads and saves all plugin data")

@@ -5,11 +5,11 @@ import club.aurorapvp.auroracombat.config.Lang;
 import club.aurorapvp.auroracombat.data.KillDeathDataHandler;
 import java.util.HashMap;
 import java.util.Map;
-
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 public class KillDeathTracker {
+
   private static final Map<Player, KillDeathTracker> TRACKERS = new HashMap<>();
   private final Player player;
   private int deaths;

@@ -12,6 +12,7 @@ import org.bukkit.event.entity.ProjectileLaunchEvent;
 import org.bukkit.util.Vector;
 
 public class ProjectileListener implements Listener {
+
   @EventHandler
   public void onPearlThrow(ProjectileLaunchEvent event) {
     if (!(event.getEntity() instanceof EnderPearl)) {
@@ -40,12 +41,14 @@ public class ProjectileListener implements Listener {
       }
 
       if (position.distance(event.getEntity().getLocation()) >= maxDistance) {
-        player.setCooldown(Material.ENDER_PEARL, Config.get().getInt("misc.ender-pearl-cooldown.time") * 20);
+        player.setCooldown(Material.ENDER_PEARL,
+            Config.get().getInt("misc.ender-pearl-cooldown.time") * 20);
       }
     }
 
     if (position.distance(event.getEntity().getLocation()) >= maxDistance) {
-      player.setCooldown(Material.ENDER_PEARL, Config.get().getInt("misc.ender-pearl-cooldown.time") * 20);
+      player.setCooldown(Material.ENDER_PEARL,
+          Config.get().getInt("misc.ender-pearl-cooldown.time") * 20);
     }
   }
 }

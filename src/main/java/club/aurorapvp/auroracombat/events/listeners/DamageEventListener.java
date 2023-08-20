@@ -30,6 +30,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffectType;
 
 public class DamageEventListener implements Listener {
+
   private final HashSet<Projectile> firedProjectiles = new HashSet<>();
   private Player lastCrystalAttacker;
   private Player lastInteractedWithBlock;
@@ -137,8 +138,8 @@ public class DamageEventListener implements Listener {
 
     if (event.getClickedBlock().getBlockData() instanceof RespawnAnchor respawnAnchor) {
       if ((respawnAnchor.getCharges() > 0
-              && event.getPlayer().getInventory().getItemInMainHand().getType()
-                  != Material.GLOWSTONE)
+          && event.getPlayer().getInventory().getItemInMainHand().getType()
+          != Material.GLOWSTONE)
           || respawnAnchor.getCharges() >= 4) {
         this.lastExplodedBlock = event.getClickedBlock().getState();
         this.lastInteractedWithBlock = event.getPlayer();
@@ -186,6 +187,7 @@ public class DamageEventListener implements Listener {
   }
 
   private static class PlayerOnPlayerDamageBuilder {
+
     private DamageType damageType;
     private Player damaged;
     private Player attacker;

@@ -5,6 +5,7 @@ import club.aurorapvp.auroracombat.data.ScoreDataHandler;
 import org.bukkit.entity.Player;
 
 public class Score {
+
   private final Player player;
   private final Rating rating;
   private final ScoreDataHandler data;

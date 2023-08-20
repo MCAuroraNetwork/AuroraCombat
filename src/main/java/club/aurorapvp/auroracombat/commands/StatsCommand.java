@@ -16,6 +16,7 @@ import org.bukkit.entity.Player;
 @CommandAlias("stats")
 @CommandPermission("auroracombat.command.stats")
 public class StatsCommand extends BaseCommand {
+
   @Default
   @Description("Gets your own major stats")
   @SuppressWarnings("unused")
@@ -30,7 +31,8 @@ public class StatsCommand extends BaseCommand {
     }
 
     player.sendMessage(
-        Lang.formatComponent("stats-command", player.getName(), ratings.toString(), tracker.getKills(),
+        Lang.formatComponent("stats-command", player.getName(), ratings.toString(),
+            tracker.getKills(),
             tracker.getDeaths(), tracker.getKDR()));
   }
 
@@ -57,7 +59,8 @@ public class StatsCommand extends BaseCommand {
     }
 
     player.sendMessage(
-        Lang.formatComponent("stats-command", player.getName(), ratings.toString(), tracker.getKills(),
+        Lang.formatComponent("stats-command", player.getName(), ratings.toString(),
+            tracker.getKills(),
             tracker.getDeaths(), tracker.getKDR()));
   }
 }

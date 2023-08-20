@@ -6,12 +6,12 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Objects;
 import java.util.logging.Level;
-
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 public class Lang {
+
   private static final HashMap<String, String> PLACEHOLDERS = new HashMap<>();
   private static final File FILE = new File(AuroraCombat.INSTANCE.getDataFolder(), "lang.yml");
   private static YamlConfiguration lang;

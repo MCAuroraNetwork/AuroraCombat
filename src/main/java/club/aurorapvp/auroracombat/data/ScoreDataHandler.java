@@ -7,6 +7,7 @@ import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
 public class ScoreDataHandler {
+
   private final PersistentDataContainer container;
   private final NamespacedKey key;
   private final Score score;

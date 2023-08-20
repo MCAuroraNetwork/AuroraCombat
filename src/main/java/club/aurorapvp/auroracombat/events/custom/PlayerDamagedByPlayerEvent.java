@@ -8,6 +8,7 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 public class PlayerDamagedByPlayerEvent extends Event {
+
   private static final HandlerList HANDLERS = new HandlerList();
   private final DamageType damageType;
   private final Player attacked;

@@ -12,9 +12,11 @@ import java.util.logging.Level;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 public class RatingDataHandler {
+
   private static final File FILE = new File(AuroraCombat.INSTANCE.getDataFolder(), "ratings.yml");
   private static final YamlConfiguration yaml = YamlConfiguration.loadConfiguration(FILE);
   private final Rating rating;
+
   public RatingDataHandler(Rating rating) {
     this.rating = rating;
   }
