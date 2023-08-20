@@ -3,6 +3,7 @@ package club.aurorapvp.auroracombat.modules;
 import club.aurorapvp.auroracombat.AuroraCombat;
 import club.aurorapvp.auroracombat.config.Config;
 import club.aurorapvp.auroracombat.config.Lang;
+import club.aurorapvp.auroracombat.data.RatingDataHandler;
 import club.aurorapvp.auroracombat.flags.RatingFlags;
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldguard.WorldGuard;
@@ -23,6 +24,7 @@ public class Rating {
   private static final Map<String, Rating> RATINGS = new HashMap<>();
   private final String name;
   private final RatingType type;
+  private final RatingDataHandler data;
   private final Map<Player, Score> scores = new HashMap<>();
   private final Set<Player> ENABLED_PLAYERS = new HashSet<>();
   private boolean enabled;
@@ -31,6 +33,8 @@ public class Rating {
     this.name = name;
     this.type = type;
     this.enabled = enabled;
+
+    this.data = new RatingDataHandler(this);
 
     RATINGS.put(name, this);
   }
@@ -142,50 +146,6 @@ public class Rating {
     return false;
   }
 
-  // TODO this is very... direct
-  // TODO save if the rating is enabled or not
-  @SuppressWarnings("ResultOfMethodCallIgnored")
-  public void create() {
-    File file = new File(AuroraCombat.INSTANCE.getDataFolder(), "ratings.yml");
-
-    if (!file.exists()) {
-      try {
-        file.getParentFile().mkdirs();
-        file.createNewFile();
-      } catch (IOException e) {
-        AuroraCombat.INSTANCE.getLogger().log(Level.SEVERE, "Failed to generate ratings file", e);
-      }
-    }
-
-    YamlConfiguration yaml = YamlConfiguration.loadConfiguration(file);
-
-    String type = null;
-    switch (this.type) {
-      case GLOBAL -> type = "global";
-      case REGION -> type = "region";
-      case CUSTOM -> type = "custom";
-    }
-
-    List<String> ratings;
-    if (yaml.contains("ratings." + type)) {
-      ratings = yaml.getStringList("ratings." + type);
-    } else {
-      ratings = new ArrayList<>();
-    }
-
-    String newRating = this.getName();
-    if (!ratings.contains(newRating)) {
-      ratings.add(newRating);
-      yaml.set("ratings." + type, ratings);
-
-      try {
-        yaml.save(file);
-      } catch (IOException e) {
-        AuroraCombat.INSTANCE.getLogger().log(Level.SEVERE, "Failed to save ratings file", e);
-      }
-    }
-  }
-
   public Score getScore(Player player) {
     return scores.get(player);
   }
@@ -200,6 +160,10 @@ public class Rating {
     }
 
     return null;
+  }
+
+  public void create() {
+    data.create();
   }
 
   public void updateElo(Player deadPlayer, Player killer) {
