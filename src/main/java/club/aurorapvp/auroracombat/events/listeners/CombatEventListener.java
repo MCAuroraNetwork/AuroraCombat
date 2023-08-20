@@ -9,7 +9,6 @@ import club.aurorapvp.auroracombat.modules.CombatTag;
 import club.aurorapvp.auroracombat.modules.KillDeathTracker;
 import club.aurorapvp.auroracombat.modules.Rating;
 import java.util.Objects;
-import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
@@ -17,6 +16,7 @@ import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 public class CombatEventListener implements Listener {
+
   private PlayerDamagedByPlayerEvent lastDamage;
 
   @EventHandler
@@ -28,12 +28,21 @@ public class CombatEventListener implements Listener {
 
   @EventHandler
   public void onCommandRun(PlayerCommandPreprocessEvent event) {
-    if (CombatTag.isTagged(event.getPlayer())
-        && !Config.get().getBoolean("combat-tag.allow-commands")) {
-      event.getPlayer().sendMessage(Lang.getComponent("commands-disabled"));
-
-      event.setCancelled(true);
+    if (!CombatTag.isTagged(event.getPlayer())) {
+      return;
     }
+
+    if (Config.get().getBoolean("combat-tag.allow-commands")) {
+      return;
+    }
+
+    if (event.getPlayer().hasPermission("auroracombat.bypass.commands")) {
+      return;
+    }
+
+    event.getPlayer().sendMessage(Lang.getComponent("commands-disabled"));
+
+    event.setCancelled(true);
   }
 
   @EventHandler

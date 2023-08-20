@@ -12,6 +12,9 @@ permissions:
     default: op
     children:
       auroracombat.command.auroracombat: true
+  auroracombat.bypass.commands:
+    description: Allows for the use of commands during combat
+    default: op
 
 dependencies:
   server:
