@@ -42,7 +42,7 @@ public class CombatTag {
     this.playerOne = tagged;
     this.playerTwo = opponent;
 
-    if (!canBeTagged(tagged) || !canBeTagged(opponent)) {
+    if (isUntaggable(tagged) || isUntaggable(opponent)) {
       return;
     }
 
@@ -131,7 +131,7 @@ public class CombatTag {
     taggablePlayers.put(player, taggable);
   }
 
-  public static boolean canBeTagged(Player player) {
+  public static boolean isUntaggable(Player player) {
     if (AuroraCombat.isWorldGuardInstalled()) {
       RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
       RegionQuery query = container.createQuery();
@@ -140,7 +140,8 @@ public class CombatTag {
 
       if (set != null) {
         for (ProtectedRegion region : set.getRegions()) {
-          return Objects.equals(region.getFlag(CombatTagFlags.TAGS_ENABLED), StateFlag.State.ALLOW);
+          return !Objects.equals(region.getFlag(CombatTagFlags.TAGS_ENABLED),
+              StateFlag.State.ALLOW);
         }
       }
     }
