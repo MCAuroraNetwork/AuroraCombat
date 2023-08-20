@@ -17,6 +17,12 @@ permissions:
   auroracombat.command.stats:
     default: false
 
+  auroracombat.command.ratings:
+    default: false
+    children:
+      auroracombat.command.ratings.create: true
+      auroracombat.command.ratings.delete: true
+
   auroracombat.default:
     description: Enables basic AuroraCombat commands
     default: true
@@ -31,6 +37,7 @@ permissions:
     description: Enables use of AuroraCombat admin commands
     default: op
     children:
+      auroracombat.command.ratings: true
       auroracombat.command.auroracombat.reload: true
 
 dependencies:

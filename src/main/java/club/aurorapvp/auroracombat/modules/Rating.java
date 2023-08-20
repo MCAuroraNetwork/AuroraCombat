@@ -166,6 +166,10 @@ public class Rating {
     data.create();
   }
 
+  public void delete() {
+    data.delete();
+  }
+
   public void updateElo(Player deadPlayer, Player killer) {
     Score deadScore = this.getScore(deadPlayer);
     Score killerScore = this.getScore(killer);

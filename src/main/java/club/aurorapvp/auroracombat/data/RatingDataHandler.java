@@ -19,7 +19,6 @@ public class RatingDataHandler {
     this.rating = rating;
   }
 
-  // TODO save if the rating is enabled or not
   public void create() {
     try {
       Files.createDirectories(FILE.getParentFile().toPath());

@@ -10,6 +10,7 @@ import org.bukkit.entity.Player;
 @CommandPermission("auroracombat.command.ratings")
 public class RatingCommands extends BaseCommand {
   @Subcommand("create")
+  @CommandPermission("auroracombat.command.ratings.create")
   @Syntax("<name> <true|false>")
   @Description("Creates a new rating")
   @SuppressWarnings("unused")
@@ -21,5 +22,16 @@ public class RatingCommands extends BaseCommand {
     }
 
     player.sendMessage(Lang.getComponent("rating-created"));
+  }
+
+  @Subcommand("delete")
+  @CommandPermission("auroracombat.command.ratings.delete")
+  @Syntax("<name>")
+  @Description("Deletes a rating")
+  @SuppressWarnings("unused")
+  public void onDelete(Player player, String name) {
+    Rating.getRating(name).delete();
+
+    player.sendMessage(Lang.getComponent("rating-deleted"));
   }
 }
