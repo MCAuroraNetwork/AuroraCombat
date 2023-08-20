@@ -213,7 +213,7 @@ public class CombatTag {
 
     bossbarTask =
         new BukkitRunnable() {
-          int seconds = Config.get().getInt("combat-tag.duration") / 1000;
+          int ticks = Config.get().getInt("combat-tag.duration") / 50;
 
           @Override
           public void run() {
@@ -253,7 +253,7 @@ public class CombatTag {
 
             playerTwo.showBossBar(playerTwoBar[0]);
 
-            if ((seconds -= 1) == 0) {
+            if ((ticks -= 1) == 0) {
               this.cancel();
             }
           }
