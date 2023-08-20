@@ -67,6 +67,15 @@ public class Rating {
     return name;
   }
 
+  public String getFriendlyName() {
+    String[] words = name.split("_");
+    for (int i = 0; i < words.length; i++) {
+      words[i] = words[i].substring(0, 1).toUpperCase() + words[i].substring(1);
+    }
+
+    return String.join(" ", words);
+  }
+
   public RatingType getType() {
     return type;
   }
@@ -205,21 +214,12 @@ public class Rating {
     killerScore.changePoints(
         (int) Math.round(Config.get().getInt("elo.max-change") * -(0 + EloChange)));
 
-    String name = this.getName();
-
-    String[] words = name.split("_");
-    for (int i = 0; i < words.length; i++) {
-      words[i] = words[i].substring(0, 1).toUpperCase() + words[i].substring(1);
-    }
-
-    name = String.join(" ", words);
-
     deadPlayer.sendMessage(
         Lang.formatComponent(
-            "points-decreased", killer.getName(), killerScore.getPoints(), name, EloChange));
+            "points-decreased", killer.getName(), killerScore.getPoints(), this.getFriendlyName(), EloChange));
     killer.sendMessage(
         Lang.formatComponent(
-            "points-increased", deadPlayer.getName(), deadScore.getPoints(), name, EloChange));
+            "points-increased", deadPlayer.getName(), deadScore.getPoints(), this.getFriendlyName(), EloChange));
   }
 
   @SuppressWarnings("unused")
