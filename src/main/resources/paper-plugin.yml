@@ -14,12 +14,21 @@ permissions:
   auroracombat.command.auroracombat.reload:
     default: false
 
+  auroracombat.command.stats:
+    default: false
+
+  auroracombat.default:
+    description: Enables basic AuroraCombat commands
+    default: true
+    children:
+      auroracombat.command.stats: true
+
   auroracombat.bypass.commands:
     description: Allows for the use of commands during combat
     default: op
 
   auroracombat.admin:
-    description: Enables use of AuroraDuels admin commands
+    description: Enables use of AuroraCombat admin commands
     default: op
     children:
       auroracombat.command.auroracombat.reload: true
