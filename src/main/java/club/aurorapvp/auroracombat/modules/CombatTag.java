@@ -174,13 +174,11 @@ public class CombatTag {
 
     t = new Timer();
 
-    // TODO isn't this duplicate code of CombatTag#removeTag?
     t.schedule(
         new TimerTask() {
           @Override
           public void run() {
             tag.removeTag();
-
             this.cancel();
           }
         },
