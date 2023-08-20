@@ -7,14 +7,22 @@ description: A combat plugin for the Aurora Network
 website: aurorapvp.club
 
 permissions:
+  auroracombat.command.auroracombat:
+    default: true
+    children:
+      auroracombat.command.auroracombat.reload: false
+  auroracombat.command.auroracombat.reload:
+    default: false
+
+  auroracombat.bypass.commands:
+    description: Allows for the use of commands during combat
+    default: op
+
   auroracombat.admin:
     description: Enables use of AuroraDuels admin commands
     default: op
     children:
-      auroracombat.command.auroracombat: true
-  auroracombat.bypass.commands:
-    description: Allows for the use of commands during combat
-    default: op
+      auroracombat.command.auroracombat.reload: true
 
 dependencies:
   server:
