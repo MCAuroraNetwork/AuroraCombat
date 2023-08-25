@@ -57,9 +57,6 @@ public class CombatTag {
           Lang.formatComponent(
               "tagged", tagged.getName(), (Config.get().getInt("combat-tag.duration") / 1000)));
 
-      playerOne.setGlowing(true);
-      playerTwo.setGlowing(true);
-
       tags.add(this);
 
       resetTimer();
@@ -277,13 +274,5 @@ public class CombatTag {
 
     playerOne.hideBossBar(playerOneBar[0]);
     playerTwo.hideBossBar(playerTwoBar[0]);
-
-    if (!CombatTag.isTagged(playerOne)) {
-      playerOne.setGlowing(false);
-    }
-
-    if (!CombatTag.isTagged(playerTwo)) {
-      playerTwo.setGlowing(false);
-    }
   }
 }
