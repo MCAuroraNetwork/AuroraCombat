@@ -36,6 +36,6 @@ public class PlayerInfo {
           player.setScoreboard(scoreboard);
         }
       }
-    }.runTaskTimer(AuroraCombat.INSTANCE, 0L, 1L).getTaskId();
+    }.runTaskTimer(AuroraCombat.INSTANCE, 0L, 1L);
   }
 }

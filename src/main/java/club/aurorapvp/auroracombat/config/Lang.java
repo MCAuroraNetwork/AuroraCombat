@@ -30,10 +30,10 @@ public class Lang {
     DEFAULTS.put(
         "points-decreased",
         "prefix <red>You were killed by %1$s (%2$s). %3$s ELO <bold>-%4$s points");
-    DEFAULTS.put("tagged", "prefix <aqua>Tagged by %1$s for %2$s sec");
-    DEFAULTS.put("tagged-action-bar", "<aqua>Tagged by %1$s!<reset> %2$s");
-    DEFAULTS.put("tag-removed", "prefix <aqua>Untagged by %s");
-    DEFAULTS.put("tag-removed-action-bar", "<aqua>Untagged by %s");
+    DEFAULTS.put("tagged", "prefix <red>Tagged by %1$s for %2$s sec");
+    DEFAULTS.put("tagged-action-bar", "<red>Tagged by %1$s!<reset> %2$s");
+    DEFAULTS.put("tag-removed", "prefix <green>Untagged by %s");
+    DEFAULTS.put("tag-removed-action-bar", "<green>Untagged by %s");
     DEFAULTS.put(
         "new-kill", "prefix <bold><green>+1 Kill<reset><green>, %1$s Kills, Killstreak: %2$s");
     DEFAULTS.put(
@@ -48,7 +48,7 @@ public class Lang {
     DEFAULTS.put("death-message.killed-by-player-magic", "<red>%1$s killed by %2$s's magic %3$s");
     DEFAULTS.put("unknown-player", "prefix <red>Player not found!");
     DEFAULTS.put("commands-disabled", "prefix <red>Commands disabled in combat");
-    DEFAULTS.put("rating-created", "prefix <green>Rating created");
+    DEFAULTS.put("rating-created", "prefix <green>Rating created!");
     DEFAULTS.put("stats-command", """
         prefix <aqua><bold>%1$s's Stats
         %2$s
