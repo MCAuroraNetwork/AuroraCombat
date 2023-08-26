@@ -21,6 +21,7 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.logging.Level;
 import net.kyori.adventure.bossbar.BossBar;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -52,10 +53,10 @@ public class CombatTag {
     } else {
       tagged.sendMessage(
           Lang.formatComponent(
-              "tagged", opponent.getName(), (Config.get().getInt("combat-tag.duration") / 1000)));
+              "tagged", opponent.getName(), Config.get().getInt("combat-tag.duration")));
       opponent.sendMessage(
           Lang.formatComponent(
-              "tagged", tagged.getName(), (Config.get().getInt("combat-tag.duration") / 1000)));
+              "tagged", tagged.getName(), Config.get().getInt("combat-tag.duration")));
 
       tags.add(this);
 
@@ -180,9 +181,9 @@ public class CombatTag {
         },
         Config.get().getInt("combat-tag.duration"));
 
-    final int totalSeconds = Config.get().getInt("combat-tag.duration") / 1000;
+    final int totalSeconds = Config.get().getInt("combat-tag.duration");
     final int executionTimes = 30;
-    final int delay = totalSeconds / executionTimes;
+    final double delay = (double) totalSeconds / executionTimes;
 
     countdownTask =
         new BukkitRunnable() {
@@ -206,11 +207,11 @@ public class CombatTag {
               this.cancel();
             }
           }
-        }.runTaskTimer(AuroraCombat.INSTANCE, 0, delay * 20L);
+        }.runTaskTimer(AuroraCombat.INSTANCE, 0, (long) (delay * 20));
 
     bossbarTask =
         new BukkitRunnable() {
-          int ticks = Config.get().getInt("combat-tag.duration") / 50;
+          int ticks = Config.get().getInt("combat-tag.duration") * 20;
 
           @Override
           public void run() {
