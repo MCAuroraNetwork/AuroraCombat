@@ -21,8 +21,8 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.logging.Level;
 import net.kyori.adventure.bossbar.BossBar;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
@@ -44,7 +44,7 @@ public class CombatTag {
     this.playerOne = tagged;
     this.playerTwo = opponent;
 
-    if (isUntaggable(tagged) || isUntaggable(opponent)) {
+    if (CombatTag.isUntaggable(tagged) || CombatTag.isUntaggable(opponent)) {
       return;
     }
 
@@ -132,7 +132,9 @@ public class CombatTag {
   }
 
   public static boolean isUntaggable(Player player) {
-    if (AuroraCombat.isWorldGuardInstalled()) {
+    boolean taggable = taggablePlayers.get(player);
+
+    if (taggable && AuroraCombat.isWorldGuardInstalled()) {
       RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
       RegionQuery query = container.createQuery();
       ApplicableRegionSet set =
@@ -146,7 +148,7 @@ public class CombatTag {
       }
     }
 
-    return taggablePlayers.get(player);
+    return false;
   }
 
   public Player getPlayerOne() {
@@ -191,7 +193,8 @@ public class CombatTag {
 
           @Override
           public void run() {
-            int greenBars = (int) Math.round((double) (executionTimes - counter) / executionTimes * 30);
+            int greenBars = (int) Math.round(
+                (double) (executionTimes - counter) / executionTimes * 30);
             int redBars = 30 - greenBars;
 
             String progressBar = "<green>" + "|".repeat(greenBars) + "<red>" + "|".repeat(redBars);
@@ -272,7 +275,9 @@ public class CombatTag {
 
   public void removeTag() {
     timer.cancel();
-    bossbarTask.cancel();
+
+    Bukkit.getScheduler().cancelTask(countdownTask.getTaskId());
+    Bukkit.getScheduler().cancelTask(bossbarTask.getTaskId());
 
     tags.remove(this);
 

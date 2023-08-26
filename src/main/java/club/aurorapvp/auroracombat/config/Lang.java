@@ -30,7 +30,7 @@ public class Lang {
         "prefix <green>You killed <bold>%1$s<reset> <yellow><bold>(%2$s)<reset><green>!");
     DEFAULTS.put(
         "you-were-killed-by",
-        "prefix <red>You were killed by <bold>%1$s<reset> <yellow>(%2$s)<reset><red>.");
+        "prefix <red>You were killed by <bold>%1$s<reset> <yellow><bold>(%2$s)<reset><red>.");
     DEFAULTS.put("tagged", "prefix <red>Tagged by %1$s for %2$s seconds");
     DEFAULTS.put("tagged-action-bar", "<red><bold>%1$s<reset> %2$s");
     DEFAULTS.put("tag-removed", "prefix <green>You're no longer tagged by %s!");
