@@ -227,7 +227,7 @@ public class CombatTag {
                     Lang.formatComponent(
                         "opponent-bossbar",
                         playerTwo.getName(),
-                        (int) playerTwo.getHealth(),
+                        (int) playerTwo.getHealth() + playerTwo.getAbsorptionAmount(),
                         (int) playerTwo.getLocation().distance(playerOne.getLocation()),
                         playerTwo.getPing()),
                     1.0f,
@@ -245,7 +245,7 @@ public class CombatTag {
                     Lang.formatComponent(
                         "opponent-bossbar",
                         playerOne.getName(),
-                        (int) playerOne.getHealth(),
+                        (int) playerOne.getHealth() + playerTwo.getAbsorptionAmount(),
                         (int) playerOne.getLocation().distance(playerTwo.getLocation()),
                         playerOne.getPing()),
                     1.0f,
