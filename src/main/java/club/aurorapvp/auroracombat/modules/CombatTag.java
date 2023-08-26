@@ -191,7 +191,7 @@ public class CombatTag {
           @Override
           public void run() {
             int greenBars = (int) Math.round((double) (executionTimes - counter) / executionTimes * 30);
-            int redBars = 15 - greenBars;
+            int redBars = 30 - greenBars;
 
             String progressBar = "<green>" + "|".repeat(greenBars) + "<red>" + "|".repeat(redBars);
 
