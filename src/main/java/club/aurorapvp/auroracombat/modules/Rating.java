@@ -184,9 +184,8 @@ public class Rating {
     assert killerScore != null;
     double EloChange = Rating.getELOChange(deadScore.getPoints(), killerScore.getPoints());
 
-    deadScore.changePoints((int) Math.round(Config.get().getInt("elo.max-change") * EloChange));
-    killerScore.changePoints(
-        (int) Math.round(Config.get().getInt("elo.max-change") * -(0 + EloChange)));
+    deadScore.changePoints((int) (Config.get().getInt("elo.max-change") * EloChange));
+    killerScore.changePoints((int) (Config.get().getInt("elo.max-change") * -(0 + EloChange)));
 
     deadPlayer.sendMessage(
         Lang.formatComponent(

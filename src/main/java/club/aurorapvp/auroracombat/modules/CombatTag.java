@@ -34,7 +34,7 @@ public class CombatTag {
   private final Player playerTwo;
   private final BossBar[] playerOneBar = new BossBar[1];
   private final BossBar[] playerTwoBar = new BossBar[1];
-  private Timer t;
+  private Timer timer;
   private BukkitTask bossbarTask;
   private BukkitTask countdownTask;
   private Long timeStarted;
@@ -47,7 +47,7 @@ public class CombatTag {
       return;
     }
 
-    if (getTag(tagged, opponent) != null) {
+    if (CombatTag.getTag(tagged, opponent) != null) {
       Objects.requireNonNull(getTag(tagged, opponent)).resetTimer();
     } else {
       tagged.sendMessage(
@@ -59,7 +59,7 @@ public class CombatTag {
 
       tags.add(this);
 
-      resetTimer();
+      this.startTimer();
     }
   }
 
@@ -113,6 +113,7 @@ public class CombatTag {
         return tag;
       }
     }
+
     return null;
   }
 
@@ -163,17 +164,13 @@ public class CombatTag {
     }
   }
 
-  public void resetTimer() {
-    t.cancel();
-    bossbarTask.cancel();
-    countdownTask.cancel();
-
+  public void startTimer() {
     timeStarted = System.currentTimeMillis();
     CombatTag tag = this;
 
-    t = new Timer();
+    timer = new Timer();
 
-    t.schedule(
+    timer.schedule(
         new TimerTask() {
           @Override
           public void run() {
@@ -257,12 +254,20 @@ public class CombatTag {
         }.runTaskTimer(AuroraCombat.INSTANCE, 0, 1L);
   }
 
+  public void resetTimer() {
+    timer.cancel();
+    bossbarTask.cancel();
+    countdownTask.cancel();
+
+    this.startTimer();
+  }
+
   public int getTimeRemaining() {
     return (int) (timeStarted + 15000 - System.currentTimeMillis());
   }
 
   public void removeTag() {
-    t.cancel();
+    timer.cancel();
     bossbarTask.cancel();
 
     tags.remove(this);
