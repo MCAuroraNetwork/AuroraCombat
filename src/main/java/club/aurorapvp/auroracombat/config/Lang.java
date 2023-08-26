@@ -30,10 +30,10 @@ public class Lang {
     DEFAULTS.put(
         "points-decreased",
         "prefix <red>You were killed by %1$s (%2$s). %3$s ELO <bold>-%4$s points");
-    DEFAULTS.put("tagged", "prefix <red>Tagged by %1$s for %2$s sec");
-    DEFAULTS.put("tagged-action-bar", "<red>Tagged by %1$s!<reset> %2$s");
-    DEFAULTS.put("tag-removed", "prefix <green>Untagged by %s");
-    DEFAULTS.put("tag-removed-action-bar", "<green>Untagged by %s");
+    DEFAULTS.put("tagged", "prefix <red>Tagged by %1$s for %2$s seconds");
+    DEFAULTS.put("tagged-action-bar", "<red>%1$s<reset> %2$s");
+    DEFAULTS.put("tag-removed", "prefix <green>You're no longer tagged by %s!");
+    DEFAULTS.put("tag-removed-action-bar", "<green>You're no longer tagged by %s!");
     DEFAULTS.put(
         "new-kill", "prefix <bold><green>+1 Kill<reset><green>, %1$s Kills, Killstreak: %2$s");
     DEFAULTS.put(

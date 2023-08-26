@@ -180,14 +180,17 @@ public class CombatTag {
         },
         Config.get().getInt("combat-tag.duration"));
 
+    final int totalSeconds = Config.get().getInt("combat-tag.duration") / 1000;
+    final int executionTimes = 30;
+    final int delay = totalSeconds / executionTimes;
+
     countdownTask =
         new BukkitRunnable() {
-          final int totalSeconds = Config.get().getInt("combat-tag.duration") / 1000;
-          int seconds = totalSeconds;
+          int counter = 0;
 
           @Override
           public void run() {
-            int greenBars = (int) Math.round((double) seconds / totalSeconds * 15);
+            int greenBars = (int) Math.round((double) (executionTimes - counter) / executionTimes * 30);
             int redBars = 15 - greenBars;
 
             String progressBar = "<green>" + "|".repeat(greenBars) + "<red>" + "|".repeat(redBars);
@@ -199,11 +202,11 @@ public class CombatTag {
                 Lang.formatComponent(
                     "tagged-action-bar", playerOne.getName(), progressBar));
 
-            if ((seconds -= 1) == 0) {
+            if ((counter += 1) == executionTimes) {
               this.cancel();
             }
           }
-        }.runTaskTimer(AuroraCombat.INSTANCE, 0, 20L);
+        }.runTaskTimer(AuroraCombat.INSTANCE, 0, delay * 20L);
 
     bossbarTask =
         new BukkitRunnable() {
