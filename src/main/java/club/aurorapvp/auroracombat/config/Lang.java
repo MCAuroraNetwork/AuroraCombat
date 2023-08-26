@@ -27,10 +27,10 @@ public class Lang {
     DEFAULTS.put("prefix", "~<gradient:#FFAA00:#FF55FF><bold>AuroraCombat ><reset>~");
     DEFAULTS.put(
         "you-killed",
-        "prefix <green>You killed <bold>%1$s<reset> <yellow><bold>(%2$s)<reset><green>!");
+        "prefix <green>You killed <bold>%1$s<reset> <yellow><bold>(%2$s)<reset><green>! <bold>-%3$s");
     DEFAULTS.put(
         "you-were-killed-by",
-        "prefix <red>You were killed by <bold>%1$s<reset> <yellow><bold>(%2$s)<reset><red>.");
+        "prefix <red>You were killed by <bold>%1$s<reset> <yellow><bold>(%2$s)<reset><red>. <bold>-%3$s");
     DEFAULTS.put("tagged", "prefix <red>Tagged by %1$s for %2$s seconds");
     DEFAULTS.put("tagged-action-bar", "<red><bold>%1$s<reset> %2$s");
     DEFAULTS.put("tag-removed", "prefix <green>You're no longer tagged by %s!");
