@@ -65,12 +65,12 @@ public class CombatEventListener implements Listener {
 
   @EventHandler
   public void onKilledByPlayer(PlayerKilledByPlayerEvent event) {
+    Objects.requireNonNull(KillDeathTracker.getTracker(event.getDead())).addDeath();
+    Objects.requireNonNull(KillDeathTracker.getTracker(event.getKiller())).addKill();
+
     for (Rating rating : Rating.getRatings()) {
       if (rating.isEnabled(event.getDead())) {
         rating.updateElo(event.getDead(), event.getKiller());
-
-        Objects.requireNonNull(KillDeathTracker.getTracker(event.getDead())).addDeath();
-        Objects.requireNonNull(KillDeathTracker.getTracker(event.getKiller())).addKill();
       }
     }
   }
