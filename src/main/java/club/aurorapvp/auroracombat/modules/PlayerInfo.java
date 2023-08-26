@@ -32,7 +32,8 @@ public class PlayerInfo {
           }
 
           String playerName = player.getName();
-          objective.getScore(playerName).setScore((int) player.getHealth());
+          objective.getScore(playerName).setScore(
+              (int) (player.getHealth() + player.getAbsorptionAmount()));
           player.setScoreboard(scoreboard);
         }
       }
