@@ -27,11 +27,11 @@ public class Lang {
     DEFAULTS.put("prefix", "~<gradient:#FFAA00:#FF55FF><bold>AuroraCombat ><reset>~");
     DEFAULTS.put(
         "you-killed",
-        "prefix <green>You killed <bold>%1$s<reset> <yellow><bold>(%2$s)<reset><green>! <bold>+%3$s points");
+        "prefix <green>You killed <bold>%1$s<reset> <yellow><bold>(%2$s)<reset><green>! <bold>+%3$s<reset><green> points");
     DEFAULTS.put(
         "you-were-killed-by",
-        "prefix <red>You were killed by <bold>%1$s<reset> <yellow><bold>(%2$s)<reset><red>. <bold>-%3$s points");
-    DEFAULTS.put("tagged", "prefix <red>Tagged by %1$s for %2$s seconds");
+        "prefix <red>You were killed by <bold>%1$s<reset> <yellow><bold>(%2$s)<reset><red>. <bold>-%3$s<reset><green> points");
+    DEFAULTS.put("tagged", "prefix <red>Tagged by <bold>%1$s<reset><red> for %2$s seconds");
     DEFAULTS.put("tagged-action-bar", "<red><bold>%1$s<reset> %2$s");
     DEFAULTS.put("tag-removed", "prefix <green>You're no longer tagged by %s!");
     DEFAULTS.put("tag-removed-action-bar", "<green>You're no longer tagged by %s!");
@@ -41,22 +41,23 @@ public class Lang {
         "death-message.killed-by-player-explosion", "<red>%1$s was blown up by %2$s with %3$s");
     DEFAULTS.put("death-message.killed-by-player-slain", "<red>%1$s was slain by %2$s with %3$s");
     DEFAULTS.put("death-message.killed-by-player-shot", "<red>%1$s was shot by %2$s with %3$s");
-    DEFAULTS.put("death-message.killed-by-player-magic", "<red>%1$s was killed by %2$s's magic %3$s");
+    DEFAULTS.put("death-message.killed-by-player-magic",
+        "<red>%1$s was killed by %2$s's magic %3$s");
     DEFAULTS.put("death-message.combat-logged", "<red>%1$s combat logged to hide from %2$s");
     DEFAULTS.put("unknown-player", "prefix <red>Player not found!");
     DEFAULTS.put("commands-disabled", "prefix <red>Commands disabled in combat");
     DEFAULTS.put("rating-created", "prefix <green>Rating created!");
     DEFAULTS.put("stats-command", """
-        prefix <aqua><bold>%1$s's Stats
+        prefix <yellow><bold>%1$s's Stats
         %2$s
 
-        <aqua>Kills: %3$s
-        <aqua>Deaths: %4$s
-        <aqua>Killstreak: %5$s
+        <yellow>Kills: %3$s
+        <yellow>Deaths: %4$s
+        <yellow>Killstreak: %5$s
         """);
     DEFAULTS.put(
         "opponent-bossbar",
-        "<aqua><bold>%1$s <reset><red>| %2$s❤ |<reset><aqua> %3$sm |<reset><yellow> %4$sms");
+        "<yellow><bold>%1$s <reset><red>| %2$s❤ |<reset><yellow> %3$sm |<reset><yellow> %4$sms");
     DEFAULTS.put("player-health-and-ping", "<reset><red>❤ |<reset><blue> %s" + "ms");
 
     for (String path : DEFAULTS.keySet()) {
