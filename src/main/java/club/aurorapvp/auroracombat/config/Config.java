@@ -57,11 +57,14 @@ public class Config {
         FILE.getParentFile().mkdirs();
         FILE.createNewFile();
 
+        config = YamlConfiguration.loadConfiguration(FILE);
+
         Config.generateDefaults();
       } catch (IOException e) {
         AuroraCombat.INSTANCE.getLogger().log(Level.SEVERE, "Failed to generate config file", e);
       }
     }
+
     config = YamlConfiguration.loadConfiguration(FILE);
     AuroraCombat.INSTANCE.getLogger().info("Config reloaded!");
   }

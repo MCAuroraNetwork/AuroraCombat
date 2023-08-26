@@ -133,11 +133,14 @@ public class Lang {
         FILE.getParentFile().mkdirs();
         FILE.createNewFile();
 
+        lang = YamlConfiguration.loadConfiguration(FILE);
+
         Lang.generateDefaults();
       } catch (IOException e) {
         AuroraCombat.INSTANCE.getLogger().log(Level.SEVERE, "Failed to generate lang file", e);
       }
     }
+
     lang = YamlConfiguration.loadConfiguration(FILE);
     AuroraCombat.INSTANCE.getLogger().info("Lang reloaded!");
   }
