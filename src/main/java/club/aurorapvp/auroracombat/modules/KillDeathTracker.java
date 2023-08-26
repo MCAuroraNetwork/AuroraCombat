@@ -73,8 +73,6 @@ public class KillDeathTracker {
   public void addDeath() {
     this.deaths = deaths + 1;
 
-    player.sendMessage(Lang.formatComponent("new-death", deaths, killStreak));
-
     if (killStreak >= Config.get().getInt("misc.min-killstreak-to-announce")) {
       Bukkit.broadcast(Lang.formatComponent("killstreak-lost", player, killStreak));
     }
@@ -85,8 +83,6 @@ public class KillDeathTracker {
   public void addKill() {
     this.killStreak = killStreak + 1;
     this.kills = kills + 1;
-
-    player.sendMessage(Lang.formatComponent("new-kill", kills, killStreak));
   }
 
   public static void saveAll() {

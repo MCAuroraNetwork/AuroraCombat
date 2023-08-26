@@ -35,12 +35,7 @@ public class Lang {
     DEFAULTS.put("tagged-action-bar", "<red><bold>%1$s<reset> %2$s");
     DEFAULTS.put("tag-removed", "prefix <green>You're no longer tagged by %s!");
     DEFAULTS.put("tag-removed-action-bar", "<green>You're no longer tagged by %s!");
-    DEFAULTS.put(
-        "new-kill", "prefix <bold><green>+1 Kill<reset><green>, %1$s Kills, Killstreak: %2$s");
-    DEFAULTS.put(
-        "new-death",
-        "prefix <bold><red>+1 Death<reset><red>, %1$s Deaths, Lost %2$s Killstreak");
-    DEFAULTS.put("killstreak-lost", "%1$s died and lost %2$s Killstreak");
+    DEFAULTS.put("killstreak-lost", "prefix <red><bold>%1$s died and lost %2$s Killstreak!");
     DEFAULTS.put("death-message.killed-by-player-generic", "<red>%1$s killed by %2$s");
     DEFAULTS.put(
         "death-message.killed-by-player-explosion", "<red>%1$s was blown up by %2$s with %3$s");
