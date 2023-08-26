@@ -179,7 +179,7 @@ public class CombatTag {
             this.cancel();
           }
         },
-        Config.get().getInt("combat-tag.duration"));
+        Config.get().getInt("combat-tag.duration") * 1000L);
 
     final int totalSeconds = Config.get().getInt("combat-tag.duration");
     final int executionTimes = 30;
