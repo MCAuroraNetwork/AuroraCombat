@@ -286,7 +286,9 @@ public class CombatTag {
     playerOne.sendActionBar(Lang.formatComponent("tag-removed-action-bar", playerTwo.getName()));
     playerTwo.sendActionBar(Lang.formatComponent("tag-removed-action-bar", playerOne.getName()));
 
-    playerOne.hideBossBar(playerOneBar[0]);
-    playerTwo.hideBossBar(playerTwoBar[0]);
+    if (playerOneBar[0] != null && playerTwoBar[0] != null) {
+      playerOne.hideBossBar(playerOneBar[0]);
+      playerTwo.hideBossBar(playerTwoBar[0]);
+    }
   }
 }
