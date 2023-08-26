@@ -26,10 +26,11 @@ public class Lang {
 
     DEFAULTS.put("prefix", "~<gradient:#FFAA00:#FF55FF><bold>AuroraCombat ><reset>~");
     DEFAULTS.put(
-        "points-increased", "prefix <green>You killed %1$s (%2$s)! %3$s ELO <bold>+%4$s points");
+        "points-increased",
+        "prefix <green>You killed <bold>%1$s<reset><green> <yellow><bold>(%2$s)<reset><green>! %3$s ELO <bold>+%4$s points");
     DEFAULTS.put(
         "points-decreased",
-        "prefix <red>You were killed by %1$s (%2$s). %3$s ELO <bold>-%4$s points");
+        "prefix <red>You were killed by <bold>%1$s<reset><red><yellow>(%2$s)<red>. %3$s ELO <bold>-%4$s points");
     DEFAULTS.put("tagged", "prefix <red>Tagged by %1$s for %2$s seconds");
     DEFAULTS.put("tagged-action-bar", "<red>%1$s<reset> %2$s");
     DEFAULTS.put("tag-removed", "prefix <green>You're no longer tagged by %s!");
@@ -38,7 +39,7 @@ public class Lang {
         "new-kill", "prefix <bold><green>+1 Kill<reset><green>, %1$s Kills, Killstreak: %2$s");
     DEFAULTS.put(
         "new-death",
-        "prefix <red><green>+1 Death<reset><red>, %1$s Deaths, Lost %2$s Killstreak");
+        "prefix <bold><red>+1 Death<reset><red>, %1$s Deaths, Lost %2$s Killstreak");
     DEFAULTS.put("killstreak-lost", "%1$s died and lost %2$s Killstreak");
     DEFAULTS.put("death-message.killed-by-player-generic", "<red>%1$s killed by %2$s");
     DEFAULTS.put(
