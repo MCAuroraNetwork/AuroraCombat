@@ -45,6 +45,8 @@ public class DeathMessage {
                   event.getAttacker().getName(),
                   MiniMessage.miniMessage().serialize(weaponName))
               .hoverEvent(hover));
+      case COMBAT_LOG ->
+          event.deathMessage(Lang.formatComponent("combat-logged", event.getKiller().getName()));
       default -> event.deathMessage(
           Lang.formatComponent(
                   "death-message.killed-by-player-generic",

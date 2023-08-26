@@ -8,7 +8,10 @@ import club.aurorapvp.auroracombat.modules.BlockFallDamage;
 import club.aurorapvp.auroracombat.modules.CombatTag;
 import club.aurorapvp.auroracombat.modules.KillDeathTracker;
 import club.aurorapvp.auroracombat.modules.Rating;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
@@ -18,11 +21,14 @@ import org.bukkit.event.player.PlayerQuitEvent;
 public class CombatEventListener implements Listener {
 
   private PlayerDamagedByPlayerEvent lastDamage;
+  private final Set<Player> combatLoggers = new HashSet<>();
 
   @EventHandler
   public void onPlayerQuit(PlayerQuitEvent event) {
     if (CombatTag.isTagged(event.getPlayer())) {
       event.getPlayer().setHealth(0);
+
+      combatLoggers.add(event.getPlayer());
     }
   }
 
@@ -47,6 +53,12 @@ public class CombatEventListener implements Listener {
 
   @EventHandler
   public void onPlayerDeath(PlayerDeathEvent event) {
+    if (combatLoggers.contains(event.getPlayer())) {
+      new PlayerKilledByPlayerEvent(
+          Objects.requireNonNull(CombatTag.getRecentTag(event.getPlayer()))
+              .getOpponent(event.getPlayer()), event).callEvent();
+    }
+
     CombatTag.removeTags(event.getPlayer());
     BlockFallDamage.setInVulnerable(event.getPlayer());
 

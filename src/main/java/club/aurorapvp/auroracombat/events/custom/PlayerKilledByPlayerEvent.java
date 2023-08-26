@@ -1,5 +1,6 @@
 package club.aurorapvp.auroracombat.events.custom;
 
+import club.aurorapvp.auroracombat.enums.DamageType;
 import club.aurorapvp.auroracombat.modules.DeathMessage;
 import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
@@ -17,6 +18,13 @@ public class PlayerKilledByPlayerEvent extends PlayerDamagedByPlayerEvent {
     super(event.getDamageType(), event.getDamaged(), event.getAttacker(), event.getWeapon());
     this.deathEvent = deathEvent;
     this.killer = event.getAttacker();
+    new DeathMessage(this);
+  }
+
+  public PlayerKilledByPlayerEvent(Player killer, PlayerDeathEvent deathEvent) {
+    super(DamageType.COMBAT_LOG, deathEvent.getPlayer(), killer, null);
+    this.deathEvent = deathEvent;
+    this.killer = killer;
     new DeathMessage(this);
   }
 

@@ -42,6 +42,7 @@ public class Lang {
     DEFAULTS.put("death-message.killed-by-player-slain", "<red>%1$s was slain by %2$s with %3$s");
     DEFAULTS.put("death-message.killed-by-player-shot", "<red>%1$s was shot by %2$s with %3$s");
     DEFAULTS.put("death-message.killed-by-player-magic", "<red>%1$s was killed by %2$s's magic %3$s");
+    DEFAULTS.put("death-message.combat-logged", "<red>%1$s combat logged to hide from %2$s");
     DEFAULTS.put("unknown-player", "prefix <red>Player not found!");
     DEFAULTS.put("commands-disabled", "prefix <red>Commands disabled in combat");
     DEFAULTS.put("rating-created", "prefix <green>Rating created!");

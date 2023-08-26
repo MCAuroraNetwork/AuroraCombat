@@ -5,5 +5,6 @@ public enum DamageType {
   MAGIC,
   RANGED,
   EXPLOSION_BLOCK,
-  EXPLOSION_ENTITY
+  EXPLOSION_ENTITY,
+  COMBAT_LOG
 }
