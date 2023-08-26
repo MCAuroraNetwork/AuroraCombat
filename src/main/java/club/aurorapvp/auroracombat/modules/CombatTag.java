@@ -8,6 +8,7 @@ import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldguard.WorldGuard;
 import com.sk89q.worldguard.protection.ApplicableRegionSet;
 import com.sk89q.worldguard.protection.flags.StateFlag;
+import com.sk89q.worldguard.protection.flags.StateFlag.State;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import com.sk89q.worldguard.protection.regions.RegionContainer;
 import com.sk89q.worldguard.protection.regions.RegionQuery;
@@ -142,13 +143,13 @@ public class CombatTag {
 
       if (set != null) {
         for (ProtectedRegion region : set.getRegions()) {
-          return !Objects.equals(region.getFlag(CombatTagFlags.TAGS_ENABLED),
-              StateFlag.State.ALLOW);
+          return Objects.equals(region.getFlag(CombatTagFlags.TAGS_ENABLED),
+              State.DENY);
         }
       }
     }
 
-    return false;
+    return true;
   }
 
   public Player getPlayerOne() {
