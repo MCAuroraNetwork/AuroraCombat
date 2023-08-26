@@ -26,11 +26,11 @@ public class Lang {
 
     DEFAULTS.put("prefix", "~<gradient:#FFAA00:#FF55FF><bold>AuroraCombat ><reset>~");
     DEFAULTS.put(
-        "points-increased",
-        "prefix <green>You killed <bold>%1$s<reset><green> <yellow><bold>(%2$s)<reset><green>!");
+        "you-killed",
+        "prefix <green>You killed <bold>%1$s<reset> <yellow><bold>(%2$s)<reset><green>!");
     DEFAULTS.put(
-        "points-decreased",
-        "prefix <red>You were killed by <bold>%1$s<reset><red><yellow>(%2$s)<reset><red>.");
+        "you-were-killed-by",
+        "prefix <red>You were killed by <bold>%1$s<reset> <yellow>(%2$s)<reset><red>.");
     DEFAULTS.put("tagged", "prefix <red>Tagged by %1$s for %2$s seconds");
     DEFAULTS.put("tagged-action-bar", "<red><bold>%1$s<reset> %2$s");
     DEFAULTS.put("tag-removed", "prefix <green>You're no longer tagged by %s!");
@@ -43,10 +43,10 @@ public class Lang {
     DEFAULTS.put("killstreak-lost", "%1$s died and lost %2$s Killstreak");
     DEFAULTS.put("death-message.killed-by-player-generic", "<red>%1$s killed by %2$s");
     DEFAULTS.put(
-        "death-message.killed-by-player-explosion", "<red>%1$s blown up by %2$s with %3$s");
-    DEFAULTS.put("death-message.killed-by-player-slain", "<red>%1$s slain by %2$s with %3$s");
-    DEFAULTS.put("death-message.killed-by-player-shot", "<red>%1$s shot by %2$s with %3$s");
-    DEFAULTS.put("death-message.killed-by-player-magic", "<red>%1$s killed by %2$s's magic %3$s");
+        "death-message.killed-by-player-explosion", "<red>%1$s was blown up by %2$s with %3$s");
+    DEFAULTS.put("death-message.killed-by-player-slain", "<red>%1$s was slain by %2$s with %3$s");
+    DEFAULTS.put("death-message.killed-by-player-shot", "<red>%1$s was shot by %2$s with %3$s");
+    DEFAULTS.put("death-message.killed-by-player-magic", "<red>%1$s was killed by %2$s's magic %3$s");
     DEFAULTS.put("unknown-player", "prefix <red>Player not found!");
     DEFAULTS.put("commands-disabled", "prefix <red>Commands disabled in combat");
     DEFAULTS.put("rating-created", "prefix <green>Rating created!");

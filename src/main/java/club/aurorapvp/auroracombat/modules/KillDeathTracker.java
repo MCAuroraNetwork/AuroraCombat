@@ -71,7 +71,7 @@ public class KillDeathTracker {
   }
 
   public void addDeath() {
-    this.deaths++;
+    this.deaths = deaths + 1;
 
     player.sendMessage(Lang.formatComponent("new-death", deaths, killStreak));
 
@@ -83,8 +83,8 @@ public class KillDeathTracker {
   }
 
   public void addKill() {
-    this.killStreak++;
-    this.kills++;
+    this.killStreak = killStreak + 1;
+    this.kills = kills + 1;
 
     player.sendMessage(Lang.formatComponent("new-kill", kills, killStreak));
   }

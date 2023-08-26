@@ -189,10 +189,10 @@ public class Rating {
 
     deadPlayer.sendMessage(
         Lang.formatComponent(
-            "points-decreased", killer.getName(), killerScore.getPoints()));
+            "you-were-killed-by", killer.getName(), killerScore.getPoints()));
     killer.sendMessage(
         Lang.formatComponent(
-            "points-increased", deadPlayer.getName(), deadScore.getPoints()));
+            "you-killed", deadPlayer.getName(), deadScore.getPoints()));
   }
 
   @SuppressWarnings("unused")
