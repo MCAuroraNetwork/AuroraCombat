@@ -96,6 +96,12 @@ public class KillDeathTracker {
   }
 
   public static KillDeathTracker getTracker(Player player) {
-    return TRACKERS.getOrDefault(player, new KillDeathTracker(player));
+    KillDeathTracker tracker = TRACKERS.get(player);
+    if (tracker == null) {
+      tracker = new KillDeathTracker(player);
+      TRACKERS.put(player, tracker);
+    }
+
+    return tracker;
   }
 }
