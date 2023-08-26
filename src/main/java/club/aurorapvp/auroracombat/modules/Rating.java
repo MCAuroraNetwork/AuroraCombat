@@ -190,11 +190,11 @@ public class Rating {
     deadPlayer.sendMessage(
         Lang.formatComponent(
             "points-decreased", killer.getName(), killerScore.getPoints(), this.getFriendlyName(),
-            EloChange));
+            (int) (Config.get().getInt("elo.max-change") * EloChange)));
     killer.sendMessage(
         Lang.formatComponent(
             "points-increased", deadPlayer.getName(), deadScore.getPoints(), this.getFriendlyName(),
-            EloChange));
+            (int) (Config.get().getInt("elo.max-change") * -(0 + EloChange))));
   }
 
   @SuppressWarnings("unused")

@@ -27,12 +27,12 @@ public class Lang {
     DEFAULTS.put("prefix", "~<gradient:#FFAA00:#FF55FF><bold>AuroraCombat ><reset>~");
     DEFAULTS.put(
         "points-increased",
-        "prefix <green>You killed <bold>%1$s<reset><green> <yellow><bold>(%2$s)<reset><green>! %3$s ELO <bold>+%4$s points");
+        "prefix <green>You killed <bold>%1$s<reset><green> <yellow><bold>(%2$s)<reset><green>! %3$s ELO <bold>+%4$s<reset><green> points");
     DEFAULTS.put(
         "points-decreased",
-        "prefix <red>You were killed by <bold>%1$s<reset><red><yellow>(%2$s)<red>. %3$s ELO <bold>-%4$s points");
+        "prefix <red>You were killed by <bold>%1$s<reset><red><yellow>(%2$s)<red>. %3$s ELO <bold>-%4$s<reset><red> points");
     DEFAULTS.put("tagged", "prefix <red>Tagged by %1$s for %2$s seconds");
-    DEFAULTS.put("tagged-action-bar", "<red>%1$s<reset> %2$s");
+    DEFAULTS.put("tagged-action-bar", "<red><bold>%1$s<reset> %2$s");
     DEFAULTS.put("tag-removed", "prefix <green>You're no longer tagged by %s!");
     DEFAULTS.put("tag-removed-action-bar", "<green>You're no longer tagged by %s!");
     DEFAULTS.put(
