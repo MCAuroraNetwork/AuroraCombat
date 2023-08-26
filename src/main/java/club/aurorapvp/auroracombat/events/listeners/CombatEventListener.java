@@ -65,8 +65,10 @@ public class CombatEventListener implements Listener {
 
   @EventHandler
   public void onKilledByPlayer(PlayerKilledByPlayerEvent event) {
-    Objects.requireNonNull(KillDeathTracker.getTracker(event.getDead())).addDeath();
-    Objects.requireNonNull(KillDeathTracker.getTracker(event.getKiller())).addKill();
+    if (!CombatTag.isUntaggable(event.getDead()) && !CombatTag.isUntaggable(event.getKiller())) {
+      Objects.requireNonNull(KillDeathTracker.getTracker(event.getDead())).addDeath();
+      Objects.requireNonNull(KillDeathTracker.getTracker(event.getKiller())).addKill();
+    }
 
     for (Rating rating : Rating.getRatings()) {
       if (rating.isEnabled(event.getDead())) {
