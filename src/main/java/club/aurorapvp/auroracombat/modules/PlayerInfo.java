@@ -6,6 +6,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scoreboard.Criteria;
+import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
 
@@ -21,6 +22,7 @@ public class PlayerInfo {
     }
 
     final Objective finalObjective = objective;
+    finalObjective.setDisplaySlot(DisplaySlot.BELOW_NAME);
     new BukkitRunnable() {
       @Override
       public void run() {
