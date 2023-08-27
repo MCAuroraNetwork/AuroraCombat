@@ -48,25 +48,21 @@ public class DamageEventListener implements Listener {
     }
 
     if (event.getDamager() instanceof EnderCrystal enderCrystal) {
-      Bukkit.getPluginManager()
-          .callEvent(
-              new PlayerOnPlayerDamageBuilder()
-                  .damageType(DamageType.EXPLOSION_ENTITY)
-                  .damaged(damaged)
-                  .attacker(this.lastCrystalAttacker)
-                  .weapon(ItemStackUtil.toItemStack(enderCrystal))
-                  .build());
+      new PlayerOnPlayerDamageBuilder()
+          .damageType(DamageType.EXPLOSION_ENTITY)
+          .damaged(damaged)
+          .attacker(this.lastCrystalAttacker)
+          .weapon(ItemStackUtil.toItemStack(enderCrystal))
+          .build().callEvent();
     }
 
     if (event.getDamager() instanceof Player attacker) {
-      Bukkit.getPluginManager()
-          .callEvent(
-              new PlayerOnPlayerDamageBuilder()
-                  .damageType(DamageType.MELEE)
-                  .damaged(damaged)
-                  .attacker(attacker)
-                  .weapon(attacker.getInventory().getItemInMainHand())
-                  .build());
+      new PlayerOnPlayerDamageBuilder()
+          .damageType(DamageType.MELEE)
+          .damaged(damaged)
+          .attacker(attacker)
+          .weapon(attacker.getInventory().getItemInMainHand())
+          .build().callEvent();
     }
 
     if (!(event.getDamager() instanceof Projectile projectile)) {
@@ -79,14 +75,12 @@ public class DamageEventListener implements Listener {
 
     for (Projectile firedProjectile : firedProjectiles) {
       if (projectile == firedProjectile) {
-        Bukkit.getPluginManager()
-            .callEvent(
-                new PlayerOnPlayerDamageBuilder()
-                    .damageType(DamageType.RANGED)
-                    .damaged(damaged)
-                    .attacker(attacker)
-                    .weapon(ItemStackUtil.toItemStack(projectile))
-                    .build());
+        new PlayerOnPlayerDamageBuilder()
+            .damageType(DamageType.RANGED)
+            .damaged(damaged)
+            .attacker(attacker)
+            .weapon(ItemStackUtil.toItemStack(projectile))
+            .build().callEvent();
       }
     }
 
@@ -99,14 +93,12 @@ public class DamageEventListener implements Listener {
             effect ->
                 effect.getType() == PotionEffectType.HARM
                     || effect.getType() == PotionEffectType.POISON)) {
-      Bukkit.getPluginManager()
-          .callEvent(
-              new PlayerOnPlayerDamageBuilder()
-                  .damageType(DamageType.MAGIC)
-                  .damaged(damaged)
-                  .attacker(attacker)
-                  .weapon(ItemStackUtil.toItemStack(thrownPotion))
-                  .build());
+      new PlayerOnPlayerDamageBuilder()
+          .damageType(DamageType.MAGIC)
+          .damaged(damaged)
+          .attacker(attacker)
+          .weapon(ItemStackUtil.toItemStack(thrownPotion))
+          .build().callEvent();
     }
   }
 
@@ -119,14 +111,12 @@ public class DamageEventListener implements Listener {
     if (event.getCause() == EntityDamageEvent.DamageCause.BLOCK_EXPLOSION
         && damaged.getLocation().distance(this.lastExplodedBlock.getLocation()) <= 10) {
 
-      Bukkit.getPluginManager()
-          .callEvent(
-              new PlayerOnPlayerDamageBuilder()
-                  .damageType(DamageType.EXPLOSION_BLOCK)
-                  .damaged(damaged)
-                  .attacker(this.lastInteractedWithBlock)
-                  .weapon(new ItemStack(this.lastExplodedBlock.getType()))
-                  .build());
+      new PlayerOnPlayerDamageBuilder()
+          .damageType(DamageType.EXPLOSION_BLOCK)
+          .damaged(damaged)
+          .attacker(this.lastInteractedWithBlock)
+          .weapon(new ItemStack(this.lastExplodedBlock.getType()))
+          .build().callEvent();
     }
   }
 
