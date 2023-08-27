@@ -69,7 +69,7 @@ public class CombatEventListener implements Listener {
       return;
     }
 
-    if (event.getPlayer().equals(lastDamage.getDamaged())) {
+    if (event.getPlayer().equals(lastDamage.getDamaged()) && !lastDamage.isCancelled()) {
       new PlayerKilledByPlayerEvent(lastDamage, event).callEvent();
       lastDamage = null;
     }

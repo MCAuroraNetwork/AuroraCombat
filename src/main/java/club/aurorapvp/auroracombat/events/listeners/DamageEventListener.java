@@ -49,19 +49,21 @@ public class DamageEventListener implements Listener {
 
     if (event.getDamager() instanceof EnderCrystal enderCrystal) {
       new PlayerOnPlayerDamageBuilder()
-          .damageType(DamageType.EXPLOSION_ENTITY)
-          .damaged(damaged)
-          .attacker(this.lastCrystalAttacker)
-          .weapon(ItemStackUtil.toItemStack(enderCrystal))
+          .setDamageType(DamageType.EXPLOSION_ENTITY)
+          .setDamaged(damaged)
+          .setAttacker(this.lastCrystalAttacker)
+          .setWeapon(ItemStackUtil.toItemStack(enderCrystal))
+          .setEvent(event)
           .build().callEvent();
     }
 
     if (event.getDamager() instanceof Player attacker) {
       new PlayerOnPlayerDamageBuilder()
-          .damageType(DamageType.MELEE)
-          .damaged(damaged)
-          .attacker(attacker)
-          .weapon(attacker.getInventory().getItemInMainHand())
+          .setDamageType(DamageType.MELEE)
+          .setDamaged(damaged)
+          .setAttacker(attacker)
+          .setWeapon(attacker.getInventory().getItemInMainHand())
+          .setEvent(event)
           .build().callEvent();
     }
 
@@ -76,10 +78,11 @@ public class DamageEventListener implements Listener {
     for (Projectile firedProjectile : firedProjectiles) {
       if (projectile == firedProjectile) {
         new PlayerOnPlayerDamageBuilder()
-            .damageType(DamageType.RANGED)
-            .damaged(damaged)
-            .attacker(attacker)
-            .weapon(ItemStackUtil.toItemStack(projectile))
+            .setDamageType(DamageType.RANGED)
+            .setDamaged(damaged)
+            .setAttacker(attacker)
+            .setWeapon(ItemStackUtil.toItemStack(projectile))
+            .setEvent(event)
             .build().callEvent();
       }
     }
@@ -94,10 +97,11 @@ public class DamageEventListener implements Listener {
                 effect.getType() == PotionEffectType.HARM
                     || effect.getType() == PotionEffectType.POISON)) {
       new PlayerOnPlayerDamageBuilder()
-          .damageType(DamageType.MAGIC)
-          .damaged(damaged)
-          .attacker(attacker)
-          .weapon(ItemStackUtil.toItemStack(thrownPotion))
+          .setDamageType(DamageType.MAGIC)
+          .setDamaged(damaged)
+          .setAttacker(attacker)
+          .setWeapon(ItemStackUtil.toItemStack(thrownPotion))
+          .setEvent(event)
           .build().callEvent();
     }
   }
@@ -112,10 +116,11 @@ public class DamageEventListener implements Listener {
         && damaged.getLocation().distance(this.lastExplodedBlock.getLocation()) <= 10) {
 
       new PlayerOnPlayerDamageBuilder()
-          .damageType(DamageType.EXPLOSION_BLOCK)
-          .damaged(damaged)
-          .attacker(this.lastInteractedWithBlock)
-          .weapon(new ItemStack(this.lastExplodedBlock.getType()))
+          .setDamageType(DamageType.EXPLOSION_BLOCK)
+          .setDamaged(damaged)
+          .setAttacker(this.lastInteractedWithBlock)
+          .setWeapon(new ItemStack(this.lastExplodedBlock.getType()))
+          .setEvent(event)
           .build().callEvent();
     }
   }
@@ -179,33 +184,39 @@ public class DamageEventListener implements Listener {
   private static class PlayerOnPlayerDamageBuilder {
 
     private DamageType damageType;
+    private EntityDamageEvent event;
     private Player damaged;
     private Player attacker;
     private ItemStack weapon;
 
-    public PlayerOnPlayerDamageBuilder damageType(DamageType damageType) {
+    public PlayerOnPlayerDamageBuilder setDamageType(DamageType damageType) {
       this.damageType = damageType;
       return this;
     }
 
-    public PlayerOnPlayerDamageBuilder damaged(Player damaged) {
+    public PlayerOnPlayerDamageBuilder setDamaged(Player damaged) {
       this.damaged = damaged;
       return this;
     }
 
-    public PlayerOnPlayerDamageBuilder attacker(Player attacker) {
+    public PlayerOnPlayerDamageBuilder setAttacker(Player attacker) {
       this.attacker = attacker;
       return this;
     }
 
-    public PlayerOnPlayerDamageBuilder weapon(ItemStack weapon) {
+    public PlayerOnPlayerDamageBuilder setWeapon(ItemStack weapon) {
       this.weapon = weapon;
+      return this;
+    }
+
+    public PlayerOnPlayerDamageBuilder setEvent(EntityDamageEvent event) {
+      this.event = event;
       return this;
     }
 
     public PlayerDamagedByPlayerEvent build() {
       return new PlayerDamagedByPlayerEvent(
-          this.damageType, this.damaged, this.attacker, this.weapon);
+          this.damageType, this.event, this.damaged, this.attacker, this.weapon);
     }
   }
 }

@@ -4,25 +4,26 @@ import club.aurorapvp.auroracombat.enums.DamageType;
 import club.aurorapvp.auroracombat.modules.DeathMessage;
 import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Cancellable;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.jetbrains.annotations.NotNull;
 
-public class PlayerKilledByPlayerEvent extends PlayerDamagedByPlayerEvent {
+public class PlayerKilledByPlayerEvent extends PlayerDamagedByPlayerEvent implements Cancellable {
 
   private static final HandlerList HANDLERS = new HandlerList();
   private final PlayerDeathEvent deathEvent;
   private final Player killer;
 
   public PlayerKilledByPlayerEvent(PlayerDamagedByPlayerEvent event, PlayerDeathEvent deathEvent) {
-    super(event.getDamageType(), event.getDamaged(), event.getAttacker(), event.getWeapon());
+    super(event.getDamageType(), event.getDamaged().getLastDamageCause(), event.getDamaged(), event.getAttacker(), event.getWeapon());
     this.deathEvent = deathEvent;
     this.killer = event.getAttacker();
     new DeathMessage(this);
   }
 
   public PlayerKilledByPlayerEvent(Player killer, PlayerDeathEvent deathEvent) {
-    super(DamageType.COMBAT_LOG, deathEvent.getPlayer(), killer, null);
+    super(DamageType.COMBAT_LOG,  deathEvent.getPlayer().getLastDamageCause(), killer, deathEvent.getPlayer(), null);
     this.deathEvent = deathEvent;
     this.killer = killer;
     new DeathMessage(this);
