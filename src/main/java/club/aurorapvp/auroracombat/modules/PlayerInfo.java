@@ -17,13 +17,13 @@ public class PlayerInfo {
       @Override
       public void run() {
         for (Player player : Bukkit.getOnlinePlayers()) {
-          Scoreboard scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
+          Scoreboard scoreboard = player.getScoreboard();
           Objective objective = scoreboard.getObjective(DisplaySlot.BELOW_NAME);
 
           if (objective == null) {
             objective =
                 scoreboard.registerNewObjective(
-                    "below-name",
+                    player.getName() + "-below-name",
                     Criteria.DUMMY,
                     Lang.formatComponent("player-health-and-ping", player.getPing()));
             objective.setDisplaySlot(DisplaySlot.BELOW_NAME);
