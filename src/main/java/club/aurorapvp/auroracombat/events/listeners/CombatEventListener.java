@@ -91,9 +91,11 @@ public class CombatEventListener implements Listener {
 
   @EventHandler
   public void onDamagedByPlayer(PlayerDamagedByPlayerEvent event) {
-    if (!event.getAttacker().equals(event.getDamaged())) {
-      new CombatTag(event.getDamaged(), event.getAttacker());
-      lastDamage = event;
+    if (event.getAttacker().equals(event.getDamaged())) {
+      return;
     }
+
+    new CombatTag(event.getDamaged(), event.getAttacker());
+    lastDamage = event;
   }
 }
