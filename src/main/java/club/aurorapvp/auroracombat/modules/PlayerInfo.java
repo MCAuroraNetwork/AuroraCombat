@@ -12,15 +12,20 @@ import org.bukkit.scoreboard.Scoreboard;
 public class PlayerInfo {
 
   public static void init() {
-    new BukkitRunnable() {
-      final Scoreboard scoreboard = Bukkit.getScoreboardManager().getMainScoreboard();
-      final Objective objective = scoreboard.registerNewObjective("below-name", Criteria.DUMMY,
-          MiniMessage.miniMessage().deserialize("<red>❤"));
+    final Scoreboard scoreboard = Bukkit.getScoreboardManager().getMainScoreboard();
+    Objective objective = scoreboard.getObjective("below-name-health");
 
+    if (objective == null) {
+      objective = scoreboard.registerNewObjective("below-name-health", Criteria.DUMMY,
+          MiniMessage.miniMessage().deserialize("<red>❤"));
+    }
+
+    final Objective finalObjective = objective;
+    new BukkitRunnable() {
       @Override
       public void run() {
         for (Player player : Bukkit.getOnlinePlayers()) {
-          objective.getScore(player.getName()).setScore(
+          finalObjective.getScore(player.getName()).setScore(
               (int) (player.getHealth() + player.getAbsorptionAmount()));
         }
       }
