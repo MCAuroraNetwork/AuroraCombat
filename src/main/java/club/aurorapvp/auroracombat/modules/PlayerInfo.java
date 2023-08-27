@@ -17,7 +17,7 @@ public class PlayerInfo {
       @Override
       public void run() {
         for (Player player : Bukkit.getOnlinePlayers()) {
-          Scoreboard scoreboard = player.getScoreboard();
+          Scoreboard scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
           Objective objective = scoreboard.getObjective(DisplaySlot.BELOW_NAME);
 
           if (objective == null) {
