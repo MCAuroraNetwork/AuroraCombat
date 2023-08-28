@@ -15,10 +15,10 @@ public class PlayerKilledByPlayerEvent extends PlayerDamagedByPlayerEvent implem
   private final PlayerDeathEvent deathEvent;
   private final Player killer;
 
-  public PlayerKilledByPlayerEvent(PlayerDamagedByPlayerEvent event, PlayerDeathEvent deathEvent) {
-    super(event.getDamageType(), event.getDamaged().getLastDamageCause(), event.getDamaged(), event.getAttacker(), event.getWeapon());
+  public PlayerKilledByPlayerEvent(PlayerDamagedByPlayerEvent lastDamage, PlayerDeathEvent deathEvent) {
+    super(lastDamage.getDamageType(), lastDamage.getDamaged().getLastDamageCause(), lastDamage.getDamaged(), lastDamage.getAttacker(), lastDamage.getWeapon());
     this.deathEvent = deathEvent;
-    this.killer = event.getAttacker();
+    this.killer = lastDamage.getAttacker();
     new DeathMessage(this);
   }
 
@@ -49,6 +49,14 @@ public class PlayerKilledByPlayerEvent extends PlayerDamagedByPlayerEvent implem
   @SuppressWarnings("unused")
   public PlayerDeathEvent getDeathEvent() {
     return deathEvent;
+  }
+
+  @Override
+  public void setCancelled(boolean cancel) {
+    cancelled = cancel;
+
+    deathEvent.setCancelled(cancel);
+    lastDamage.setCancelled(cancel);
   }
 
   @Override

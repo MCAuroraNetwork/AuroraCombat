@@ -13,16 +13,16 @@ public class PlayerDamagedByPlayerEvent extends Event implements Cancellable {
 
   private static final HandlerList HANDLERS = new HandlerList();
   private final DamageType damageType;
-  private final EntityDamageEvent event;
+  protected final EntityDamageEvent lastDamage;
   private final Player attacked;
   private final Player attacker;
   private final ItemStack weapon;
-  private boolean cancelled;
+  protected boolean cancelled;
 
   public PlayerDamagedByPlayerEvent(
-      DamageType damageType, EntityDamageEvent event, Player attacked, Player attacker, ItemStack weapon) {
+      DamageType damageType, EntityDamageEvent lastDamage, Player attacked, Player attacker, ItemStack weapon) {
     this.damageType = damageType;
-    this.event = event;
+    this.lastDamage = lastDamage;
     this.attacked = attacked;
     this.attacker = attacker;
     this.weapon = weapon;
@@ -63,6 +63,6 @@ public class PlayerDamagedByPlayerEvent extends Event implements Cancellable {
   public void setCancelled(boolean cancel) {
     cancelled = cancel;
 
-    event.setCancelled(true);
+    lastDamage.setCancelled(cancel);
   }
 }
