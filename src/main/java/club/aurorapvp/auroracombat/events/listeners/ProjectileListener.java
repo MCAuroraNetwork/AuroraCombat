@@ -1,8 +1,10 @@
 package club.aurorapvp.auroracombat.events.listeners;
 
+import club.aurorapvp.auroracombat.AuroraCombat;
 import club.aurorapvp.auroracombat.config.Config;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.EnderPearl;
@@ -12,10 +14,12 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.ProjectileLaunchEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
+import org.bukkit.scheduler.BukkitRunnable;
 
 public class ProjectileListener implements Listener {
 
   private final Map<Player, Location> lastThrowLocation = new HashMap<>();
+  private final Map<Player, Boolean> onCooldown = new HashMap<>();
 
   @EventHandler
   public void onPlayerTeleport(PlayerTeleportEvent event) {
@@ -27,10 +31,25 @@ public class ProjectileListener implements Listener {
       return;
     }
 
-    if (lastThrowLocation.get(event.getPlayer()).distance(event.getPlayer().getLocation())
+    if (onCooldown.getOrDefault(event.getPlayer(), false)) {
+      event.setCancelled(true);
+      return;
+    }
+
+    if (lastThrowLocation.get(event.getPlayer()).distance(event.getTo())
         >= Config.get().getInt("misc.ender-pearl-cooldown.max-distance")) {
-      event.getPlayer().setCooldown(Material.ENDER_PEARL,
-          Config.get().getInt("misc.ender-pearl-cooldown.time") * 20);
+      int ticks = Config.get().getInt("misc.ender-pearl-cooldown.time") * 20;
+
+      event.getPlayer().setCooldown(Material.ENDER_PEARL, ticks);
+
+      onCooldown.put(event.getPlayer(), true);
+
+      new BukkitRunnable() {
+        @Override
+        public void run() {
+          onCooldown.put(event.getPlayer(), false);
+        }
+      }.runTaskLater(AuroraCombat.INSTANCE, ticks);
     }
   }
 
@@ -45,6 +64,11 @@ public class ProjectileListener implements Listener {
     }
 
     if (!Config.get().getBoolean("misc.ender-pearl-cooldown.enabled")) {
+      return;
+    }
+
+    if (onCooldown.getOrDefault(player, false)) {
+      event.setCancelled(true);
       return;
     }
 
