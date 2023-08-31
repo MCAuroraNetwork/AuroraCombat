@@ -8,10 +8,13 @@ import club.aurorapvp.auroracombat.modules.BlockFallDamage;
 import club.aurorapvp.auroracombat.modules.CombatTag;
 import club.aurorapvp.auroracombat.modules.KillDeathTracker;
 import club.aurorapvp.auroracombat.modules.Rating;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
@@ -20,7 +23,7 @@ import org.bukkit.event.player.PlayerQuitEvent;
 
 public class CombatEventListener implements Listener {
 
-  private PlayerDamagedByPlayerEvent lastDamage;
+  public static final Map<Player, Event> lastDamage = new HashMap<>();
   private final Set<Player> combatLoggers = new HashSet<>();
 
   @EventHandler
@@ -65,13 +68,19 @@ public class CombatEventListener implements Listener {
     CombatTag.removeTags(event.getPlayer());
     BlockFallDamage.setInVulnerable(event.getPlayer());
 
-    if (lastDamage == null) {
+    if (lastDamage.get(event.getPlayer()) == null) {
       return;
     }
 
-    if (event.getPlayer().equals(lastDamage.getDamaged()) && !lastDamage.isCancelled()) {
-      new PlayerKilledByPlayerEvent(lastDamage, event).callEvent();
-      lastDamage = null;
+    if (!(lastDamage.get(
+        event.getPlayer()) instanceof PlayerDamagedByPlayerEvent damagedByPlayerEvent)) {
+      return;
+    }
+
+    if (event.getPlayer().equals(damagedByPlayerEvent.getDamaged())
+        && !damagedByPlayerEvent.isCancelled()) {
+      new PlayerKilledByPlayerEvent(damagedByPlayerEvent, event).callEvent();
+      lastDamage.remove(event.getPlayer());
     }
   }
 
@@ -96,6 +105,6 @@ public class CombatEventListener implements Listener {
     }
 
     new CombatTag(event.getDamaged(), event.getAttacker());
-    lastDamage = event;
+    lastDamage.put(event.getDamaged(), event);
   }
 }

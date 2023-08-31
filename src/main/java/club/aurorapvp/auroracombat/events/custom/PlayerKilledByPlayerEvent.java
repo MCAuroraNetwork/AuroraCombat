@@ -29,11 +29,6 @@ public class PlayerKilledByPlayerEvent extends PlayerDamagedByPlayerEvent implem
     new DeathMessage(this);
   }
 
-  @SuppressWarnings("unused")
-  public static HandlerList getHandlerList() {
-    return HANDLERS;
-  }
-
   public Player getDead() {
     return deathEvent.getEntity();
   }
@@ -51,16 +46,21 @@ public class PlayerKilledByPlayerEvent extends PlayerDamagedByPlayerEvent implem
     return deathEvent;
   }
 
+  @SuppressWarnings("unused")
+  public static HandlerList getHandlerList() {
+    return HANDLERS;
+  }
+
+  @Override
+  public @NotNull HandlerList getHandlers() {
+    return HANDLERS;
+  }
+
   @Override
   public void setCancelled(boolean cancel) {
     cancelled = cancel;
 
     deathEvent.setCancelled(cancel);
     lastDamage.setCancelled(cancel);
-  }
-
-  @Override
-  public @NotNull HandlerList getHandlers() {
-    return HANDLERS;
   }
 }

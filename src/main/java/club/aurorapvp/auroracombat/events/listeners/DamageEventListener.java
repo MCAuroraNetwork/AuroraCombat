@@ -1,5 +1,7 @@
 package club.aurorapvp.auroracombat.events.listeners;
 
+import static club.aurorapvp.auroracombat.events.listeners.CombatEventListener.lastDamage;
+
 import club.aurorapvp.auroracombat.AuroraCombat;
 import club.aurorapvp.auroracombat.config.Config;
 import club.aurorapvp.auroracombat.enums.DamageType;
@@ -28,6 +30,7 @@ import org.bukkit.event.entity.ProjectileLaunchEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffectType;
+import org.bukkit.scheduler.BukkitRunnable;
 
 public class DamageEventListener implements Listener {
 
@@ -46,6 +49,8 @@ public class DamageEventListener implements Listener {
     if (!(event.getEntity() instanceof Player damaged)) {
       return;
     }
+
+    lastDamage.put(damaged, event);
 
     if (event.getDamager() instanceof EnderCrystal enderCrystal) {
       new PlayerOnPlayerDamageBuilder()
@@ -111,6 +116,8 @@ public class DamageEventListener implements Listener {
     if (!(event.getEntity() instanceof Player damaged)) {
       return;
     }
+
+    lastDamage.put(damaged, event);
 
     if (event.getCause() == EntityDamageEvent.DamageCause.BLOCK_EXPLOSION
         && damaged.getLocation().distance(this.lastExplodedBlock.getLocation()) <= 10) {

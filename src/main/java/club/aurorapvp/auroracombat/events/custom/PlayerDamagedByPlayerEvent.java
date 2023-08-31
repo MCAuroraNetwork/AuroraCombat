@@ -28,11 +28,6 @@ public class PlayerDamagedByPlayerEvent extends Event implements Cancellable {
     this.weapon = weapon;
   }
 
-  @SuppressWarnings("unused")
-  public static HandlerList getHandlerList() {
-    return HANDLERS;
-  }
-
   public ItemStack getWeapon() {
     return weapon;
   }
@@ -47,6 +42,11 @@ public class PlayerDamagedByPlayerEvent extends Event implements Cancellable {
 
   public DamageType getDamageType() {
     return damageType;
+  }
+
+  @SuppressWarnings("unused")
+  public static HandlerList getHandlerList() {
+    return HANDLERS;
   }
 
   @Override
