@@ -15,7 +15,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 public class ItemStackUtil {
 
   public static ItemStack toItemStack(EnderCrystal enderCrystal) {
-    Component displayName = enderCrystal.name();
+    Component displayName = enderCrystal.customName();
 
     ItemStack item = new ItemStack(Material.END_CRYSTAL);
     ItemMeta meta = item.getItemMeta();
@@ -29,7 +29,8 @@ public class ItemStackUtil {
 
   public static ItemStack toItemStack(Projectile projectile) {
     ItemStack item;
-    Component displayName = projectile.name();
+    Component displayName = projectile.customName();
+    assert displayName != null;
     displayName = displayName.colorIfAbsent(NamedTextColor.AQUA);
 
     if (projectile instanceof Arrow) {
