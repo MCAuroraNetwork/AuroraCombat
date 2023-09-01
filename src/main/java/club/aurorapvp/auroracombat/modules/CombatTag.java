@@ -223,9 +223,6 @@ public class CombatTag {
               playerOne.hideBossBar(playerOneBar[0]);
             }
 
-            AuroraCombat.INSTANCE.getLogger().log(Level.INFO,
-                String.valueOf(playerTwo.getHealth() + playerTwo.getAbsorptionAmount() / 20));
-
             playerOneBar[0] =
                 BossBar.bossBar(
                     Lang.formatComponent(

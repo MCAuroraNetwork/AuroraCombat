@@ -8,7 +8,10 @@ import club.aurorapvp.auroracombat.enums.DamageType;
 import club.aurorapvp.auroracombat.events.custom.PlayerDamagedByPlayerEvent;
 import club.aurorapvp.auroracombat.modules.BlockFallDamage;
 import club.aurorapvp.auroracombat.util.ItemStackUtil;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -30,11 +33,11 @@ import org.bukkit.event.entity.ProjectileLaunchEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffectType;
-import org.bukkit.scheduler.BukkitRunnable;
 
 public class DamageEventListener implements Listener {
 
   private final HashSet<Projectile> firedProjectiles = new HashSet<>();
+  private Map<Player, Component> lastPlacedCrystalName = new HashMap<>();
   private Player lastCrystalAttacker;
   private Player lastInteractedWithBlock;
   private BlockState lastExplodedBlock;
@@ -52,12 +55,13 @@ public class DamageEventListener implements Listener {
 
     lastDamage.put(damaged, event);
 
-    if (event.getDamager() instanceof EnderCrystal enderCrystal) {
+    if (event.getDamager() instanceof EnderCrystal) {
       new PlayerOnPlayerDamageBuilder()
           .setDamageType(DamageType.EXPLOSION_ENTITY)
           .setDamaged(damaged)
           .setAttacker(this.lastCrystalAttacker)
-          .setWeapon(ItemStackUtil.toItemStack(enderCrystal))
+          .setWeapon(ItemStackUtil.toEndCrystalItemStack(
+              lastPlacedCrystalName.get(this.lastCrystalAttacker)))
           .setEvent(event)
           .build().callEvent();
     }
@@ -136,6 +140,12 @@ public class DamageEventListener implements Listener {
   public void onPlayerInteract(PlayerInteractEvent event) {
     if (event.getClickedBlock() == null) {
       return;
+    }
+
+    if (event.getPlayer().getInventory().getItemInMainHand().getType()
+        .equals(Material.END_CRYSTAL)) {
+      lastPlacedCrystalName.put(event.getPlayer(),
+          event.getPlayer().getInventory().getItemInMainHand().displayName());
     }
 
     if (event.getClickedBlock().getBlockData() instanceof RespawnAnchor respawnAnchor) {
