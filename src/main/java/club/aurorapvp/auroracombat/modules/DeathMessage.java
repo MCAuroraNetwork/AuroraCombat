@@ -6,8 +6,10 @@ import java.util.Objects;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.text.minimessage.MiniMessage;
+import org.bukkit.Color;
 import org.bukkit.inventory.ItemStack;
 
 public class DeathMessage {
@@ -16,12 +18,13 @@ public class DeathMessage {
     ItemStack weapon = event.getWeapon();
     HoverEvent<HoverEvent.ShowItem> hover = weapon.asHoverEvent();
 
-    Component weaponName = weapon.displayName().decoration(TextDecoration.ITALIC, false);
+    Component weaponName = weapon.displayName();
 
-    if (weaponName.color() == null || Objects.requireNonNull(weaponName.color()).asHexString()
-        .equals(NamedTextColor.WHITE.asHexString())) {
-      weaponName.color(NamedTextColor.AQUA);
+    if (Objects.equals(weaponName.color(), TextColor.color(Color.WHITE.asRGB()))) {
+      weaponName = weaponName.color(NamedTextColor.AQUA);
     }
+
+    weaponName.decoration(TextDecoration.ITALIC, false);
 
     switch (event.getDamageType()) {
       case MELEE -> event.deathMessage(
