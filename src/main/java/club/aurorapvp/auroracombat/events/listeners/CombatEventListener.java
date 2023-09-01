@@ -41,7 +41,18 @@ public class CombatEventListener implements Listener {
       return;
     }
 
-    if (Config.get().getBoolean("combat-tag.allow-commands")) {
+    boolean commandMatched = false;
+
+    if (!Config.get().getBoolean("combat-tag.commands.allow-commands")) {
+      for (String command : Config.get().getStringList("combat-tag.commands.whitelisted")) {
+        if (event.getMessage().equals(command)) {
+          commandMatched = true;
+          break;
+        }
+      }
+    }
+
+    if (!commandMatched) {
       return;
     }
 
