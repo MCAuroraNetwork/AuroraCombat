@@ -2,6 +2,7 @@ package club.aurorapvp.auroracombat.modules;
 
 import club.aurorapvp.auroracombat.config.Lang;
 import club.aurorapvp.auroracombat.events.custom.PlayerKilledByPlayerEvent;
+import java.util.Objects;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -16,6 +17,11 @@ public class DeathMessage {
     HoverEvent<HoverEvent.ShowItem> hover = weapon.asHoverEvent();
 
     Component weaponName = weapon.displayName().decoration(TextDecoration.ITALIC, false);
+
+    if (weaponName.color() == null || Objects.requireNonNull(weaponName.color()).asHexString()
+        .equals(NamedTextColor.WHITE.asHexString())) {
+      weaponName.color(NamedTextColor.AQUA);
+    }
 
     switch (event.getDamageType()) {
       case MELEE -> event.deathMessage(
@@ -37,7 +43,7 @@ public class DeathMessage {
                   "death-message.killed-by-player-shot",
                   event.getDamaged().getName(),
                   event.getAttacker().getName(),
-                  MiniMessage.miniMessage().serialize(weaponName.colorIfAbsent(NamedTextColor.AQUA)))
+                  MiniMessage.miniMessage().serialize(weaponName))
               .hoverEvent(hover));
       case MAGIC -> event.deathMessage(
           Lang.formatComponent(

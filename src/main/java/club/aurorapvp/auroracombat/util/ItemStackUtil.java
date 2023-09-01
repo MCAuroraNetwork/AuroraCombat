@@ -59,8 +59,6 @@ public class ItemStackUtil {
     if (displayName != null) {
       ItemMeta meta = item.getItemMeta();
 
-      displayName = displayName.colorIfAbsent(NamedTextColor.AQUA);
-
       meta.displayName(displayName);
 
       item.setItemMeta(meta);
