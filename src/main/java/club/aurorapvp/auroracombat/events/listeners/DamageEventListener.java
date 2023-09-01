@@ -37,7 +37,8 @@ import org.bukkit.potion.PotionEffectType;
 public class DamageEventListener implements Listener {
 
   private final HashSet<Projectile> firedProjectiles = new HashSet<>();
-  private Map<Player, Component> lastPlacedCrystalName = new HashMap<>();
+  private final Map<Player, Component> lastPlacedCrystalName = new HashMap<>();
+  private final Map<Player, ItemStack> lastUsedBow = new HashMap<>();
   private Player lastCrystalAttacker;
   private Player lastInteractedWithBlock;
   private BlockState lastExplodedBlock;
@@ -90,7 +91,7 @@ public class DamageEventListener implements Listener {
             .setDamageType(DamageType.RANGED)
             .setDamaged(damaged)
             .setAttacker(attacker)
-            .setWeapon(ItemStackUtil.toItemStack(projectile))
+            .setWeapon(lastUsedBow.get(attacker))
             .setEvent(event)
             .build().callEvent();
       }
@@ -167,8 +168,9 @@ public class DamageEventListener implements Listener {
 
   @EventHandler
   public void onProjectileFired(ProjectileLaunchEvent event) {
-    if (event.getEntity().getShooter() instanceof Player) {
+    if (event.getEntity().getShooter() instanceof Player player) {
       this.firedProjectiles.add(event.getEntity());
+      this.lastUsedBow.put(player, player.getInventory().getItemInMainHand());
     }
   }
 
