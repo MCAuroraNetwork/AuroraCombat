@@ -61,29 +61,25 @@ public class Placeholders extends PlaceholderExpansion {
     if (params.startsWith("killstreak")) {
       KillDeathTracker tracker = KillDeathTracker.getTracker(player);
 
-      assert tracker != null;
       return String.valueOf(tracker.getKillStreak());
     }
 
     if (params.startsWith("kills")) {
       KillDeathTracker tracker = KillDeathTracker.getTracker(player);
 
-      assert tracker != null;
       return String.valueOf(tracker.getKills());
     }
 
     if (params.startsWith("deaths")) {
       KillDeathTracker tracker = KillDeathTracker.getTracker(player);
 
-      assert tracker != null;
       return String.valueOf(tracker.getDeaths());
     }
 
     if (params.startsWith("kdr")) {
       KillDeathTracker tracker = KillDeathTracker.getTracker(player);
 
-      assert tracker != null;
-      return String.valueOf(Math.round(tracker.getKDR() * 1000d) / 1000d);
+      return String.valueOf(Math.round(tracker.getKDR() * 10d) / 10d);
     }
 
     return null;
