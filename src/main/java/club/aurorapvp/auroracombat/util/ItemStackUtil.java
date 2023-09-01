@@ -35,9 +35,6 @@ public class ItemStackUtil {
 
   public static ItemStack toItemStack(Projectile projectile) {
     ItemStack item;
-    Component displayName = projectile.customName();
-    assert displayName != null;
-    displayName = displayName.colorIfAbsent(NamedTextColor.AQUA);
 
     if (projectile instanceof Arrow) {
       item = new ItemStack(Material.ARROW);
@@ -57,11 +54,17 @@ public class ItemStackUtil {
           };
     }
 
-    ItemMeta meta = item.getItemMeta();
+    Component displayName = projectile.customName();
 
-    meta.displayName(displayName);
+    if (displayName != null) {
+      ItemMeta meta = item.getItemMeta();
 
-    item.setItemMeta(meta);
+      displayName = displayName.colorIfAbsent(NamedTextColor.AQUA);
+
+      meta.displayName(displayName);
+
+      item.setItemMeta(meta);
+    }
 
     return item;
   }
