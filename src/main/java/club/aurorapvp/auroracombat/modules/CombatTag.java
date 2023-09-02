@@ -241,7 +241,9 @@ public class CombatTag {
     final int executionTimes = 30;
     final double delay = (double) totalSeconds / executionTimes;
 
-    countdownTask.cancel();
+    if (countdownTask != null) {
+      countdownTask.cancel();
+    }
 
     countdownTask =
         new BukkitRunnable() {
