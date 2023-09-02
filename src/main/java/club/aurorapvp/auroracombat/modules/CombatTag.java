@@ -216,40 +216,37 @@ public class CombatTag {
           }
         }.runTaskTimer(AuroraCombat.INSTANCE, 0, (long) (delay * 20));
 
-    if (playerOneBar[0] != null) {
-      playerOne.hideBossBar(playerOneBar[0]);
+    if (playerOneBar[0] == null) {
+      playerOneBar[0] =
+          BossBar.bossBar(
+              Lang.formatComponent(
+                  "opponent-bossbar",
+                  playerTwo.getName(),
+                  (int) (playerTwo.getHealth() + playerTwo.getAbsorptionAmount()),
+                  (int) playerTwo.getLocation().distance(playerOne.getLocation()),
+                  playerTwo.getPing()),
+              1.0f,
+              BossBar.Color.RED,
+              BossBar.Overlay.PROGRESS);
+
+      playerOne.showBossBar(playerOneBar[0]);
     }
 
-    playerOneBar[0] =
-        BossBar.bossBar(
-            Lang.formatComponent(
-                "opponent-bossbar",
-                playerTwo.getName(),
-                (int) (playerTwo.getHealth() + playerTwo.getAbsorptionAmount()),
-                (int) playerTwo.getLocation().distance(playerOne.getLocation()),
-                playerTwo.getPing()),
-            1.0f,
-            BossBar.Color.RED,
-            BossBar.Overlay.PROGRESS);
+    if (playerTwoBar[0] == null) {
+      playerTwoBar[0] =
+          BossBar.bossBar(
+              Lang.formatComponent(
+                  "opponent-bossbar",
+                  playerOne.getName(),
+                  (int) (playerOne.getHealth() + playerTwo.getAbsorptionAmount()),
+                  (int) playerOne.getLocation().distance(playerTwo.getLocation()),
+                  playerOne.getPing()),
+              (float) Math.min((playerOne.getHealth() + playerOne.getAbsorptionAmount()) / 20,
+                  1.0f),
+              BossBar.Color.RED,
+              BossBar.Overlay.PROGRESS);
 
-    playerOne.showBossBar(playerOneBar[0]);
-
-    playerTwoBar[0] =
-        BossBar.bossBar(
-            Lang.formatComponent(
-                "opponent-bossbar",
-                playerOne.getName(),
-                (int) (playerOne.getHealth() + playerTwo.getAbsorptionAmount()),
-                (int) playerOne.getLocation().distance(playerTwo.getLocation()),
-                playerOne.getPing()),
-            (float) Math.min((playerOne.getHealth() + playerOne.getAbsorptionAmount()) / 20, 1.0f),
-            BossBar.Color.RED,
-            BossBar.Overlay.PROGRESS);
-
-    playerTwo.showBossBar(playerTwoBar[0]);
-
-    if (playerTwoBar[0] != null) {
-      playerTwo.hideBossBar(playerTwoBar[0]);
+      playerTwo.showBossBar(playerTwoBar[0]);
     }
 
     bossbarTask =
