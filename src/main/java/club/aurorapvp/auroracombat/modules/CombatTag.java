@@ -60,60 +60,6 @@ public class CombatTag {
 
       tags.add(this);
 
-      playerOneBar[0] =
-          BossBar.bossBar(
-              Lang.formatComponent(
-                  "opponent-bossbar",
-                  playerTwo.getName(),
-                  (int) (playerTwo.getHealth() + playerTwo.getAbsorptionAmount()),
-                  (int) playerTwo.getLocation().distance(playerOne.getLocation()),
-                  playerTwo.getPing()),
-              1.0f,
-              BossBar.Color.RED,
-              BossBar.Overlay.PROGRESS);
-
-      playerOne.showBossBar(playerOneBar[0]);
-
-      playerTwoBar[0] =
-          BossBar.bossBar(
-              Lang.formatComponent(
-                  "opponent-bossbar",
-                  playerOne.getName(),
-                  (int) (playerOne.getHealth() + playerTwo.getAbsorptionAmount()),
-                  (int) playerOne.getLocation().distance(playerTwo.getLocation()),
-                  playerOne.getPing()),
-              (float) Math.min((playerOne.getHealth() + playerOne.getAbsorptionAmount()) / 20, 1.0f),
-              BossBar.Color.RED,
-              BossBar.Overlay.PROGRESS);
-
-      playerTwo.showBossBar(playerTwoBar[0]);
-
-      bossbarTask =
-          new BukkitRunnable() {
-            int ticks = Config.get().getInt("combat-tag.duration") * 20;
-
-            @Override
-            public void run() {
-              playerOneBar[0].name(Lang.formatComponent("opponent-bossbar", playerTwo.getName(),
-                  (int) (playerTwo.getHealth() + playerTwo.getAbsorptionAmount()),
-                  (int) playerTwo.getLocation().distance(playerOne.getLocation()),
-                  playerTwo.getPing())).progress(
-                  (float) Math.min((playerTwo.getHealth() + playerTwo.getAbsorptionAmount()) / 20,
-                      1.0f));
-
-              playerTwoBar[0].name(Lang.formatComponent("opponent-bossbar", playerOne.getName(),
-                  (int) (playerOne.getHealth() + playerTwo.getAbsorptionAmount()),
-                  (int) playerOne.getLocation().distance(playerTwo.getLocation()),
-                  playerOne.getPing())).progress(
-                  (float) Math.min((playerOne.getHealth() + playerOne.getAbsorptionAmount()) / 20,
-                      1.0f));
-
-              if ((ticks -= 1) == 0) {
-                this.cancel();
-              }
-            }
-          }.runTaskTimer(AuroraCombat.INSTANCE, 0, 1L);
-
       this.startTimer();
     }
   }
@@ -269,6 +215,68 @@ public class CombatTag {
             }
           }
         }.runTaskTimer(AuroraCombat.INSTANCE, 0, (long) (delay * 20));
+
+    if (playerOneBar[0] != null) {
+      playerOne.hideBossBar(playerOneBar[0]);
+    }
+
+    playerOneBar[0] =
+        BossBar.bossBar(
+            Lang.formatComponent(
+                "opponent-bossbar",
+                playerTwo.getName(),
+                (int) (playerTwo.getHealth() + playerTwo.getAbsorptionAmount()),
+                (int) playerTwo.getLocation().distance(playerOne.getLocation()),
+                playerTwo.getPing()),
+            1.0f,
+            BossBar.Color.RED,
+            BossBar.Overlay.PROGRESS);
+
+    playerOne.showBossBar(playerOneBar[0]);
+
+    playerTwoBar[0] =
+        BossBar.bossBar(
+            Lang.formatComponent(
+                "opponent-bossbar",
+                playerOne.getName(),
+                (int) (playerOne.getHealth() + playerTwo.getAbsorptionAmount()),
+                (int) playerOne.getLocation().distance(playerTwo.getLocation()),
+                playerOne.getPing()),
+            (float) Math.min((playerOne.getHealth() + playerOne.getAbsorptionAmount()) / 20, 1.0f),
+            BossBar.Color.RED,
+            BossBar.Overlay.PROGRESS);
+
+    playerTwo.showBossBar(playerTwoBar[0]);
+
+    if (playerTwoBar[0] != null) {
+      playerTwo.hideBossBar(playerTwoBar[0]);
+    }
+
+    bossbarTask =
+        new BukkitRunnable() {
+          int ticks = Config.get().getInt("combat-tag.duration") * 20;
+
+          @Override
+          public void run() {
+            playerOneBar[0].name(Lang.formatComponent("opponent-bossbar", playerTwo.getName(),
+                (int) (playerTwo.getHealth() + playerTwo.getAbsorptionAmount()),
+                (int) playerTwo.getLocation().distance(playerOne.getLocation()),
+                playerTwo.getPing())).progress(
+                (float) Math.min((playerTwo.getHealth() + playerTwo.getAbsorptionAmount()) / 20,
+                    1.0f));
+
+            playerTwoBar[0].name(Lang.formatComponent("opponent-bossbar", playerOne.getName(),
+                (int) (playerOne.getHealth() + playerTwo.getAbsorptionAmount()),
+                (int) playerOne.getLocation().distance(playerTwo.getLocation()),
+                playerOne.getPing())).progress(
+                (float) Math.min((playerOne.getHealth() + playerOne.getAbsorptionAmount()) / 20,
+                    1.0f));
+
+            if ((ticks -= 1) == 0) {
+              this.cancel();
+            }
+          }
+        }.runTaskTimer(AuroraCombat.INSTANCE, 0, 1L);
   }
 
   public void resetTimer() {
