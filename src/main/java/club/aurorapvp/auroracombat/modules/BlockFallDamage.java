@@ -8,7 +8,7 @@ public class BlockFallDamage {
   private static final HashMap<Player, Boolean> inVulnerable = new HashMap<>();
 
   public static boolean shouldTakeDamage(Player player) {
-    return !inVulnerable.getOrDefault(player, true);
+    return !inVulnerable.get(player);
   }
 
   public static void setInVulnerable(Player player) {

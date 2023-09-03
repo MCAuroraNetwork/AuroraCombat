@@ -17,6 +17,7 @@ public class PlayerEventListener implements Listener {
   @EventHandler
   public void onPlayerJoin(PlayerJoinEvent event) {
     Rating.register(event.getPlayer());
+    BlockFallDamage.setInVulnerable(event.getPlayer());
 
     if (Config.get().getBoolean("combat-tag.enable")) {
       CombatTag.setTaggable(event.getPlayer(), true);
