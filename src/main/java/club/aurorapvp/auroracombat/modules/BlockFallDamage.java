@@ -16,6 +16,6 @@ public class BlockFallDamage {
   }
 
   public static void setVulnerable(Player player) {
-    inVulnerable.remove(player);
+    inVulnerable.put(player, false);
   }
 }

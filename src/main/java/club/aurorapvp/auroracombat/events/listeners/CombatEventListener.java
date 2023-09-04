@@ -13,6 +13,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import net.kyori.adventure.sound.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
@@ -100,6 +101,11 @@ public class CombatEventListener implements Listener {
     if (!CombatTag.isUntaggable(event.getDead()) && !CombatTag.isUntaggable(event.getKiller())) {
       Objects.requireNonNull(KillDeathTracker.getTracker(event.getDead())).addDeath();
       Objects.requireNonNull(KillDeathTracker.getTracker(event.getKiller())).addKill();
+
+      event.getDead()
+          .playSound(Sound.sound().type(org.bukkit.Sound.ENTITY_ENDER_DRAGON_GROWL).build());
+      event.getKiller()
+          .playSound(Sound.sound().type(org.bukkit.Sound.ENTITY_ARROW_HIT_PLAYER).build());
     }
 
     for (Rating rating : Rating.getRatings()) {
