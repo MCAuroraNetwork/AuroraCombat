@@ -242,7 +242,7 @@ public class CombatTag {
                       Component.text(playerTwo.getPing())),
               1.0f, Color.RED, Overlay.PROGRESS);
 
-      playerOne.showBossBar(playerTwoBar[0]);
+      playerOne.showBossBar(playerOneBar[0]);
     }
 
     if (playerTwoBar[0] == null) {
