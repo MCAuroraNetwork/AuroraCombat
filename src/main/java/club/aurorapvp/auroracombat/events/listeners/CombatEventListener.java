@@ -53,7 +53,7 @@ public class CombatEventListener implements Listener {
       }
     }
 
-    if (!commandMatched) {
+    if (commandMatched) {
       return;
     }
 
