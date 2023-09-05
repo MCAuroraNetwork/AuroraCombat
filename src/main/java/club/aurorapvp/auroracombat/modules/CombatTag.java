@@ -26,7 +26,6 @@ import net.kyori.adventure.bossbar.BossBar.Color;
 import net.kyori.adventure.bossbar.BossBar.Overlay;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
-import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -207,20 +206,16 @@ public class CombatTag {
             int redBars = 30 - greenBars;
 
             Component green = Component.text("|".repeat(greenBars))
-                .color(TextColor.fromHexString(
-                    NamedTextColor.GREEN.asHexString()));
+                .color(NamedTextColor.GREEN);
 
             Component red = Component.text("|".repeat(redBars))
-                .color(TextColor.fromHexString(
-                    NamedTextColor.RED.asHexString()));
+                .color(NamedTextColor.RED);
 
             Component playerOneName = playerOne.name().decorate(TextDecoration.BOLD)
-                .color(TextColor.fromHexString(
-                    NamedTextColor.RED.asHexString()));
+                .color(NamedTextColor.RED);
 
             Component playerTwoName = playerTwo.name().decorate(TextDecoration.BOLD)
-                .color(TextColor.fromHexString(
-                    NamedTextColor.RED.asHexString()));
+                .color(NamedTextColor.RED);
 
             playerOne.sendActionBar(playerTwoName.appendSpace().append(green.append(red)));
             playerTwo.sendActionBar(playerOneName.appendSpace().append(green.append(red)));
@@ -237,9 +232,10 @@ public class CombatTag {
               playerTwo.displayName().decorate(TextDecoration.BOLD).color(NamedTextColor.YELLOW)
                   .appendSpace().append(
                       Component.text(
-                          (int) (playerTwo.getHealth() + playerTwo.getAbsorptionAmount()) + "❤"))
+                              (int) (playerTwo.getHealth() + playerTwo.getAbsorptionAmount()) + "❤")
+                          .color(NamedTextColor.RED))
                   .appendSpace().append(
-                      Component.text(playerTwo.getPing())),
+                      Component.text(playerTwo.getPing() + "ms").color(NamedTextColor.AQUA)),
               1.0f, Color.RED, Overlay.PROGRESS);
 
       playerOne.showBossBar(playerOneBar[0]);
@@ -251,9 +247,10 @@ public class CombatTag {
               playerOne.displayName().decorate(TextDecoration.BOLD).color(NamedTextColor.YELLOW)
                   .appendSpace().append(
                       Component.text(
-                          (int) (playerOne.getHealth() + playerOne.getAbsorptionAmount()) + "❤"))
+                              (int) (playerOne.getHealth() + playerOne.getAbsorptionAmount()) + "❤")
+                          .color(NamedTextColor.RED))
                   .appendSpace().append(
-                      Component.text(playerOne.getPing())),
+                      Component.text(playerOne.getPing() + "ms").color(NamedTextColor.AQUA)),
               1.0f, Color.RED, Overlay.PROGRESS);
 
       playerTwo.showBossBar(playerTwoBar[0]);
@@ -270,22 +267,24 @@ public class CombatTag {
   public void updateBossbar(Player player) {
     if (player == playerTwo) {
       playerOneBar[0].name(
-          playerTwo.displayName().decorate(TextDecoration.BOLD).color(NamedTextColor.YELLOW)
-              .appendSpace().append(
-                  Component.text(
-                      (int) (playerTwo.getHealth() + playerTwo.getAbsorptionAmount()) + "❤"))
-              .appendSpace().append(
-                  Component.text(playerTwo.getPing()))).progress(
-          (float) Math.min((playerTwo.getHealth() + playerTwo.getAbsorptionAmount()) / 20,
+              playerTwo.displayName().decorate(TextDecoration.BOLD).color(NamedTextColor.YELLOW)
+                  .appendSpace().append(
+                      Component.text(
+                              (int) (playerTwo.getHealth() + playerTwo.getAbsorptionAmount()) + "❤")
+                          .color(NamedTextColor.RED))
+                  .appendSpace().append(
+                      Component.text(playerTwo.getPing() + "ms").color(NamedTextColor.AQUA)))
+          .progress((float) Math.min((playerTwo.getHealth() + playerTwo.getAbsorptionAmount()) / 20,
               1.0f));
     } else {
       playerTwoBar[0].name(
           playerOne.displayName().decorate(TextDecoration.BOLD).color(NamedTextColor.YELLOW)
               .appendSpace().append(
                   Component.text(
-                      (int) (playerOne.getHealth() + playerOne.getAbsorptionAmount()) + "❤"))
+                          (int) (playerOne.getHealth() + playerOne.getAbsorptionAmount()) + "❤")
+                      .color(NamedTextColor.RED))
               .appendSpace().append(
-                  Component.text(playerOne.getPing()))).progress(
+                  Component.text(playerOne.getPing() + "ms").color(NamedTextColor.AQUA))).progress(
           (float) Math.min((playerOne.getHealth() + playerOne.getAbsorptionAmount()) / 20,
               1.0f));
     }
