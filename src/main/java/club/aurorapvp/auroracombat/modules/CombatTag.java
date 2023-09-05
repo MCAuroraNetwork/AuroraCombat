@@ -22,6 +22,12 @@ import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
 import net.kyori.adventure.bossbar.BossBar;
+import net.kyori.adventure.bossbar.BossBar.Color;
+import net.kyori.adventure.bossbar.BossBar.Overlay;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.TextColor;
+import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -36,7 +42,6 @@ public class CombatTag {
   private final BossBar[] playerOneBar = new BossBar[1];
   private final BossBar[] playerTwoBar = new BossBar[1];
   private Timer timer;
-  private BukkitTask bossbarTask;
   private BukkitTask countdownTask;
   private Long timeStarted;
 
@@ -201,14 +206,24 @@ public class CombatTag {
                 (double) (executionTimes - counter) / executionTimes * 30);
             int redBars = 30 - greenBars;
 
-            String progressBar = "<green>" + "|".repeat(greenBars) + "<red>" + "|".repeat(redBars);
+            Component green = Component.text("|".repeat(greenBars))
+                .color(TextColor.fromHexString(
+                    NamedTextColor.GREEN.asHexString()));
 
-            playerOne.sendActionBar(
-                Lang.formatComponent(
-                    "tagged-action-bar", playerTwo.getName(), progressBar));
-            playerTwo.sendActionBar(
-                Lang.formatComponent(
-                    "tagged-action-bar", playerOne.getName(), progressBar));
+            Component red = Component.text("|".repeat(redBars))
+                .color(TextColor.fromHexString(
+                    NamedTextColor.RED.asHexString()));
+
+            Component playerOneName = playerOne.name().decorate(TextDecoration.BOLD)
+                .color(TextColor.fromHexString(
+                    NamedTextColor.RED.asHexString()));
+
+            Component playerTwoName = playerTwo.name().decorate(TextDecoration.BOLD)
+                .color(TextColor.fromHexString(
+                    NamedTextColor.RED.asHexString()));
+
+            playerOne.sendActionBar(playerTwoName.appendSpace().append(green.append(red)));
+            playerTwo.sendActionBar(playerOneName.appendSpace().append(green.append(red)));
 
             if ((counter += 1) == executionTimes) {
               this.cancel();
@@ -219,73 +234,61 @@ public class CombatTag {
     if (playerOneBar[0] == null) {
       playerOneBar[0] =
           BossBar.bossBar(
-              Lang.formatComponent(
-                  "opponent-bossbar",
-                  playerTwo.getName(),
-                  (int) (playerTwo.getHealth() + playerTwo.getAbsorptionAmount()),
-                  (int) playerTwo.getLocation().distance(playerOne.getLocation()),
-                  playerTwo.getPing()),
-              1.0f,
-              BossBar.Color.RED,
-              BossBar.Overlay.PROGRESS);
+              playerTwo.displayName().decorate(TextDecoration.BOLD).color(NamedTextColor.YELLOW)
+                  .appendSpace().append(
+                      Component.text(
+                          (int) (playerTwo.getHealth() + playerTwo.getAbsorptionAmount()) + "❤"))
+                  .appendSpace().append(
+                      Component.text(playerTwo.getPing())),
+              1.0f, Color.RED, Overlay.PROGRESS);
 
-      playerOne.showBossBar(playerOneBar[0]);
+      playerOne.showBossBar(playerTwoBar[0]);
     }
 
     if (playerTwoBar[0] == null) {
       playerTwoBar[0] =
           BossBar.bossBar(
-              Lang.formatComponent(
-                  "opponent-bossbar",
-                  playerOne.getName(),
-                  (int) (playerOne.getHealth() + playerTwo.getAbsorptionAmount()),
-                  (int) playerOne.getLocation().distance(playerTwo.getLocation()),
-                  playerOne.getPing()),
-              (float) Math.min((playerOne.getHealth() + playerOne.getAbsorptionAmount()) / 20,
-                  1.0f),
-              BossBar.Color.RED,
-              BossBar.Overlay.PROGRESS);
+              playerOne.displayName().decorate(TextDecoration.BOLD).color(NamedTextColor.YELLOW)
+                  .appendSpace().append(
+                      Component.text(
+                          (int) (playerOne.getHealth() + playerOne.getAbsorptionAmount()) + "❤"))
+                  .appendSpace().append(
+                      Component.text(playerOne.getPing())),
+              1.0f, Color.RED, Overlay.PROGRESS);
 
       playerTwo.showBossBar(playerTwoBar[0]);
     }
-
-    bossbarTask =
-        new BukkitRunnable() {
-          int ticks = Config.get().getInt("combat-tag.duration") * 20;
-
-          @Override
-          public void run() {
-            try {
-              playerOneBar[0].name(Lang.formatComponent("opponent-bossbar", playerTwo.getName(),
-                  (int) (playerTwo.getHealth() + playerTwo.getAbsorptionAmount()),
-                  (int) playerTwo.getLocation().distance(playerOne.getLocation()),
-                  playerTwo.getPing())).progress(
-                  (float) Math.min((playerTwo.getHealth() + playerTwo.getAbsorptionAmount()) / 20,
-                      1.0f));
-
-              playerTwoBar[0].name(Lang.formatComponent("opponent-bossbar", playerOne.getName(),
-                  (int) (playerOne.getHealth() + playerTwo.getAbsorptionAmount()),
-                  (int) playerOne.getLocation().distance(playerTwo.getLocation()),
-                  playerOne.getPing())).progress(
-                  (float) Math.min((playerOne.getHealth() + playerOne.getAbsorptionAmount()) / 20,
-                      1.0f));
-
-              if ((ticks -= 1) == 0) {
-                this.cancel();
-              }
-            } catch (IllegalArgumentException e) {
-              this.cancel();
-            }
-          }
-        }.runTaskTimer(AuroraCombat.INSTANCE, 0, 1L);
   }
 
   public void resetTimer() {
     timer.cancel();
-    bossbarTask.cancel();
     countdownTask.cancel();
 
     this.startTimer();
+  }
+
+  public void updateBossbar(Player player) {
+    if (player == playerTwo) {
+      playerOneBar[0].name(
+          playerTwo.displayName().decorate(TextDecoration.BOLD).color(NamedTextColor.YELLOW)
+              .appendSpace().append(
+                  Component.text(
+                      (int) (playerTwo.getHealth() + playerTwo.getAbsorptionAmount()) + "❤"))
+              .appendSpace().append(
+                  Component.text(playerTwo.getPing()))).progress(
+          (float) Math.min((playerTwo.getHealth() + playerTwo.getAbsorptionAmount()) / 20,
+              1.0f));
+    } else {
+      playerTwoBar[0].name(
+          playerOne.displayName().decorate(TextDecoration.BOLD).color(NamedTextColor.YELLOW)
+              .appendSpace().append(
+                  Component.text(
+                      (int) (playerOne.getHealth() + playerOne.getAbsorptionAmount()) + "❤"))
+              .appendSpace().append(
+                  Component.text(playerOne.getPing()))).progress(
+          (float) Math.min((playerOne.getHealth() + playerOne.getAbsorptionAmount()) / 20,
+              1.0f));
+    }
   }
 
   public int getTimeRemaining() {
@@ -296,7 +299,6 @@ public class CombatTag {
     timer.cancel();
 
     Bukkit.getScheduler().cancelTask(countdownTask.getTaskId());
-    Bukkit.getScheduler().cancelTask(bossbarTask.getTaskId());
 
     tags.remove(this);
 
