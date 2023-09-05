@@ -255,21 +255,25 @@ public class CombatTag {
 
           @Override
           public void run() {
-            playerOneBar[0].name(Lang.formatComponent("opponent-bossbar", playerTwo.getName(),
-                (int) (playerTwo.getHealth() + playerTwo.getAbsorptionAmount()),
-                (int) playerTwo.getLocation().distance(playerOne.getLocation()),
-                playerTwo.getPing())).progress(
-                (float) Math.min((playerTwo.getHealth() + playerTwo.getAbsorptionAmount()) / 20,
-                    1.0f));
+            try {
+              playerOneBar[0].name(Lang.formatComponent("opponent-bossbar", playerTwo.getName(),
+                  (int) (playerTwo.getHealth() + playerTwo.getAbsorptionAmount()),
+                  (int) playerTwo.getLocation().distance(playerOne.getLocation()),
+                  playerTwo.getPing())).progress(
+                  (float) Math.min((playerTwo.getHealth() + playerTwo.getAbsorptionAmount()) / 20,
+                      1.0f));
 
-            playerTwoBar[0].name(Lang.formatComponent("opponent-bossbar", playerOne.getName(),
-                (int) (playerOne.getHealth() + playerTwo.getAbsorptionAmount()),
-                (int) playerOne.getLocation().distance(playerTwo.getLocation()),
-                playerOne.getPing())).progress(
-                (float) Math.min((playerOne.getHealth() + playerOne.getAbsorptionAmount()) / 20,
-                    1.0f));
+              playerTwoBar[0].name(Lang.formatComponent("opponent-bossbar", playerOne.getName(),
+                  (int) (playerOne.getHealth() + playerTwo.getAbsorptionAmount()),
+                  (int) playerOne.getLocation().distance(playerTwo.getLocation()),
+                  playerOne.getPing())).progress(
+                  (float) Math.min((playerOne.getHealth() + playerOne.getAbsorptionAmount()) / 20,
+                      1.0f));
 
-            if ((ticks -= 1) == 0) {
+              if ((ticks -= 1) == 0) {
+                this.cancel();
+              }
+            } catch (IllegalArgumentException e) {
               this.cancel();
             }
           }
