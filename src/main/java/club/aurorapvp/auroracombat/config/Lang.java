@@ -54,9 +54,6 @@ public class Lang {
         <yellow>Deaths: %4$s
         <yellow>Killstreak: %5$s
         """);
-    DEFAULTS.put(
-        "opponent-bossbar",
-        "<yellow><bold>%1$s <reset><red>| %2$s❤ |<reset><green> %3$sm |<reset><aqua> %4$sms");
 
     for (String path : DEFAULTS.keySet()) {
       if (!get().contains(path) || get().getString(path) == null) {

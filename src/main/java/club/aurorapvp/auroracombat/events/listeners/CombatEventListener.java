@@ -1,6 +1,5 @@
 package club.aurorapvp.auroracombat.events.listeners;
 
-import club.aurorapvp.auroracombat.AuroraCombat;
 import club.aurorapvp.auroracombat.config.Config;
 import club.aurorapvp.auroracombat.config.Lang;
 import club.aurorapvp.auroracombat.events.custom.PlayerDamagedByPlayerEvent;
@@ -15,16 +14,15 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import net.kyori.adventure.sound.Sound;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.scheduler.BukkitRunnable;
 
 public class CombatEventListener implements Listener {
 
@@ -71,6 +69,7 @@ public class CombatEventListener implements Listener {
   }
 
   @EventHandler
+  (priority = EventPriority.MONITOR, ignoreCancelled = true)
   public void onHealthChange(EntityDamageEvent event) {
     if (!(event.getEntity() instanceof Player player)) {
       return;
@@ -80,14 +79,9 @@ public class CombatEventListener implements Listener {
       return;
     }
 
-    new BukkitRunnable() {
-      @Override
-      public void run() {
-        for (CombatTag tag : CombatTag.getTags(player)) {
-          tag.updateBossbar(player);
-        }
-      }
-    }.runTaskLater(AuroraCombat.INSTANCE, 1L);
+    for (CombatTag tag : CombatTag.getTags(player)) {
+      tag.updateBossbar(player, event.getDamage());
+    }
   }
 
   @EventHandler

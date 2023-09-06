@@ -264,13 +264,13 @@ public class CombatTag {
     this.startTimer();
   }
 
-  public void updateBossbar(Player player) {
+  public void updateBossbar(Player player, double damage) {
     if (player == playerTwo) {
       playerOneBar[0].name(
               playerTwo.displayName().decorate(TextDecoration.BOLD).color(NamedTextColor.YELLOW)
                   .appendSpace().append(
                       Component.text(
-                              (int) (playerTwo.getHealth() + playerTwo.getAbsorptionAmount()) + "❤")
+                              (int) (playerTwo.getHealth() + playerTwo.getAbsorptionAmount() - damage) + "❤")
                           .color(NamedTextColor.RED))
                   .appendSpace().append(
                       Component.text(playerTwo.getPing() + "ms").color(NamedTextColor.AQUA)))
@@ -281,7 +281,7 @@ public class CombatTag {
           playerOne.displayName().decorate(TextDecoration.BOLD).color(NamedTextColor.YELLOW)
               .appendSpace().append(
                   Component.text(
-                          (int) (playerOne.getHealth() + playerOne.getAbsorptionAmount()) + "❤")
+                          (int) (playerOne.getHealth() + playerOne.getAbsorptionAmount() - damage) + "❤")
                       .color(NamedTextColor.RED))
               .appendSpace().append(
                   Component.text(playerOne.getPing() + "ms").color(NamedTextColor.AQUA))).progress(
