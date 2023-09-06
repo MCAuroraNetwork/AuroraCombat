@@ -69,22 +69,6 @@ public class CombatEventListener implements Listener {
   }
 
   @EventHandler
-  (priority = EventPriority.MONITOR, ignoreCancelled = true)
-  public void onHealthChange(EntityDamageEvent event) {
-    if (!(event.getEntity() instanceof Player player)) {
-      return;
-    }
-
-    if (!CombatTag.isTagged(player)) {
-      return;
-    }
-
-    for (CombatTag tag : CombatTag.getTags(player)) {
-      tag.updateBossbar(player, event.getDamage());
-    }
-  }
-
-  @EventHandler
   public void onPlayerDeath(PlayerDeathEvent event) {
     if (combatLoggers.contains(event.getPlayer())) {
       new PlayerKilledByPlayerEvent(

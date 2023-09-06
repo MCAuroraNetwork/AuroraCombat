@@ -43,6 +43,7 @@ public class CombatTag {
   private Timer timer;
   private BukkitTask countdownTask;
   private Long timeStarted;
+  private BukkitRunnable bossbarTask;
 
   public CombatTag(Player tagged, Player opponent) {
     this.playerOne = tagged;
@@ -255,39 +256,48 @@ public class CombatTag {
 
       playerTwo.showBossBar(playerTwoBar[0]);
     }
+
+    bossbarTask = new BukkitRunnable() {
+      @Override
+      public void run() {
+        playerOneBar[0].name(
+                playerTwo.displayName().decorate(TextDecoration.BOLD).color(NamedTextColor.YELLOW)
+                    .appendSpace().append(
+                        Component.text(
+                                (int) (playerTwo.getHealth() + playerTwo.getAbsorptionAmount()) + "❤")
+                            .color(NamedTextColor.RED))
+                    .appendSpace().append(
+                        Component.text(playerTwo.getPing() + "ms").color(NamedTextColor.AQUA)))
+            .progress(
+                (float) Math.min((playerTwo.getHealth() + playerTwo.getAbsorptionAmount()) / 20,
+                    1.0f));
+
+        playerTwoBar[0].name(
+            playerOne.displayName().decorate(TextDecoration.BOLD).color(NamedTextColor.YELLOW)
+                .appendSpace().append(
+                    Component.text(
+                            (int) (playerOne.getHealth() + playerOne.getAbsorptionAmount()) + "❤")
+                        .color(NamedTextColor.RED))
+                .appendSpace().append(
+                    Component.text(playerOne.getPing() + "ms").color(NamedTextColor.AQUA))).progress(
+            (float) Math.min((playerOne.getHealth() + playerOne.getAbsorptionAmount()) / 20,
+                1.0f));
+      }
+    };
   }
 
   public void resetTimer() {
     timer.cancel();
-    countdownTask.cancel();
+
+    if (!bossbarTask.isCancelled() && bossbarTask != null) {
+      bossbarTask.cancel();
+    }
+
+    if (!countdownTask.isCancelled() && countdownTask != null) {
+      countdownTask.cancel();
+    }
 
     this.startTimer();
-  }
-
-  public void updateBossbar(Player player, double damage) {
-    if (player == playerTwo) {
-      playerOneBar[0].name(
-              playerTwo.displayName().decorate(TextDecoration.BOLD).color(NamedTextColor.YELLOW)
-                  .appendSpace().append(
-                      Component.text(
-                              (int) (playerTwo.getHealth() + playerTwo.getAbsorptionAmount() - damage) + "❤")
-                          .color(NamedTextColor.RED))
-                  .appendSpace().append(
-                      Component.text(playerTwo.getPing() + "ms").color(NamedTextColor.AQUA)))
-          .progress((float) Math.min((playerTwo.getHealth() + playerTwo.getAbsorptionAmount()) / 20,
-              1.0f));
-    } else {
-      playerTwoBar[0].name(
-          playerOne.displayName().decorate(TextDecoration.BOLD).color(NamedTextColor.YELLOW)
-              .appendSpace().append(
-                  Component.text(
-                          (int) (playerOne.getHealth() + playerOne.getAbsorptionAmount() - damage) + "❤")
-                      .color(NamedTextColor.RED))
-              .appendSpace().append(
-                  Component.text(playerOne.getPing() + "ms").color(NamedTextColor.AQUA))).progress(
-          (float) Math.min((playerOne.getHealth() + playerOne.getAbsorptionAmount()) / 20,
-              1.0f));
-    }
   }
 
   public int getTimeRemaining() {
@@ -297,7 +307,13 @@ public class CombatTag {
   public void removeTag() {
     timer.cancel();
 
-    Bukkit.getScheduler().cancelTask(countdownTask.getTaskId());
+    if (!bossbarTask.isCancelled() && bossbarTask != null) {
+      bossbarTask.cancel();
+    }
+
+    if (!countdownTask.isCancelled() && countdownTask != null) {
+      countdownTask.cancel();
+    }
 
     tags.remove(this);
 
