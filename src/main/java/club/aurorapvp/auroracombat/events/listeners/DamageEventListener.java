@@ -190,7 +190,7 @@ public class DamageEventListener implements Listener {
       return;
     }
 
-    if (Config.get().getBoolean("misc.fall-damage.enable-first")) {
+    if (AuroraCombat.INSTANCE.getConfig().getBoolean("misc.fall-damage.enable-first")) {
       return;
     }
 

@@ -1,5 +1,6 @@
 package club.aurorapvp.auroracombat.modules;
 
+import club.aurorapvp.auroracombat.AuroraCombat;
 import club.aurorapvp.auroracombat.config.Config;
 import club.aurorapvp.auroracombat.config.Lang;
 import club.aurorapvp.auroracombat.data.KillDeathDataHandler;
@@ -73,8 +74,8 @@ public class KillDeathTracker {
   public void addDeath() {
     this.deaths = deaths + 1;
 
-    if (killStreak >= Config.get().getInt("misc.min-killstreak-to-announce")) {
-      Bukkit.broadcast(Lang.formatComponent("killstreak-lost", player, killStreak));
+    if (killStreak >= AuroraCombat.INSTANCE.getConfig().getInt("misc.min-killstreak-to-announce")) {
+      Bukkit.broadcast(AuroraCombat.INSTANCE.getLang().formatComponent("killstreak-lost", player, killStreak));
     }
 
     this.killStreak = 0;

@@ -1,5 +1,6 @@
 package club.aurorapvp.auroracombat.commands;
 
+import club.aurorapvp.auroracombat.AuroraCombat;
 import club.aurorapvp.auroracombat.config.Lang;
 import club.aurorapvp.auroracombat.modules.KillDeathTracker;
 import club.aurorapvp.auroracombat.modules.Rating;
@@ -31,7 +32,7 @@ public class StatsCommand extends BaseCommand {
     }
 
     player.sendMessage(
-        Lang.formatComponent("stats-command", player.getName(), ratings.toString(),
+        AuroraCombat.INSTANCE.getLang().formatComponent("stats-command", player.getName(), ratings.toString(),
             tracker.getKills(),
             tracker.getDeaths(), tracker.getKDR()));
   }
@@ -45,7 +46,7 @@ public class StatsCommand extends BaseCommand {
     Player player = Bukkit.getPlayer(playerName);
 
     if (player == null) {
-      sender.sendMessage(Lang.getComponent("unknown-player"));
+      sender.sendMessage(AuroraCombat.INSTANCE.getLang().getComponent("unknown-player"));
       return;
     }
 
@@ -59,7 +60,7 @@ public class StatsCommand extends BaseCommand {
     }
 
     player.sendMessage(
-        Lang.formatComponent("stats-command", player.getName(), ratings.toString(),
+        AuroraCombat.INSTANCE.getLang().formatComponent("stats-command", player.getName(), ratings.toString(),
             tracker.getKills(),
             tracker.getDeaths(), tracker.getKDR()));
   }

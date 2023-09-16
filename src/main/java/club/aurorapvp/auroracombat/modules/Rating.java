@@ -184,17 +184,17 @@ public class Rating {
     assert killerScore != null;
     double EloChange = Rating.getELOChange(deadScore.getPoints(), killerScore.getPoints());
 
-    deadScore.changePoints((int) (Config.get().getInt("elo.max-change") * EloChange));
-    killerScore.changePoints((int) (Config.get().getInt("elo.max-change") * -(0 + EloChange)));
+    deadScore.changePoints((int) (AuroraCombat.INSTANCE.getConfig().getInt("elo.max-change") * EloChange));
+    killerScore.changePoints((int) (AuroraCombat.INSTANCE.getConfig().getInt("elo.max-change") * -(0 + EloChange)));
 
     deadPlayer.sendMessage(
-        Lang.formatComponent(
+        AuroraCombat.INSTANCE.getLang().formatComponent(
             "you-were-killed-by", killer.getName(), killerScore.getPoints(),
-            (int) (Config.get().getInt("elo.max-change") * EloChange)));
+            (int) (AuroraCombat.INSTANCE.getConfig().getInt("elo.max-change") * EloChange)));
     killer.sendMessage(
-        Lang.formatComponent(
+        AuroraCombat.INSTANCE.getLang().formatComponent(
             "you-killed", deadPlayer.getName(), deadScore.getPoints(),
-            (int) (Config.get().getInt("elo.max-change") * -(0 + EloChange))));
+            (int) (AuroraCombat.INSTANCE.getConfig().getInt("elo.max-change") * -(0 + EloChange))));
   }
 
   @SuppressWarnings("unused")
@@ -205,9 +205,9 @@ public class Rating {
 
     if (winner) {
       score.changePoints(
-          (int) Math.round(Config.get().getInt("elo.max-change") * -(0 + EloChange)));
+          (int) Math.round(AuroraCombat.INSTANCE.getConfig().getInt("elo.max-change") * -(0 + EloChange)));
     } else {
-      score.changePoints((int) Math.round(Config.get().getInt("elo.max-change") * EloChange));
+      score.changePoints((int) Math.round(AuroraCombat.INSTANCE.getConfig().getInt("elo.max-change") * EloChange));
     }
   }
 

@@ -1,5 +1,6 @@
 package club.aurorapvp.auroracombat.modules;
 
+import club.aurorapvp.auroracombat.AuroraCombat;
 import club.aurorapvp.auroracombat.config.Config;
 import club.aurorapvp.auroracombat.data.ScoreDataHandler;
 import org.bukkit.entity.Player;
@@ -19,7 +20,7 @@ public class Score {
     if (this.exists()) {
       this.reload();
     } else {
-      points = Config.get().getInt("elo.default-points");
+      points = AuroraCombat.INSTANCE.getConfig().getInt("elo.default-points");
       this.save();
     }
   }

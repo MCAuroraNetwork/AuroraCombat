@@ -4,7 +4,6 @@ import club.aurorapvp.auroracombat.AuroraCombat;
 import club.aurorapvp.auroracombat.config.Config;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Level;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.EnderPearl;
@@ -27,7 +26,7 @@ public class ProjectileListener implements Listener {
       return;
     }
 
-    if (!Config.get().getBoolean("misc.ender-pearl-cooldown.enabled")) {
+    if (!AuroraCombat.INSTANCE.getConfig().getBoolean("misc.ender-pearl-cooldown.enabled")) {
       return;
     }
 
@@ -37,8 +36,8 @@ public class ProjectileListener implements Listener {
     }
 
     if (lastThrowLocation.get(event.getPlayer()).distance(event.getTo())
-        >= Config.get().getInt("misc.ender-pearl-cooldown.max-distance")) {
-      int ticks = Config.get().getInt("misc.ender-pearl-cooldown.time") * 20;
+        >= AuroraCombat.INSTANCE.getConfig().getInt("misc.ender-pearl-cooldown.max-distance")) {
+      int ticks = AuroraCombat.INSTANCE.getConfig().getInt("misc.ender-pearl-cooldown.time") * 20;
 
       event.getPlayer().setCooldown(Material.ENDER_PEARL, ticks);
 
@@ -63,7 +62,7 @@ public class ProjectileListener implements Listener {
       return;
     }
 
-    if (!Config.get().getBoolean("misc.ender-pearl-cooldown.enabled")) {
+    if (!AuroraCombat.INSTANCE.getConfig().getBoolean("misc.ender-pearl-cooldown.enabled")) {
       return;
     }
 

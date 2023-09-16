@@ -1,5 +1,6 @@
 package club.aurorapvp.auroracombat.commands;
 
+import club.aurorapvp.auroracombat.AuroraCombat;
 import club.aurorapvp.auroracombat.config.Lang;
 import club.aurorapvp.auroracombat.modules.Rating;
 import co.aikar.commands.BaseCommand;
@@ -26,7 +27,7 @@ public class RatingCommands extends BaseCommand {
       new Rating(name, Rating.RatingType.REGION, true).create();
     }
 
-    player.sendMessage(Lang.getComponent("rating-created"));
+    player.sendMessage(AuroraCombat.INSTANCE.getLang().getComponent("rating-created"));
   }
 
   @Subcommand("delete")
@@ -37,6 +38,6 @@ public class RatingCommands extends BaseCommand {
   public void onDelete(Player player, String name) {
     Rating.getRating(name).delete();
 
-    player.sendMessage(Lang.getComponent("rating-deleted"));
+    player.sendMessage(AuroraCombat.INSTANCE.getLang().getComponent("rating-deleted"));
   }
 }

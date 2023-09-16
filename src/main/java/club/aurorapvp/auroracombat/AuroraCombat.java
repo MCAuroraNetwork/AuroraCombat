@@ -11,12 +11,27 @@ import club.aurorapvp.auroracombat.modules.Placeholders;
 import club.aurorapvp.auroracombat.modules.PlayerInfo;
 import club.aurorapvp.auroracombat.modules.Rating;
 import org.bukkit.Bukkit;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class AuroraCombat extends JavaPlugin {
 
   public static AuroraCombat INSTANCE;
   private static boolean worldGuardInstalled;
+  private Config config;
+  private Lang lang;
+
+  public static boolean isWorldGuardInstalled() {
+    return worldGuardInstalled;
+  }
+
+  public YamlConfiguration getConfig() {
+    return config.getYaml();
+  }
+
+  public Lang getLang() {
+    return lang;
+  }
 
   @Override
   public void onLoad() {
@@ -25,11 +40,11 @@ public final class AuroraCombat extends JavaPlugin {
     INSTANCE = this;
 
     // Setup configs
-    Config.init();
-    Lang.init();
+    config = new Config();
+    lang = new Lang();
 
     if (Bukkit.getPluginManager().getPlugin("WorldGuard") != null) {
-      if (Config.get().getBoolean("optional-plugins.worldguard-compatibility")) {
+      if (this.getConfig().getBoolean("optional-plugins.worldguard-compatibility")) {
         RatingFlags.init();
         CombatTagFlags.init();
         worldGuardInstalled = true;
@@ -65,10 +80,6 @@ public final class AuroraCombat extends JavaPlugin {
                 + "ms");
   }
 
-  public static boolean isWorldGuardInstalled() {
-    return worldGuardInstalled;
-  }
-
   @Override
   public void onDisable() {
     long startTime = System.currentTimeMillis();
@@ -81,5 +92,9 @@ public final class AuroraCombat extends JavaPlugin {
             "AuroraCombat disabled in "
                 + Math.subtractExact(System.currentTimeMillis(), startTime)
                 + "ms");
+  }
+
+  public void reloadConfig() {
+    config.reload();
   }
 }

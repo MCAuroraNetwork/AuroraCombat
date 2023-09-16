@@ -11,15 +11,15 @@ import org.bukkit.configuration.file.YamlConfiguration;
 
 public class Config {
 
-  private static final File FILE = new File(AuroraCombat.INSTANCE.getDataFolder(), "config.yml");
-  private static YamlConfiguration config;
+  private final File FILE = new File(AuroraCombat.INSTANCE.getDataFolder(), "config.yml");
+  private YamlConfiguration config;
 
-  public static void init() {
-    Config.reload();
-    Config.generateDefaults();
+  public Config() {
+    this.reload();
+    this.generateDefaults();
   }
 
-  public static void generateDefaults() {
+  public void generateDefaults() {
     final HashMap<String, Object> DEFAULTS = new HashMap<>();
 
     DEFAULTS.put("elo.default-points", 400);
@@ -37,24 +37,24 @@ public class Config {
     DEFAULTS.put("optional-plugins.worldguard-compatibility", true);
 
     for (String path : DEFAULTS.keySet()) {
-      if (!get().isSet(path) || get().getString(path) == null) {
-        get().set(path, DEFAULTS.get(path));
+      if (!getYaml().isSet(path) || getYaml().getString(path) == null) {
+        getYaml().set(path, DEFAULTS.get(path));
       }
     }
 
     try {
-      get().save(FILE);
+      getYaml().save(FILE);
     } catch (IOException e) {
       AuroraCombat.INSTANCE.getLogger().log(Level.SEVERE, "Failed to save config file", e);
     }
   }
 
-  public static YamlConfiguration get() {
+  public YamlConfiguration getYaml() {
     return config;
   }
 
   @SuppressWarnings("ResultOfMethodCallIgnored")
-  public static void reload() {
+  public void reload() {
     if (!FILE.exists()) {
       try {
         FILE.getParentFile().mkdirs();
@@ -62,7 +62,7 @@ public class Config {
 
         config = YamlConfiguration.loadConfiguration(FILE);
 
-        Config.generateDefaults();
+        this.generateDefaults();
       } catch (IOException e) {
         AuroraCombat.INSTANCE.getLogger().log(Level.SEVERE, "Failed to generate config file", e);
       }

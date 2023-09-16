@@ -1,5 +1,6 @@
 package club.aurorapvp.auroracombat.events.listeners;
 
+import club.aurorapvp.auroracombat.AuroraCombat;
 import club.aurorapvp.auroracombat.config.Config;
 import club.aurorapvp.auroracombat.config.Lang;
 import club.aurorapvp.auroracombat.events.custom.PlayerDamagedByPlayerEvent;
@@ -17,9 +18,7 @@ import net.kyori.adventure.sound.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -46,8 +45,8 @@ public class CombatEventListener implements Listener {
 
     boolean commandMatched = false;
 
-    if (!Config.get().getBoolean("combat-tag.commands.allow-commands")) {
-      for (String command : Config.get().getStringList("combat-tag.commands.whitelisted")) {
+    if (!AuroraCombat.INSTANCE.getConfig().getBoolean("combat-tag.commands.allow-commands")) {
+      for (String command : AuroraCombat.INSTANCE.getConfig().getStringList("combat-tag.commands.whitelisted")) {
         if (event.getMessage().equals(command)) {
           commandMatched = true;
           break;
@@ -63,7 +62,7 @@ public class CombatEventListener implements Listener {
       return;
     }
 
-    event.getPlayer().sendMessage(Lang.getComponent("commands-disabled"));
+    event.getPlayer().sendMessage(AuroraCombat.INSTANCE.getLang().getComponent("commands-disabled"));
 
     event.setCancelled(true);
   }

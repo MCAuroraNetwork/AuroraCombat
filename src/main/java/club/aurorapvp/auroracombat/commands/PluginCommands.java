@@ -9,6 +9,7 @@ import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.CommandPermission;
 import co.aikar.commands.annotation.Description;
 import co.aikar.commands.annotation.Subcommand;
+import org.checkerframework.checker.units.qual.A;
 
 @CommandAlias("auroracombat")
 @CommandPermission("auroracombat.command.auroracombat")
@@ -21,8 +22,8 @@ public class PluginCommands extends BaseCommand {
   public void onReload() {
     long startTime = System.currentTimeMillis();
 
-    Config.reload();
-    Lang.reload();
+    AuroraCombat.INSTANCE.reloadConfig();
+    AuroraCombat.INSTANCE.getLang().reload();
     Rating.saveAll();
 
     AuroraCombat.INSTANCE
