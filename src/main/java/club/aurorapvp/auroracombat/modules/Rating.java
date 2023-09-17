@@ -129,7 +129,7 @@ public class Rating {
       return true;
     }
 
-    if (!AuroraCombat.isWorldGuardInstalled()) {
+    if (!AuroraCombat.getInstance().isWorldGuardInstalled()) {
       return this.getType() != RatingType.REGION;
     }
 

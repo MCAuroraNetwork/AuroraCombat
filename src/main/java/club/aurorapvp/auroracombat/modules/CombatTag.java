@@ -138,7 +138,7 @@ public class CombatTag {
   public static boolean isUntaggable(Player player) {
     boolean taggable = taggablePlayers.get(player);
 
-    if (taggable && AuroraCombat.isWorldGuardInstalled()) {
+    if (taggable && AuroraCombat.getInstance().isWorldGuardInstalled()) {
       RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
       RegionQuery query = container.createQuery();
       ApplicableRegionSet set =

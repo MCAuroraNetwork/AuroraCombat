@@ -13,11 +13,12 @@ import club.aurorapvp.auroracombat.modules.Rating;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.NotNull;
 
 public final class AuroraCombat extends JavaPlugin {
 
   private static AuroraCombat INSTANCE;
-  private static boolean worldGuardInstalled;
+  private boolean worldGuardInstalled;
   private Config config;
   private Lang lang;
 
@@ -25,11 +26,11 @@ public final class AuroraCombat extends JavaPlugin {
     return INSTANCE;
   }
 
-  public static boolean isWorldGuardInstalled() {
+  public boolean isWorldGuardInstalled() {
     return worldGuardInstalled;
   }
 
-  public YamlConfiguration getConfig() {
+  public @NotNull YamlConfiguration getConfig() {
     return config.getYaml();
   }
 
