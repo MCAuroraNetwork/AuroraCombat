@@ -44,6 +44,7 @@ public class DamageEventListener implements Listener {
   private BlockState lastExplodedBlock;
 
   @EventHandler
+      (priority = EventPriority.HIGHEST, ignoreCancelled = true)
   public void onEntityDamage(EntityDamageByEntityEvent event) {
     if (event.getEntity() instanceof EnderCrystal
         && event.getDamager() instanceof Player attacker) {
@@ -117,6 +118,7 @@ public class DamageEventListener implements Listener {
   }
 
   @EventHandler
+      (priority = EventPriority.HIGHEST, ignoreCancelled = true)
   public void onEntityDamage(EntityDamageByBlockEvent event) {
     if (!(event.getEntity() instanceof Player damaged)) {
       return;
@@ -138,6 +140,7 @@ public class DamageEventListener implements Listener {
   }
 
   @EventHandler
+      (priority = EventPriority.HIGHEST, ignoreCancelled = true)
   public void onPlayerInteract(PlayerInteractEvent event) {
     if (event.getClickedBlock() == null) {
       return;
@@ -167,6 +170,7 @@ public class DamageEventListener implements Listener {
   }
 
   @EventHandler
+      (priority = EventPriority.HIGHEST, ignoreCancelled = true)
   public void onProjectileFired(ProjectileLaunchEvent event) {
     if (event.getEntity().getShooter() instanceof Player player) {
       this.firedProjectiles.add(event.getEntity());
@@ -175,12 +179,14 @@ public class DamageEventListener implements Listener {
   }
 
   @EventHandler
+      (priority = EventPriority.HIGHEST, ignoreCancelled = true)
   public void onProjectileHit(ProjectileHitEvent event) {
     Bukkit.getScheduler()
         .runTaskLater(AuroraCombat.getInstance(), () -> firedProjectiles.remove(event.getEntity()), 20L);
   }
 
-  @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+  @EventHandler
+      (priority = EventPriority.HIGHEST, ignoreCancelled = true)
   public void onFallDamage(EntityDamageEvent event) {
     if (!(event.getEntity() instanceof Player player)) {
       return;

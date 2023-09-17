@@ -9,6 +9,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.EnderPearl;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.ProjectileLaunchEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
@@ -21,6 +22,7 @@ public class ProjectileListener implements Listener {
   private final Map<Player, Boolean> onCooldown = new HashMap<>();
 
   @EventHandler
+      (priority = EventPriority.HIGHEST, ignoreCancelled = true)
   public void onPlayerTeleport(PlayerTeleportEvent event) {
     if (!event.getCause().equals(TeleportCause.ENDER_PEARL)) {
       return;
@@ -53,6 +55,7 @@ public class ProjectileListener implements Listener {
   }
 
   @EventHandler
+      (priority = EventPriority.HIGHEST, ignoreCancelled = true)
   public void onPearlThrow(ProjectileLaunchEvent event) {
     if (!(event.getEntity() instanceof EnderPearl)) {
       return;

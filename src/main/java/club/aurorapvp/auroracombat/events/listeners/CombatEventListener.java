@@ -18,6 +18,7 @@ import net.kyori.adventure.sound.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
@@ -38,6 +39,7 @@ public class CombatEventListener implements Listener {
   }
 
   @EventHandler
+      (priority = EventPriority.MONITOR, ignoreCancelled = true)
   public void onCommandRun(PlayerCommandPreprocessEvent event) {
     if (!CombatTag.isTagged(event.getPlayer())) {
       return;
@@ -68,6 +70,7 @@ public class CombatEventListener implements Listener {
   }
 
   @EventHandler
+      (priority = EventPriority.MONITOR, ignoreCancelled = true)
   public void onPlayerDeath(PlayerDeathEvent event) {
     if (combatLoggers.contains(event.getPlayer())) {
       new PlayerKilledByPlayerEvent(
@@ -98,6 +101,7 @@ public class CombatEventListener implements Listener {
   }
 
   @EventHandler
+      (priority = EventPriority.MONITOR, ignoreCancelled = true)
   public void onKilledByPlayer(PlayerKilledByPlayerEvent event) {
     if (!CombatTag.isUntaggable(event.getDead()) && !CombatTag.isUntaggable(event.getKiller())) {
       Objects.requireNonNull(KillDeathTracker.getTracker(event.getDead())).addDeath();
@@ -117,6 +121,7 @@ public class CombatEventListener implements Listener {
   }
 
   @EventHandler
+      (priority = EventPriority.MONITOR, ignoreCancelled = true)
   public void onDamagedByPlayer(PlayerDamagedByPlayerEvent event) {
     if (event.getAttacker().equals(event.getDamaged())) {
       return;
