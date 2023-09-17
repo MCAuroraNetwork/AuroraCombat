@@ -20,7 +20,7 @@ public class PlayerEventListener implements Listener {
     Rating.register(event.getPlayer());
     BlockFallDamage.setInVulnerable(event.getPlayer());
 
-    if (AuroraCombat.INSTANCE.getConfig().getBoolean("combat-tag.enable")) {
+    if (AuroraCombat.getInstance().getConfig().getBoolean("combat-tag.enable")) {
       CombatTag.setTaggable(event.getPlayer(), true);
     }
   }

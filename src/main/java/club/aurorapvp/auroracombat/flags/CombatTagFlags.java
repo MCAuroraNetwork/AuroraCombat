@@ -19,7 +19,7 @@ public class CombatTagFlags {
       registry.register(flag);
       TAGS_ENABLED = flag;
     } catch (FlagConflictException e) {
-      AuroraCombat.INSTANCE.getLogger()
+      AuroraCombat.getInstance().getLogger()
           .log(Level.SEVERE, "Unable to register Tags Enabled flag", e);
     }
   }

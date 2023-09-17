@@ -11,7 +11,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 
 public class Config {
 
-  private final File FILE = new File(AuroraCombat.INSTANCE.getDataFolder(), "config.yml");
+  private final File FILE = new File(AuroraCombat.getInstance().getDataFolder(), "config.yml");
   private YamlConfiguration config;
 
   public Config() {
@@ -45,7 +45,7 @@ public class Config {
     try {
       getYaml().save(FILE);
     } catch (IOException e) {
-      AuroraCombat.INSTANCE.getLogger().log(Level.SEVERE, "Failed to save config file", e);
+      AuroraCombat.getInstance().getLogger().log(Level.SEVERE, "Failed to save config file", e);
     }
   }
 
@@ -64,11 +64,11 @@ public class Config {
 
         this.generateDefaults();
       } catch (IOException e) {
-        AuroraCombat.INSTANCE.getLogger().log(Level.SEVERE, "Failed to generate config file", e);
+        AuroraCombat.getInstance().getLogger().log(Level.SEVERE, "Failed to generate config file", e);
       }
     }
 
     config = YamlConfiguration.loadConfiguration(FILE);
-    AuroraCombat.INSTANCE.getLogger().info("Config reloaded!");
+    AuroraCombat.getInstance().getLogger().info("Config reloaded!");
   }
 }

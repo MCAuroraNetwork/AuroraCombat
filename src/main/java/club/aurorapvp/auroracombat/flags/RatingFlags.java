@@ -21,7 +21,7 @@ public class RatingFlags {
       registry.register(flag);
       GLOBAL_RATINGS = flag;
     } catch (FlagConflictException e) {
-      AuroraCombat.INSTANCE.getLogger()
+      AuroraCombat.getInstance().getLogger()
           .log(Level.SEVERE, "Unable to register Global Rating flag", e);
     }
 
@@ -30,7 +30,7 @@ public class RatingFlags {
       registry.register(flag);
       REGION_RATING = flag;
     } catch (FlagConflictException e) {
-      AuroraCombat.INSTANCE.getLogger()
+      AuroraCombat.getInstance().getLogger()
           .log(Level.SEVERE, "Unable to register Regional Rating flag", e);
     }
   }

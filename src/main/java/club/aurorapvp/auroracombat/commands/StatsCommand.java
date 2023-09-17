@@ -32,7 +32,7 @@ public class StatsCommand extends BaseCommand {
     }
 
     player.sendMessage(
-        AuroraCombat.INSTANCE.getLang().formatComponent("stats-command", player.getName(), ratings.toString(),
+        AuroraCombat.getInstance().getLang().formatComponent("stats-command", player.getName(), ratings.toString(),
             tracker.getKills(),
             tracker.getDeaths(), tracker.getKDR()));
   }
@@ -46,7 +46,7 @@ public class StatsCommand extends BaseCommand {
     Player player = Bukkit.getPlayer(playerName);
 
     if (player == null) {
-      sender.sendMessage(AuroraCombat.INSTANCE.getLang().getComponent("unknown-player"));
+      sender.sendMessage(AuroraCombat.getInstance().getLang().getComponent("unknown-player"));
       return;
     }
 
@@ -60,7 +60,7 @@ public class StatsCommand extends BaseCommand {
     }
 
     player.sendMessage(
-        AuroraCombat.INSTANCE.getLang().formatComponent("stats-command", player.getName(), ratings.toString(),
+        AuroraCombat.getInstance().getLang().formatComponent("stats-command", player.getName(), ratings.toString(),
             tracker.getKills(),
             tracker.getDeaths(), tracker.getKDR()));
   }

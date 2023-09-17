@@ -13,7 +13,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 public class Lang {
 
   private final HashMap<String, String> PLACEHOLDERS = new HashMap<>();
-  private final File FILE = new File(AuroraCombat.INSTANCE.getDataFolder(), "lang.yml");
+  private final File FILE = new File(AuroraCombat.getInstance().getDataFolder(), "lang.yml");
   private YamlConfiguration lang;
 
   public Lang() {
@@ -64,7 +64,7 @@ public class Lang {
     try {
       getYaml().save(FILE);
     } catch (IOException e) {
-      AuroraCombat.INSTANCE.getLogger().log(Level.SEVERE, "Failed to save lang file", e);
+      AuroraCombat.getInstance().getLogger().log(Level.SEVERE, "Failed to save lang file", e);
     }
 
     for (Object path : getYaml().getKeys(false).toArray()) {
@@ -117,11 +117,11 @@ public class Lang {
 
         this.generateDefaults();
       } catch (IOException e) {
-        AuroraCombat.INSTANCE.getLogger().log(Level.SEVERE, "Failed to generate lang file", e);
+        AuroraCombat.getInstance().getLogger().log(Level.SEVERE, "Failed to generate lang file", e);
       }
     }
 
     lang = YamlConfiguration.loadConfiguration(FILE);
-    AuroraCombat.INSTANCE.getLogger().info("Lang reloaded!");
+    AuroraCombat.getInstance().getLogger().info("Lang reloaded!");
   }
 }

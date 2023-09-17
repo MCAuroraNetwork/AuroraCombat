@@ -31,6 +31,6 @@ public class PlayerInfo {
               (int) (player.getHealth() + player.getAbsorptionAmount()));
         }
       }
-    }.runTaskTimer(AuroraCombat.INSTANCE, 0L, 1L);
+    }.runTaskTimer(AuroraCombat.getInstance(), 0L, 1L);
   }
 }

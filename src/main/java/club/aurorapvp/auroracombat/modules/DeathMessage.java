@@ -25,32 +25,32 @@ public class DeathMessage {
       weaponName = weaponName.color(NamedTextColor.AQUA);
     }
 
-    weaponName.decoration(TextDecoration.ITALIC, false);
+    weaponName = weaponName.decoration(TextDecoration.ITALIC, false);
 
     switch (event.getDamageType()) {
       case MELEE -> event.deathMessage(
-          AuroraCombat.INSTANCE.getLang().formatComponent(
+          AuroraCombat.getInstance().getLang().formatComponent(
                   "death-message.killed-by-player-slain",
                   event.getDamaged().getName(),
                   event.getAttacker().getName(),
                   MiniMessage.miniMessage().serialize(weaponName))
               .hoverEvent(hover));
       case EXPLOSION_ENTITY, EXPLOSION_BLOCK -> event.deathMessage(
-          AuroraCombat.INSTANCE.getLang().formatComponent(
+          AuroraCombat.getInstance().getLang().formatComponent(
                   "death-message.killed-by-player-explosion",
                   event.getDamaged().getName(),
                   event.getAttacker().getName(),
                   MiniMessage.miniMessage().serialize(weaponName))
               .hoverEvent(hover));
       case RANGED -> event.deathMessage(
-          AuroraCombat.INSTANCE.getLang().formatComponent(
+          AuroraCombat.getInstance().getLang().formatComponent(
                   "death-message.killed-by-player-shot",
                   event.getDamaged().getName(),
                   event.getAttacker().getName(),
                   MiniMessage.miniMessage().serialize(weaponName))
               .hoverEvent(hover));
       case MAGIC -> event.deathMessage(
-          AuroraCombat.INSTANCE.getLang().formatComponent(
+          AuroraCombat.getInstance().getLang().formatComponent(
                   "death-message.killed-by-player-magic",
                   event.getDamaged().getName(),
                   event.getAttacker().getName(),
@@ -58,9 +58,9 @@ public class DeathMessage {
               .hoverEvent(hover));
       case COMBAT_LOG ->
           event.deathMessage(
-              AuroraCombat.INSTANCE.getLang().formatComponent("combat-logged", event.getKiller().getName()));
+              AuroraCombat.getInstance().getLang().formatComponent("combat-logged", event.getKiller().getName()));
       default -> event.deathMessage(
-          AuroraCombat.INSTANCE.getLang().formatComponent(
+          AuroraCombat.getInstance().getLang().formatComponent(
                   "death-message.killed-by-player-generic",
                   event.getDamaged().getName(),
                   event.getAttacker().getName(),

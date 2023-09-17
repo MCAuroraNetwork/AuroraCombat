@@ -20,7 +20,7 @@ public class Score {
     if (this.exists()) {
       this.reload();
     } else {
-      points = AuroraCombat.INSTANCE.getConfig().getInt("elo.default-points");
+      points = AuroraCombat.getInstance().getConfig().getInt("elo.default-points");
       this.save();
     }
   }

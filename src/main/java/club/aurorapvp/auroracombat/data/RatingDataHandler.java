@@ -13,7 +13,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 
 public class RatingDataHandler {
 
-  private static final File FILE = new File(AuroraCombat.INSTANCE.getDataFolder(), "ratings.yml");
+  private static final File FILE = new File(AuroraCombat.getInstance().getDataFolder(), "ratings.yml");
   private static final YamlConfiguration yaml = YamlConfiguration.loadConfiguration(FILE);
   private final Rating rating;
 
@@ -26,7 +26,7 @@ public class RatingDataHandler {
       Files.createDirectories(FILE.getParentFile().toPath());
       Files.createFile(FILE.toPath());
     } catch (IOException e) {
-      AuroraCombat.INSTANCE.getLogger().log(Level.SEVERE, "Failed to generate ratings file", e);
+      AuroraCombat.getInstance().getLogger().log(Level.SEVERE, "Failed to generate ratings file", e);
       return;
     }
 
@@ -47,7 +47,7 @@ public class RatingDataHandler {
       try {
         yaml.save(FILE);
       } catch (IOException e) {
-        AuroraCombat.INSTANCE.getLogger().log(Level.SEVERE, "Failed to save ratings file", e);
+        AuroraCombat.getInstance().getLogger().log(Level.SEVERE, "Failed to save ratings file", e);
       }
     }
   }
@@ -70,7 +70,7 @@ public class RatingDataHandler {
       try {
         yaml.save(FILE);
       } catch (IOException e) {
-        AuroraCombat.INSTANCE.getLogger().log(Level.SEVERE, "Failed to save ratings file", e);
+        AuroraCombat.getInstance().getLogger().log(Level.SEVERE, "Failed to save ratings file", e);
       }
     }
   }

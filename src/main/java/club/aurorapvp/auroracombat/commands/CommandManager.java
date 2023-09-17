@@ -5,7 +5,7 @@ import co.aikar.commands.PaperCommandManager;
 
 public class CommandManager {
 
-  public static PaperCommandManager MANAGER = new PaperCommandManager(AuroraCombat.INSTANCE);
+  public static PaperCommandManager MANAGER = new PaperCommandManager(AuroraCombat.getInstance());
 
   public static void init() {
     MANAGER.registerCommand(new RatingCommands());

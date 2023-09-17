@@ -20,7 +20,7 @@ public class Placeholders extends PlaceholderExpansion {
 
   @Override
   public @NotNull String getVersion() {
-    return AuroraCombat.INSTANCE.getPluginMeta().getVersion();
+    return AuroraCombat.getInstance().getPluginMeta().getVersion();
   }
 
   @Override

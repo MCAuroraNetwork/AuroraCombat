@@ -45,8 +45,8 @@ public class CombatEventListener implements Listener {
 
     boolean commandMatched = false;
 
-    if (!AuroraCombat.INSTANCE.getConfig().getBoolean("combat-tag.commands.allow-commands")) {
-      for (String command : AuroraCombat.INSTANCE.getConfig().getStringList("combat-tag.commands.whitelisted")) {
+    if (!AuroraCombat.getInstance().getConfig().getBoolean("combat-tag.commands.allow-commands")) {
+      for (String command : AuroraCombat.getInstance().getConfig().getStringList("combat-tag.commands.whitelisted")) {
         if (event.getMessage().equals(command)) {
           commandMatched = true;
           break;
@@ -62,7 +62,7 @@ public class CombatEventListener implements Listener {
       return;
     }
 
-    event.getPlayer().sendMessage(AuroraCombat.INSTANCE.getLang().getComponent("commands-disabled"));
+    event.getPlayer().sendMessage(AuroraCombat.getInstance().getLang().getComponent("commands-disabled"));
 
     event.setCancelled(true);
   }

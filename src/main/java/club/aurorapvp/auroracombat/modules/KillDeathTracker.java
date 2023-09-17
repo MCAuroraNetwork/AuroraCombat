@@ -74,8 +74,8 @@ public class KillDeathTracker {
   public void addDeath() {
     this.deaths = deaths + 1;
 
-    if (killStreak >= AuroraCombat.INSTANCE.getConfig().getInt("misc.min-killstreak-to-announce")) {
-      Bukkit.broadcast(AuroraCombat.INSTANCE.getLang().formatComponent("killstreak-lost", player, killStreak));
+    if (killStreak >= AuroraCombat.getInstance().getConfig().getInt("misc.min-killstreak-to-announce")) {
+      Bukkit.broadcast(AuroraCombat.getInstance().getLang().formatComponent("killstreak-lost", player, killStreak));
     }
 
     this.killStreak = 0;

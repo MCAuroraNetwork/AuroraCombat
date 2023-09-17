@@ -177,7 +177,7 @@ public class DamageEventListener implements Listener {
   @EventHandler
   public void onProjectileHit(ProjectileHitEvent event) {
     Bukkit.getScheduler()
-        .runTaskLater(AuroraCombat.INSTANCE, () -> firedProjectiles.remove(event.getEntity()), 20L);
+        .runTaskLater(AuroraCombat.getInstance(), () -> firedProjectiles.remove(event.getEntity()), 20L);
   }
 
   @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
@@ -190,7 +190,7 @@ public class DamageEventListener implements Listener {
       return;
     }
 
-    if (AuroraCombat.INSTANCE.getConfig().getBoolean("misc.fall-damage.enable-first")) {
+    if (AuroraCombat.getInstance().getConfig().getBoolean("misc.fall-damage.enable-first")) {
       return;
     }
 

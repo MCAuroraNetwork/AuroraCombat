@@ -26,7 +26,7 @@ public class ProjectileListener implements Listener {
       return;
     }
 
-    if (!AuroraCombat.INSTANCE.getConfig().getBoolean("misc.ender-pearl-cooldown.enabled")) {
+    if (!AuroraCombat.getInstance().getConfig().getBoolean("misc.ender-pearl-cooldown.enabled")) {
       return;
     }
 
@@ -36,8 +36,8 @@ public class ProjectileListener implements Listener {
     }
 
     if (lastThrowLocation.get(event.getPlayer()).distance(event.getTo())
-        >= AuroraCombat.INSTANCE.getConfig().getInt("misc.ender-pearl-cooldown.max-distance")) {
-      int ticks = AuroraCombat.INSTANCE.getConfig().getInt("misc.ender-pearl-cooldown.time") * 20;
+        >= AuroraCombat.getInstance().getConfig().getInt("misc.ender-pearl-cooldown.max-distance")) {
+      int ticks = AuroraCombat.getInstance().getConfig().getInt("misc.ender-pearl-cooldown.time") * 20;
 
       event.getPlayer().setCooldown(Material.ENDER_PEARL, ticks);
 
@@ -48,7 +48,7 @@ public class ProjectileListener implements Listener {
         public void run() {
           onCooldown.put(event.getPlayer(), false);
         }
-      }.runTaskLater(AuroraCombat.INSTANCE, ticks);
+      }.runTaskLater(AuroraCombat.getInstance(), ticks);
     }
   }
 
@@ -62,7 +62,7 @@ public class ProjectileListener implements Listener {
       return;
     }
 
-    if (!AuroraCombat.INSTANCE.getConfig().getBoolean("misc.ender-pearl-cooldown.enabled")) {
+    if (!AuroraCombat.getInstance().getConfig().getBoolean("misc.ender-pearl-cooldown.enabled")) {
       return;
     }
 

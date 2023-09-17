@@ -15,7 +15,7 @@ public class ScoreDataHandler {
   public ScoreDataHandler(Score score) {
     this.score = score;
     this.container = score.getPlayer().getPersistentDataContainer();
-    this.key = new NamespacedKey(AuroraCombat.INSTANCE, "rating_" + score.getRating().getName());
+    this.key = new NamespacedKey(AuroraCombat.getInstance(), "rating_" + score.getRating().getName());
   }
 
   public int getPoints() {

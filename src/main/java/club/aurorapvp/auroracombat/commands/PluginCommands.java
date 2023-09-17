@@ -22,11 +22,11 @@ public class PluginCommands extends BaseCommand {
   public void onReload() {
     long startTime = System.currentTimeMillis();
 
-    AuroraCombat.INSTANCE.reloadConfig();
-    AuroraCombat.INSTANCE.getLang().reload();
+    AuroraCombat.getInstance().reloadConfig();
+    AuroraCombat.getInstance().getLang().reload();
     Rating.saveAll();
 
-    AuroraCombat.INSTANCE
+    AuroraCombat.getInstance()
         .getLogger()
         .info("AuroraCombat reloaded in " + (System.currentTimeMillis() - startTime) + "ms");
   }

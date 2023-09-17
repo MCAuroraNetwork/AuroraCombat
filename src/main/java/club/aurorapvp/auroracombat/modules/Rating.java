@@ -47,7 +47,7 @@ public class Rating {
   public static void init() {
     new Rating("default", RatingType.GLOBAL, true);
 
-    File file = new File(AuroraCombat.INSTANCE.getDataFolder(), "ratings.yml");
+    File file = new File(AuroraCombat.getInstance().getDataFolder(), "ratings.yml");
     if (!file.exists()) {
       return;
     }
@@ -184,17 +184,17 @@ public class Rating {
     assert killerScore != null;
     double EloChange = Rating.getELOChange(deadScore.getPoints(), killerScore.getPoints());
 
-    deadScore.changePoints((int) (AuroraCombat.INSTANCE.getConfig().getInt("elo.max-change") * EloChange));
-    killerScore.changePoints((int) (AuroraCombat.INSTANCE.getConfig().getInt("elo.max-change") * -(0 + EloChange)));
+    deadScore.changePoints((int) (AuroraCombat.getInstance().getConfig().getInt("elo.max-change") * EloChange));
+    killerScore.changePoints((int) (AuroraCombat.getInstance().getConfig().getInt("elo.max-change") * -(0 + EloChange)));
 
     deadPlayer.sendMessage(
-        AuroraCombat.INSTANCE.getLang().formatComponent(
+        AuroraCombat.getInstance().getLang().formatComponent(
             "you-were-killed-by", killer.getName(), killerScore.getPoints(),
-            (int) (AuroraCombat.INSTANCE.getConfig().getInt("elo.max-change") * EloChange)));
+            (int) (AuroraCombat.getInstance().getConfig().getInt("elo.max-change") * EloChange)));
     killer.sendMessage(
-        AuroraCombat.INSTANCE.getLang().formatComponent(
+        AuroraCombat.getInstance().getLang().formatComponent(
             "you-killed", deadPlayer.getName(), deadScore.getPoints(),
-            (int) (AuroraCombat.INSTANCE.getConfig().getInt("elo.max-change") * -(0 + EloChange))));
+            (int) (AuroraCombat.getInstance().getConfig().getInt("elo.max-change") * -(0 + EloChange))));
   }
 
   @SuppressWarnings("unused")
@@ -205,9 +205,9 @@ public class Rating {
 
     if (winner) {
       score.changePoints(
-          (int) Math.round(AuroraCombat.INSTANCE.getConfig().getInt("elo.max-change") * -(0 + EloChange)));
+          (int) Math.round(AuroraCombat.getInstance().getConfig().getInt("elo.max-change") * -(0 + EloChange)));
     } else {
-      score.changePoints((int) Math.round(AuroraCombat.INSTANCE.getConfig().getInt("elo.max-change") * EloChange));
+      score.changePoints((int) Math.round(AuroraCombat.getInstance().getConfig().getInt("elo.max-change") * EloChange));
     }
   }
 

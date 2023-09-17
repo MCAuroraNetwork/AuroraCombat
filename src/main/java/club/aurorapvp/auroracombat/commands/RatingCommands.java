@@ -27,7 +27,7 @@ public class RatingCommands extends BaseCommand {
       new Rating(name, Rating.RatingType.REGION, true).create();
     }
 
-    player.sendMessage(AuroraCombat.INSTANCE.getLang().getComponent("rating-created"));
+    player.sendMessage(AuroraCombat.getInstance().getLang().getComponent("rating-created"));
   }
 
   @Subcommand("delete")
@@ -38,6 +38,6 @@ public class RatingCommands extends BaseCommand {
   public void onDelete(Player player, String name) {
     Rating.getRating(name).delete();
 
-    player.sendMessage(AuroraCombat.INSTANCE.getLang().getComponent("rating-deleted"));
+    player.sendMessage(AuroraCombat.getInstance().getLang().getComponent("rating-deleted"));
   }
 }
