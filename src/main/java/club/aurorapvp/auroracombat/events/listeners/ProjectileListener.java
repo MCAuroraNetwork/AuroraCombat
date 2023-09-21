@@ -1,11 +1,10 @@
 package club.aurorapvp.auroracombat.events.listeners;
 
 import club.aurorapvp.auroracombat.AuroraCombat;
-import club.aurorapvp.auroracombat.config.Config;
+import club.aurorapvp.auroracombat.modules.CombatTag;
 import java.util.HashMap;
 import java.util.Map;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.entity.EnderPearl;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -33,15 +32,22 @@ public class ProjectileListener implements Listener {
     }
 
     if (onCooldown.getOrDefault(event.getPlayer(), false)) {
-      event.setCancelled(true);
-      return;
+      if (!AuroraCombat.getInstance().getConfig()
+          .getBoolean("misc.ender-pearl-cooldown.only-active-when-tagged") || CombatTag.isTagged(event.getPlayer())) {
+        event.setCancelled(true);
+
+        event.getPlayer()
+            .sendMessage(AuroraCombat.getInstance().getLang().getComponent("no-running"));
+
+        return;
+      }
     }
 
     if (lastThrowLocation.get(event.getPlayer()).distance(event.getTo())
-        >= AuroraCombat.getInstance().getConfig().getInt("misc.ender-pearl-cooldown.max-distance")) {
-      int ticks = AuroraCombat.getInstance().getConfig().getInt("misc.ender-pearl-cooldown.time") * 20;
-
-      event.getPlayer().setCooldown(Material.ENDER_PEARL, ticks);
+        >= AuroraCombat.getInstance().getConfig()
+        .getInt("misc.ender-pearl-cooldown.max-distance")) {
+      int ticks =
+          AuroraCombat.getInstance().getConfig().getInt("misc.ender-pearl-cooldown.time") * 20;
 
       onCooldown.put(event.getPlayer(), true);
 
@@ -65,7 +71,10 @@ public class ProjectileListener implements Listener {
       return;
     }
 
-    if (!AuroraCombat.getInstance().getConfig().getBoolean("misc.ender-pearl-cooldown.enabled")) {
+    if (!AuroraCombat.getInstance().getConfig().getBoolean("misc.ender-pearl-cooldown.enabled")
+        || (AuroraCombat.getInstance().getConfig()
+        .getBoolean("misc.ender-pearl-cooldown.only-active-when-tagged") && !CombatTag.isTagged(
+        player))) {
       return;
     }
 

@@ -33,6 +33,7 @@ public class Config {
     DEFAULTS.put("misc.ender-pearl-cooldown.enabled", false);
     DEFAULTS.put("misc.ender-pearl-cooldown.max-distance", 20);
     DEFAULTS.put("misc.ender-pearl-cooldown.time", 10);
+    DEFAULTS.put("misc.ender-pearl-cooldown.only-active-when-tagged", false);
     DEFAULTS.put("rating.enable-default", true);
     DEFAULTS.put("optional-plugins.worldguard-compatibility", true);
 
