@@ -59,11 +59,11 @@ public class CombatTag {
           AuroraCombat.getInstance().getLang().formatComponent(
               "tagged", tagged.getName(), AuroraCombat.getInstance().getConfig().getInt("combat-tag.duration")));
 
-      if (tags.containsKey(tagged.getUniqueId())) {
+      if (!tags.containsKey(tagged.getUniqueId())) {
         tags.put(tagged.getUniqueId(), new LinkedList<>());
       }
 
-      if (tags.containsKey(opponent.getUniqueId())) {
+      if (!tags.containsKey(opponent.getUniqueId())) {
         tags.put(opponent.getUniqueId(), new LinkedList<>());
       }
 
