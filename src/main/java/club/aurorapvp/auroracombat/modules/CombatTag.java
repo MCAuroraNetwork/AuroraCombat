@@ -36,7 +36,7 @@ public class CombatTag {
   private final BossBar[] playerTwoBar = new BossBar[1];
   private Timer timer;
   private BukkitTask countdownTask;
-  private BukkitRunnable bossbarTask;
+  private BukkitTask bossbarTask;
 
   public CombatTag(Player tagged, Player opponent) {
     this.playerOne = tagged;
@@ -255,7 +255,7 @@ public class CombatTag {
             (float) Math.min((playerOne.getHealth() + playerOne.getAbsorptionAmount()) / 20,
                 1.0f));
       }
-    };
+    }.runTaskTimer(AuroraCombat.getInstance(), 1L, 1L);
   }
 
   public void resetTimer() {
