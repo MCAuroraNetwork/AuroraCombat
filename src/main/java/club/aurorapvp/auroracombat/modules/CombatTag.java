@@ -9,11 +9,8 @@ import com.sk89q.worldguard.protection.flags.StateFlag.State;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import com.sk89q.worldguard.protection.regions.RegionContainer;
 import com.sk89q.worldguard.protection.regions.RegionQuery;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Timer;
@@ -54,10 +51,12 @@ public class CombatTag {
     } else {
       tagged.sendMessage(
           AuroraCombat.getInstance().getLang().formatComponent(
-              "tagged", opponent.getName(), AuroraCombat.getInstance().getConfig().getInt("combat-tag.duration")));
+              "tagged", opponent.getName(),
+              AuroraCombat.getInstance().getConfig().getInt("combat-tag.duration")));
       opponent.sendMessage(
           AuroraCombat.getInstance().getLang().formatComponent(
-              "tagged", tagged.getName(), AuroraCombat.getInstance().getConfig().getInt("combat-tag.duration")));
+              "tagged", tagged.getName(),
+              AuroraCombat.getInstance().getConfig().getInt("combat-tag.duration")));
 
       if (!tags.containsKey(tagged.getUniqueId())) {
         tags.put(tagged.getUniqueId(), new LinkedList<>());
@@ -89,13 +88,11 @@ public class CombatTag {
   }
 
   public static CombatTag getTag(Player p1, Player p2) {
-    LinkedList<CombatTag> playerTags = tags.get(p1.getUniqueId());
-
-    if (playerTags == null) {
+    if (!tags.containsKey(p1.getUniqueId()) || !tags.containsKey(p2.getUniqueId())) {
       return null;
     }
 
-    for (CombatTag tag : playerTags) {
+    for (CombatTag tag : tags.get(p1.getUniqueId())) {
       if (tag.getPlayerOne() == p2 || tag.getPlayerTwo() == p2) {
         return tag;
       }
@@ -288,10 +285,14 @@ public class CombatTag {
 
     tags.remove(this.getPlayerOne().getUniqueId()).remove(this);
 
-    playerOne.sendMessage(AuroraCombat.getInstance().getLang().formatComponent("tag-removed", playerTwo.getName()));
-    playerTwo.sendMessage(AuroraCombat.getInstance().getLang().formatComponent("tag-removed", playerOne.getName()));
-    playerOne.sendActionBar(AuroraCombat.getInstance().getLang().formatComponent("tag-removed-action-bar", playerTwo.getName()));
-    playerTwo.sendActionBar(AuroraCombat.getInstance().getLang().formatComponent("tag-removed-action-bar", playerOne.getName()));
+    playerOne.sendMessage(
+        AuroraCombat.getInstance().getLang().formatComponent("tag-removed", playerTwo.getName()));
+    playerTwo.sendMessage(
+        AuroraCombat.getInstance().getLang().formatComponent("tag-removed", playerOne.getName()));
+    playerOne.sendActionBar(AuroraCombat.getInstance().getLang()
+        .formatComponent("tag-removed-action-bar", playerTwo.getName()));
+    playerTwo.sendActionBar(AuroraCombat.getInstance().getLang()
+        .formatComponent("tag-removed-action-bar", playerOne.getName()));
 
     if (playerOneBar[0] != null && playerTwoBar[0] != null) {
       playerOne.hideBossBar(playerOneBar[0]);
