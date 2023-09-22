@@ -11,5 +11,6 @@ public class CommandManager {
     MANAGER.registerCommand(new RatingCommands());
     MANAGER.registerCommand(new PluginCommands());
     MANAGER.registerCommand(new StatsCommand());
+    MANAGER.registerCommand(new DummyCommand());
   }
 }

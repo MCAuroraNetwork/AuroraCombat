@@ -46,6 +46,7 @@ public class Lang {
     DEFAULTS.put("unknown-player", "prefix <red>Player not found!");
     DEFAULTS.put("commands-disabled", "prefix <red>Commands disabled in combat");
     DEFAULTS.put("no-running", "prefix <red>No running from combat");
+    DEFAULTS.put("dummy-summoned", "prefix <green>Summoned a practice dummy!");
     DEFAULTS.put("rating-created", "prefix <green>Rating created!");
     DEFAULTS.put("stats-command", """
         prefix <yellow><bold>%1$s's Stats

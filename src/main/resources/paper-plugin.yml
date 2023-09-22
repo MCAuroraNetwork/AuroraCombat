@@ -23,11 +23,15 @@ permissions:
       auroracombat.command.ratings.create: true
       auroracombat.command.ratings.delete: true
 
+  auroracombat.command.summondummy:
+    default: false
+
   auroracombat.default:
     description: Enables basic AuroraCombat commands
     default: true
     children:
       auroracombat.command.stats: true
+      auroracombat.command.summondummy: true
 
   auroracombat.bypass.commands:
     description: Allows for the use of commands during combat
