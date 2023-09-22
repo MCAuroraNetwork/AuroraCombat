@@ -1,17 +1,16 @@
 package club.aurorapvp.auroracombat.modules;
 
 import club.aurorapvp.auroracombat.AuroraCombat;
-import club.aurorapvp.auroracombat.config.Config;
-import club.aurorapvp.auroracombat.config.Lang;
 import club.aurorapvp.auroracombat.data.KillDeathDataHandler;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 public class KillDeathTracker {
 
-  private static final Map<Player, KillDeathTracker> TRACKERS = new HashMap<>();
+  private static final Map<UUID, KillDeathTracker> TRACKERS = new HashMap<>();
   private final Player player;
   private int deaths;
   private int kills;
@@ -31,7 +30,7 @@ public class KillDeathTracker {
       this.save();
     }
 
-    TRACKERS.put(player, this);
+    TRACKERS.put(player.getUniqueId(), this);
   }
 
   public Player getPlayer() {
@@ -74,8 +73,10 @@ public class KillDeathTracker {
   public void addDeath() {
     this.deaths = deaths + 1;
 
-    if (killStreak >= AuroraCombat.getInstance().getConfig().getInt("misc.min-killstreak-to-announce")) {
-      Bukkit.broadcast(AuroraCombat.getInstance().getLang().formatComponent("killstreak-lost", player, killStreak));
+    if (killStreak >= AuroraCombat.getInstance().getConfig()
+        .getInt("misc.min-killstreak-to-announce")) {
+      Bukkit.broadcast(AuroraCombat.getInstance().getLang()
+          .formatComponent("killstreak-lost", player, killStreak));
     }
 
     this.killStreak = 0;
@@ -93,12 +94,6 @@ public class KillDeathTracker {
   }
 
   public static KillDeathTracker getTracker(Player player) {
-    KillDeathTracker tracker = TRACKERS.get(player);
-    if (tracker == null) {
-      tracker = new KillDeathTracker(player);
-      TRACKERS.put(player, tracker);
-    }
-
-    return tracker;
+    return TRACKERS.getOrDefault(player.getUniqueId(), new KillDeathTracker(player));
   }
 }

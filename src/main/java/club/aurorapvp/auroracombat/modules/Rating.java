@@ -1,8 +1,6 @@
 package club.aurorapvp.auroracombat.modules;
 
 import club.aurorapvp.auroracombat.AuroraCombat;
-import club.aurorapvp.auroracombat.config.Config;
-import club.aurorapvp.auroracombat.config.Lang;
 import club.aurorapvp.auroracombat.data.RatingDataHandler;
 import club.aurorapvp.auroracombat.flags.RatingFlags;
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
@@ -21,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.UUID;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
@@ -30,7 +29,7 @@ public class Rating {
   private final String name;
   private final RatingType type;
   private final RatingDataHandler data;
-  private final Map<Player, Score> scores = new HashMap<>();
+  private final Map<UUID, Score> scores = new HashMap<>();
   private final Set<Player> ENABLED_PLAYERS = new HashSet<>();
   private boolean enabled;
 
@@ -152,7 +151,7 @@ public class Rating {
   }
 
   public Score getScore(Player player) {
-    return scores.get(player);
+    return scores.getOrDefault(player.getUniqueId(), new Score(player, this));
   }
 
   @SuppressWarnings("unused")
@@ -184,8 +183,10 @@ public class Rating {
     assert killerScore != null;
     double EloChange = Rating.getELOChange(deadScore.getPoints(), killerScore.getPoints());
 
-    deadScore.changePoints((int) (AuroraCombat.getInstance().getConfig().getInt("elo.max-change") * EloChange));
-    killerScore.changePoints((int) (AuroraCombat.getInstance().getConfig().getInt("elo.max-change") * -(0 + EloChange)));
+    deadScore.changePoints(
+        (int) (AuroraCombat.getInstance().getConfig().getInt("elo.max-change") * EloChange));
+    killerScore.changePoints(
+        (int) (AuroraCombat.getInstance().getConfig().getInt("elo.max-change") * -(0 + EloChange)));
 
     deadPlayer.sendMessage(
         AuroraCombat.getInstance().getLang().formatComponent(
@@ -194,7 +195,8 @@ public class Rating {
     killer.sendMessage(
         AuroraCombat.getInstance().getLang().formatComponent(
             "you-killed", deadPlayer.getName(), deadScore.getPoints(),
-            (int) (AuroraCombat.getInstance().getConfig().getInt("elo.max-change") * -(0 + EloChange))));
+            (int) (AuroraCombat.getInstance().getConfig().getInt("elo.max-change") * -(0
+                + EloChange))));
   }
 
   @SuppressWarnings("unused")
@@ -205,9 +207,11 @@ public class Rating {
 
     if (winner) {
       score.changePoints(
-          (int) Math.round(AuroraCombat.getInstance().getConfig().getInt("elo.max-change") * -(0 + EloChange)));
+          (int) Math.round(
+              AuroraCombat.getInstance().getConfig().getInt("elo.max-change") * -(0 + EloChange)));
     } else {
-      score.changePoints((int) Math.round(AuroraCombat.getInstance().getConfig().getInt("elo.max-change") * EloChange));
+      score.changePoints((int) Math.round(
+          AuroraCombat.getInstance().getConfig().getInt("elo.max-change") * EloChange));
     }
   }
 
@@ -219,15 +223,9 @@ public class Rating {
     return new HashSet<>(RATINGS.values());
   }
 
-  public static void register(Player player) {
-    for (Rating rating : RATINGS.values()) {
-      rating.scores.put(player, new Score(player, rating));
-    }
-  }
-
   public static void unregister(Player player) {
     for (Rating rating : RATINGS.values()) {
-      rating.scores.remove(player);
+      rating.scores.remove(player.getUniqueId());
     }
   }
 

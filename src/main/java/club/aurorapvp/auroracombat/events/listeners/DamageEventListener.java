@@ -3,7 +3,6 @@ package club.aurorapvp.auroracombat.events.listeners;
 import static club.aurorapvp.auroracombat.events.listeners.CombatEventListener.lastDamage;
 
 import club.aurorapvp.auroracombat.AuroraCombat;
-import club.aurorapvp.auroracombat.config.Config;
 import club.aurorapvp.auroracombat.enums.DamageType;
 import club.aurorapvp.auroracombat.events.custom.PlayerDamagedByPlayerEvent;
 import club.aurorapvp.auroracombat.modules.BlockFallDamage;
@@ -11,6 +10,7 @@ import club.aurorapvp.auroracombat.util.ItemStackUtil;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.UUID;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -37,8 +37,8 @@ import org.bukkit.potion.PotionEffectType;
 public class DamageEventListener implements Listener {
 
   private final HashSet<Projectile> firedProjectiles = new HashSet<>();
-  private final Map<Player, Component> lastPlacedCrystalName = new HashMap<>();
-  private final Map<Player, ItemStack> lastUsedBow = new HashMap<>();
+  private final Map<UUID, Component> lastPlacedCrystalName = new HashMap<>();
+  private final Map<UUID, ItemStack> lastUsedBow = new HashMap<>();
   private Player lastCrystalAttacker;
   private Player lastInteractedWithBlock;
   private BlockState lastExplodedBlock;
@@ -55,7 +55,7 @@ public class DamageEventListener implements Listener {
       return;
     }
 
-    lastDamage.put(damaged, event);
+    lastDamage.put(damaged.getUniqueId(), event);
 
     if (event.getDamager() instanceof EnderCrystal) {
       new PlayerOnPlayerDamageBuilder()
@@ -63,7 +63,7 @@ public class DamageEventListener implements Listener {
           .setDamaged(damaged)
           .setAttacker(this.lastCrystalAttacker)
           .setWeapon(ItemStackUtil.toEndCrystalItemStack(
-              lastPlacedCrystalName.get(this.lastCrystalAttacker)))
+              lastPlacedCrystalName.get(this.lastCrystalAttacker.getUniqueId())))
           .setEvent(event)
           .build().callEvent();
     }
@@ -92,7 +92,7 @@ public class DamageEventListener implements Listener {
             .setDamageType(DamageType.RANGED)
             .setDamaged(damaged)
             .setAttacker(attacker)
-            .setWeapon(lastUsedBow.get(attacker))
+            .setWeapon(lastUsedBow.get(attacker.getUniqueId()))
             .setEvent(event)
             .build().callEvent();
       }
@@ -124,7 +124,7 @@ public class DamageEventListener implements Listener {
       return;
     }
 
-    lastDamage.put(damaged, event);
+    lastDamage.put(damaged.getUniqueId(), event);
 
     if (event.getCause() == EntityDamageEvent.DamageCause.BLOCK_EXPLOSION
         && damaged.getLocation().distance(this.lastExplodedBlock.getLocation()) <= 10) {
@@ -148,7 +148,7 @@ public class DamageEventListener implements Listener {
 
     if (event.getPlayer().getInventory().getItemInMainHand().getType()
         .equals(Material.END_CRYSTAL)) {
-      lastPlacedCrystalName.put(event.getPlayer(),
+      lastPlacedCrystalName.put(event.getPlayer().getUniqueId(),
           event.getPlayer().getInventory().getItemInMainHand().displayName());
     }
 
@@ -174,7 +174,7 @@ public class DamageEventListener implements Listener {
   public void onProjectileFired(ProjectileLaunchEvent event) {
     if (event.getEntity().getShooter() instanceof Player player) {
       this.firedProjectiles.add(event.getEntity());
-      this.lastUsedBow.put(player, player.getInventory().getItemInMainHand());
+      this.lastUsedBow.put(player.getUniqueId(), player.getInventory().getItemInMainHand());
     }
   }
 

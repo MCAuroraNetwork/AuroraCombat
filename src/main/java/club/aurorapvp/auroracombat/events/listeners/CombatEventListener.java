@@ -1,8 +1,6 @@
 package club.aurorapvp.auroracombat.events.listeners;
 
 import club.aurorapvp.auroracombat.AuroraCombat;
-import club.aurorapvp.auroracombat.config.Config;
-import club.aurorapvp.auroracombat.config.Lang;
 import club.aurorapvp.auroracombat.events.custom.PlayerDamagedByPlayerEvent;
 import club.aurorapvp.auroracombat.events.custom.PlayerKilledByPlayerEvent;
 import club.aurorapvp.auroracombat.modules.BlockFallDamage;
@@ -14,6 +12,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.UUID;
 import net.kyori.adventure.sound.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
@@ -26,7 +25,7 @@ import org.bukkit.event.player.PlayerQuitEvent;
 
 public class CombatEventListener implements Listener {
 
-  public static final Map<Player, Event> lastDamage = new HashMap<>();
+  public static final Map<UUID, Event> lastDamage = new HashMap<>();
   private final Set<Player> combatLoggers = new HashSet<>();
 
   @EventHandler
@@ -79,24 +78,24 @@ public class CombatEventListener implements Listener {
     }
 
     CombatTag.removeTags(event.getPlayer());
-    BlockFallDamage.setInVulnerable(event.getPlayer());
+    BlockFallDamage.setInvulnerable(event.getPlayer());
 
     CombatTag.removeTags(event.getPlayer());
-    BlockFallDamage.setInVulnerable(event.getPlayer());
+    BlockFallDamage.setInvulnerable(event.getPlayer());
 
-    if (lastDamage.get(event.getPlayer()) == null) {
+    if (lastDamage.get(event.getPlayer().getUniqueId()) == null) {
       return;
     }
 
     if (!(lastDamage.get(
-        event.getPlayer()) instanceof PlayerDamagedByPlayerEvent damagedByPlayerEvent)) {
+        event.getPlayer().getUniqueId()) instanceof PlayerDamagedByPlayerEvent damagedByPlayerEvent)) {
       return;
     }
 
     if (event.getPlayer().equals(damagedByPlayerEvent.getDamaged())
         && !damagedByPlayerEvent.isCancelled()) {
       new PlayerKilledByPlayerEvent(damagedByPlayerEvent, event).callEvent();
-      lastDamage.remove(event.getPlayer());
+      lastDamage.remove(event.getPlayer().getUniqueId());
     }
   }
 
@@ -128,6 +127,6 @@ public class CombatEventListener implements Listener {
     }
 
     new CombatTag(event.getDamaged(), event.getAttacker());
-    lastDamage.put(event.getDamaged(), event);
+    lastDamage.put(event.getDamaged().getUniqueId(), event);
   }
 }

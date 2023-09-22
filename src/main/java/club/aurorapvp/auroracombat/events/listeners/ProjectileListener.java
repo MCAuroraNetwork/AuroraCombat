@@ -4,6 +4,7 @@ import club.aurorapvp.auroracombat.AuroraCombat;
 import club.aurorapvp.auroracombat.modules.CombatTag;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 import org.bukkit.Location;
 import org.bukkit.entity.EnderPearl;
 import org.bukkit.entity.Player;
@@ -14,11 +15,13 @@ import org.bukkit.event.entity.ProjectileLaunchEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitTask;
 
 public class ProjectileListener implements Listener {
 
-  private final Map<Player, Location> lastThrowLocation = new HashMap<>();
-  private final Map<Player, Boolean> onCooldown = new HashMap<>();
+  private final Map<UUID, Location> lastThrowLocation = new HashMap<>();
+  private final Map<UUID, Boolean> onCooldown = new HashMap<>();
+  private final Map<UUID, BukkitTask> tasks = new HashMap<>();
 
   @EventHandler
       (priority = EventPriority.HIGHEST, ignoreCancelled = true)
@@ -31,9 +34,10 @@ public class ProjectileListener implements Listener {
       return;
     }
 
-    if (onCooldown.getOrDefault(event.getPlayer(), false)) {
+    if (onCooldown.getOrDefault(event.getPlayer().getUniqueId(), false)) {
       if (!AuroraCombat.getInstance().getConfig()
-          .getBoolean("misc.ender-pearl-cooldown.only-active-when-tagged") || CombatTag.isTagged(event.getPlayer())) {
+          .getBoolean("misc.ender-pearl-cooldown.only-active-when-tagged") || CombatTag.isTagged(
+          event.getPlayer())) {
         event.setCancelled(true);
 
         event.getPlayer()
@@ -50,14 +54,18 @@ public class ProjectileListener implements Listener {
       int ticks =
           AuroraCombat.getInstance().getConfig().getInt("misc.ender-pearl-cooldown.time") * 20;
 
-      onCooldown.put(event.getPlayer(), true);
+      onCooldown.put(event.getPlayer().getUniqueId(), true);
 
-      new BukkitRunnable() {
+      if (tasks.containsKey(event.getPlayer().getUniqueId())) {
+        tasks.get(event.getPlayer().getUniqueId()).cancel();
+      }
+
+      tasks.put(event.getPlayer().getUniqueId(), new BukkitRunnable() {
         @Override
         public void run() {
-          onCooldown.put(event.getPlayer(), false);
+          onCooldown.put(event.getPlayer().getUniqueId(), false);
         }
-      }.runTaskLater(AuroraCombat.getInstance(), ticks);
+      }.runTaskLater(AuroraCombat.getInstance(), ticks));
     }
   }
 
@@ -79,11 +87,11 @@ public class ProjectileListener implements Listener {
       return;
     }
 
-    if (onCooldown.getOrDefault(player, false)) {
+    if (onCooldown.getOrDefault(player.getUniqueId(), false)) {
       event.setCancelled(true);
       return;
     }
 
-    lastThrowLocation.put(player, player.getLocation());
+    lastThrowLocation.put(player.getUniqueId(), player.getLocation());
   }
 }

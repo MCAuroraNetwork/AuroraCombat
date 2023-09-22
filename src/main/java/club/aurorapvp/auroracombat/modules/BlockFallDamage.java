@@ -1,21 +1,26 @@
 package club.aurorapvp.auroracombat.modules;
 
 import java.util.HashMap;
+import java.util.UUID;
 import org.bukkit.entity.Player;
 
 public class BlockFallDamage {
 
-  private static final HashMap<Player, Boolean> inVulnerable = new HashMap<>();
+  private static final HashMap<UUID, Boolean> invulnerable = new HashMap<>();
 
   public static boolean shouldTakeDamage(Player player) {
-    return !inVulnerable.get(player);
+    return !invulnerable.get(player.getUniqueId());
   }
 
-  public static void setInVulnerable(Player player) {
-    inVulnerable.put(player, true);
+  public static void setInvulnerable(Player player) {
+    invulnerable.put(player.getUniqueId(), true);
   }
 
   public static void setVulnerable(Player player) {
-    inVulnerable.put(player, false);
+    invulnerable.put(player.getUniqueId(), false);
+  }
+
+  public static void unregister(Player player) {
+    invulnerable.remove(player.getUniqueId());
   }
 }

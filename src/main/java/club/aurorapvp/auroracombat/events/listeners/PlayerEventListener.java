@@ -1,7 +1,6 @@
 package club.aurorapvp.auroracombat.events.listeners;
 
 import club.aurorapvp.auroracombat.AuroraCombat;
-import club.aurorapvp.auroracombat.config.Config;
 import club.aurorapvp.auroracombat.modules.BlockFallDamage;
 import club.aurorapvp.auroracombat.modules.CombatTag;
 import club.aurorapvp.auroracombat.modules.KillDeathTracker;
@@ -17,9 +16,6 @@ public class PlayerEventListener implements Listener {
 
   @EventHandler
   public void onPlayerJoin(PlayerJoinEvent event) {
-    Rating.register(event.getPlayer());
-    BlockFallDamage.setInVulnerable(event.getPlayer());
-
     if (AuroraCombat.getInstance().getConfig().getBoolean("combat-tag.enable")) {
       CombatTag.setTaggable(event.getPlayer(), true);
     }
@@ -27,7 +23,7 @@ public class PlayerEventListener implements Listener {
 
   @EventHandler
   public void onWorldChange(PlayerChangedWorldEvent event) {
-    BlockFallDamage.setInVulnerable(event.getPlayer());
+    BlockFallDamage.setInvulnerable(event.getPlayer());
   }
 
   @EventHandler
@@ -39,5 +35,6 @@ public class PlayerEventListener implements Listener {
   @EventHandler
   public void onPlayerQuit(PlayerQuitEvent event) {
     Rating.unregister(event.getPlayer());
+    BlockFallDamage.unregister(event.getPlayer());
   }
 }
