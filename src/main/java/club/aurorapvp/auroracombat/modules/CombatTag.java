@@ -66,8 +66,8 @@ public class CombatTag {
         tags.put(opponent.getUniqueId(), new LinkedList<>());
       }
 
-      tags.getOrDefault(tagged.getUniqueId(), new LinkedList<>()).add(this);
-      tags.getOrDefault(opponent.getUniqueId(), new LinkedList<>()).add(this);
+      tags.get(tagged.getUniqueId()).add(this);
+      tags.get(opponent.getUniqueId()).add(this);
 
       this.startTimer();
     }
@@ -284,6 +284,7 @@ public class CombatTag {
     }
 
     tags.remove(this.getPlayerOne().getUniqueId()).remove(this);
+    tags.remove(this.getPlayerTwo().getUniqueId()).remove(this);
 
     playerOne.sendMessage(
         AuroraCombat.getInstance().getLang().formatComponent("tag-removed", playerTwo.getName()));
