@@ -102,7 +102,7 @@ public class CombatTag {
   }
 
   public static boolean isTagged(Player player) {
-    return !tags.get(player.getUniqueId()).isEmpty();
+    return !tags.getOrDefault(player.getUniqueId(), new LinkedList<>()).isEmpty();
   }
 
   public static void setTaggable(Player player, boolean taggable) {
