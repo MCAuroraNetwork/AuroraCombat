@@ -43,7 +43,8 @@ public class ProjectileListener implements Listener {
       }
     }
 
-    if (lastThrowLocation.get(event.getPlayer()).distance(event.getTo())
+    if (lastThrowLocation.containsKey(event.getPlayer().getUniqueId())
+        && lastThrowLocation.get(event.getPlayer().getUniqueId()).distance(event.getTo())
         >= AuroraCombat.getInstance().getConfig()
         .getInt("misc.ender-pearl-cooldown.max-distance")) {
       int ticks =
