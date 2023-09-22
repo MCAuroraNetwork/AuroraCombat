@@ -1,8 +1,6 @@
 package club.aurorapvp.auroracombat.modules;
 
 import club.aurorapvp.auroracombat.AuroraCombat;
-import club.aurorapvp.auroracombat.config.Config;
-import club.aurorapvp.auroracombat.config.Lang;
 import club.aurorapvp.auroracombat.flags.CombatTagFlags;
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldguard.WorldGuard;
@@ -14,13 +12,13 @@ import com.sk89q.worldguard.protection.regions.RegionQuery;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.UUID;
 import net.kyori.adventure.bossbar.BossBar;
 import net.kyori.adventure.bossbar.BossBar.Color;
 import net.kyori.adventure.bossbar.BossBar.Overlay;
@@ -33,15 +31,14 @@ import org.bukkit.scheduler.BukkitTask;
 
 public class CombatTag {
 
-  private static final Set<CombatTag> tags = new HashSet<>();
-  private static final Map<Player, Boolean> taggablePlayers = new HashMap<>();
+  private static final Map<UUID, LinkedList<CombatTag>> tags = new HashMap<>();
+  private static final Map<UUID, Boolean> taggablePlayers = new HashMap<>();
   private final Player playerOne;
   private final Player playerTwo;
   private final BossBar[] playerOneBar = new BossBar[1];
   private final BossBar[] playerTwoBar = new BossBar[1];
   private Timer timer;
   private BukkitTask countdownTask;
-  private Long timeStarted;
   private BukkitRunnable bossbarTask;
 
   public CombatTag(Player tagged, Player opponent) {
@@ -62,7 +59,8 @@ public class CombatTag {
           AuroraCombat.getInstance().getLang().formatComponent(
               "tagged", tagged.getName(), AuroraCombat.getInstance().getConfig().getInt("combat-tag.duration")));
 
-      tags.add(this);
+      tags.get(tagged.getUniqueId()).add(this);
+      tags.get(opponent.getUniqueId()).add(this);
 
       this.startTimer();
     }
@@ -74,47 +72,17 @@ public class CombatTag {
     }
   }
 
-  public static CombatTag[] getTags(Player player) {
-    List<CombatTag> tagList = new ArrayList<>();
-
-    for (CombatTag tag : tags) {
-      if ((tag.getPlayerOne() == player || tag.getPlayerTwo() == player)) {
-        tagList.add(tag);
-      }
-    }
-
-    CombatTag[] combatTags = new CombatTag[tagList.size()];
-
-    for (int i = 0; i < tagList.size(); i++) {
-      combatTags[i] = tagList.get(i);
-    }
-
-    return combatTags;
+  public static LinkedList<CombatTag> getTags(Player player) {
+    return tags.get(player.getUniqueId());
   }
 
   public static CombatTag getRecentTag(Player player) {
-    HashMap<Integer, CombatTag> tagTimes = new HashMap<>();
-    List<Integer> times = new ArrayList<>();
-
-    for (CombatTag tag : tags) {
-      if ((tag.getPlayerOne() == player || tag.getPlayerTwo() == player)) {
-        times.add(tag.getTimeRemaining());
-        tagTimes.put(tag.getTimeRemaining(), tag);
-      }
-    }
-
-    Collections.sort(times);
-
-    if (!times.isEmpty()) {
-      return tagTimes.get(times.get(0));
-    }
-    return null;
+    return tags.get(player.getUniqueId()).getFirst();
   }
 
   public static CombatTag getTag(Player p1, Player p2) {
-    for (CombatTag tag : tags) {
-      if ((tag.getPlayerOne() == p1 || tag.getPlayerOne() == p2)
-          && (tag.getPlayerTwo() == p1 || tag.getPlayerTwo() == p2)) {
+    for (CombatTag tag : tags.get(p1.getUniqueId())) {
+      if (tag.getPlayerOne() == p2 || tag.getPlayerTwo() == p2) {
         return tag;
       }
     }
@@ -123,20 +91,15 @@ public class CombatTag {
   }
 
   public static boolean isTagged(Player player) {
-    for (CombatTag tag : tags) {
-      if (tag.getPlayerOne() == player || tag.getPlayerTwo() == player) {
-        return true;
-      }
-    }
-    return false;
+    return !tags.get(player.getUniqueId()).isEmpty();
   }
 
   public static void setTaggable(Player player, boolean taggable) {
-    taggablePlayers.put(player, taggable);
+    taggablePlayers.put(player.getUniqueId(), taggable);
   }
 
   public static boolean isUntaggable(Player player) {
-    boolean taggable = taggablePlayers.get(player);
+    boolean taggable = taggablePlayers.get(player.getUniqueId());
 
     if (taggable && AuroraCombat.getInstance().isWorldGuardInstalled()) {
       RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
@@ -172,7 +135,6 @@ public class CombatTag {
   }
 
   public void startTimer() {
-    timeStarted = System.currentTimeMillis();
     CombatTag tag = this;
 
     timer = new Timer();
@@ -299,10 +261,6 @@ public class CombatTag {
     this.startTimer();
   }
 
-  public int getTimeRemaining() {
-    return (int) (timeStarted + 15000 - System.currentTimeMillis());
-  }
-
   public void removeTag() {
     timer.cancel();
 
@@ -314,7 +272,7 @@ public class CombatTag {
       countdownTask.cancel();
     }
 
-    tags.remove(this);
+    tags.remove(this.getPlayerOne().getUniqueId()).remove(this);
 
     playerOne.sendMessage(AuroraCombat.getInstance().getLang().formatComponent("tag-removed", playerTwo.getName()));
     playerTwo.sendMessage(AuroraCombat.getInstance().getLang().formatComponent("tag-removed", playerOne.getName()));
