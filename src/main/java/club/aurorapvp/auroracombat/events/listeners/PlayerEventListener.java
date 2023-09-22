@@ -10,6 +10,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerChangedWorldEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.event.world.WorldSaveEvent;
 
 public class PlayerEventListener implements Listener {
@@ -19,6 +20,13 @@ public class PlayerEventListener implements Listener {
     if (AuroraCombat.getInstance().getConfig().getBoolean("combat-tag.enable")) {
       CombatTag.setTaggable(event.getPlayer(), true);
     }
+
+    BlockFallDamage.setInvulnerable(event.getPlayer());
+  }
+
+  @EventHandler
+  public void onRespawn(PlayerRespawnEvent event) {
+    BlockFallDamage.setInvulnerable(event.getPlayer());
   }
 
   @EventHandler

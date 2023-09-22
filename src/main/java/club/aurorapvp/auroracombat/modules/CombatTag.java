@@ -74,13 +74,13 @@ public class CombatTag {
   }
 
   public static void removeTags(Player player) {
-    for (CombatTag tag : getTags(player)) {
+    for (CombatTag tag : CombatTag.getTags(player)) {
       tag.removeTag();
     }
   }
 
   public static LinkedList<CombatTag> getTags(Player player) {
-    return tags.get(player.getUniqueId());
+    return tags.getOrDefault(player.getUniqueId(), new LinkedList<>());
   }
 
   public static CombatTag getRecentTag(Player player) {
