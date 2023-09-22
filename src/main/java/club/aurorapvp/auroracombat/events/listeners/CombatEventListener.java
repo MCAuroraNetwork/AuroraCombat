@@ -13,6 +13,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
+import java.util.logging.Level;
 import net.kyori.adventure.sound.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
@@ -48,7 +49,7 @@ public class CombatEventListener implements Listener {
 
     if (!AuroraCombat.getInstance().getConfig().getBoolean("combat-tag.commands.allow-commands")) {
       for (String command : AuroraCombat.getInstance().getConfig().getStringList("combat-tag.commands.whitelisted")) {
-        if (event.getMessage().equals(command)) {
+        if (event.getMessage().equals("/" + command)) {
           commandMatched = true;
           break;
         }
