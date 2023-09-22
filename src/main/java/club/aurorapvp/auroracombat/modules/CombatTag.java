@@ -81,7 +81,13 @@ public class CombatTag {
   }
 
   public static CombatTag getTag(Player p1, Player p2) {
-    for (CombatTag tag : tags.get(p1.getUniqueId())) {
+    LinkedList<CombatTag> playerTags = tags.get(p1.getUniqueId());
+
+    if (playerTags == null) {
+      return null;
+    }
+
+    for (CombatTag tag : playerTags) {
       if (tag.getPlayerOne() == p2 || tag.getPlayerTwo() == p2) {
         return tag;
       }
