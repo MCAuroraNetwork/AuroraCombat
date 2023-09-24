@@ -58,16 +58,16 @@ public class CombatTag {
               "tagged", tagged.getName(),
               AuroraCombat.getInstance().getConfig().getInt("combat-tag.duration")));
 
-      if (!tags.containsKey(tagged.getUniqueId())) {
-        tags.put(tagged.getUniqueId(), new LinkedList<>());
+      if (!tags.containsKey(playerOne.getUniqueId())) {
+        tags.put(playerOne.getUniqueId(), new LinkedList<>());
       }
 
-      if (!tags.containsKey(opponent.getUniqueId())) {
-        tags.put(opponent.getUniqueId(), new LinkedList<>());
+      if (!tags.containsKey(playerTwo.getUniqueId())) {
+        tags.put(playerTwo.getUniqueId(), new LinkedList<>());
       }
 
-      tags.get(tagged.getUniqueId()).add(this);
-      tags.get(opponent.getUniqueId()).add(this);
+      tags.get(playerOne.getUniqueId()).add(this);
+      tags.get(playerTwo.getUniqueId()).add(this);
 
       this.startTimer();
     }
@@ -297,7 +297,7 @@ public class CombatTag {
       playerTwo.hideBossBar(playerTwoBar[0]);
     }
 
-    tags.remove(this.getPlayerOne().getUniqueId()).remove(this);
-    tags.remove(this.getPlayerTwo().getUniqueId()).remove(this);
+    tags.getOrDefault(this.getPlayerOne().getUniqueId(), new LinkedList<>()).remove(this);
+    tags.getOrDefault(this.getPlayerTwo().getUniqueId(), new LinkedList<>()).remove(this);
   }
 }
