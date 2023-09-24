@@ -74,7 +74,7 @@ public class CombatTag {
   }
 
   public static void removeTags(Player player) {
-    for (CombatTag tag : CombatTag.getTags(player)) {
+    for (CombatTag tag : new LinkedList<>(CombatTag.getTags(player))) {
       tag.removeTag();
     }
   }
