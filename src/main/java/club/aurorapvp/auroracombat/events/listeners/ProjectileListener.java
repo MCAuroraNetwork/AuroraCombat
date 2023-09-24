@@ -30,6 +30,10 @@ public class ProjectileListener implements Listener {
       return;
     }
 
+    if (!event.getPlayer().getWorld().equals(event.getTo().getWorld())) {
+      return;
+    }
+
     if (!AuroraCombat.getInstance().getConfig().getBoolean("misc.ender-pearl-cooldown.enabled")) {
       return;
     }
