@@ -283,9 +283,6 @@ public class CombatTag {
       countdownTask.cancel();
     }
 
-    tags.remove(this.getPlayerOne().getUniqueId()).remove(this);
-    tags.remove(this.getPlayerTwo().getUniqueId()).remove(this);
-
     playerOne.sendMessage(
         AuroraCombat.getInstance().getLang().formatComponent("tag-removed", playerTwo.getName()));
     playerTwo.sendMessage(
@@ -299,5 +296,8 @@ public class CombatTag {
       playerOne.hideBossBar(playerOneBar[0]);
       playerTwo.hideBossBar(playerTwoBar[0]);
     }
+
+    tags.remove(this.getPlayerOne().getUniqueId()).remove(this);
+    tags.remove(this.getPlayerTwo().getUniqueId()).remove(this);
   }
 }
