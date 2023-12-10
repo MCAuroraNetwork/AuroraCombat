@@ -4,7 +4,7 @@ plugins {
 }
 
 group = 'AuroraCombat'
-version = '1.7.7'
+version = '1.7.8'
 
 repositories {
     mavenCentral()
@@ -33,9 +33,9 @@ repositories {
 dependencies {
     implementation 'co.aikar:acf-paper:0.5.1-SNAPSHOT'
 
-    compileOnly 'io.papermc.paper:paper-api:1.20.1-R0.1-SNAPSHOT'
+    compileOnly 'io.papermc.paper:paper-api:1.20.4-R0.1-SNAPSHOT'
     compileOnly 'com.sk89q.worldguard:worldguard-bukkit:7.0.9-SNAPSHOT'
-    compileOnly 'me.clip:placeholderapi:2.11.1'
+    compileOnly 'me.clip:placeholderapi:2.11.5'
 }
 
 build {
