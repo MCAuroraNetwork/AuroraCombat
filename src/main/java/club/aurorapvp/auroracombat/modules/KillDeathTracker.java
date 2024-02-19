@@ -5,6 +5,7 @@ import club.aurorapvp.auroracombat.data.KillDeathDataHandler;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.logging.Level;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -91,6 +92,8 @@ public class KillDeathTracker {
     for (KillDeathTracker tracker : TRACKERS.values()) {
       tracker.save();
     }
+
+    AuroraCombat.getInstance().getLogger().log(Level.INFO, "All kdr trackers saved");
   }
 
   public static KillDeathTracker getTracker(Player player) {

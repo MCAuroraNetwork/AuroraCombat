@@ -56,11 +56,7 @@ public final class AuroraCombat extends JavaPlugin {
       }
     }
 
-    getLogger()
-        .info(
-            "AuroraCombat loaded in "
-                + Math.subtractExact(System.currentTimeMillis(), startTime)
-                + "ms");
+    getLogger().info("AuroraCombat loaded in " + (System.currentTimeMillis() - startTime) + "ms");
   }
 
   @Override
@@ -78,11 +74,7 @@ public final class AuroraCombat extends JavaPlugin {
       new Placeholders().register();
     }
 
-    getLogger()
-        .info(
-            "AuroraCombat enabled in "
-                + Math.subtractExact(System.currentTimeMillis(), startTime)
-                + "ms");
+    getLogger().info("AuroraCombat enabled in " + (System.currentTimeMillis() - startTime) + "ms");
   }
 
   @Override
@@ -92,11 +84,7 @@ public final class AuroraCombat extends JavaPlugin {
     Rating.saveAll();
     KillDeathTracker.saveAll();
 
-    getLogger()
-        .info(
-            "AuroraCombat disabled in "
-                + Math.subtractExact(System.currentTimeMillis(), startTime)
-                + "ms");
+    getLogger().info("AuroraCombat disabled in " + (System.currentTimeMillis() - startTime) + "ms");
   }
 
   public void reloadConfig() {
