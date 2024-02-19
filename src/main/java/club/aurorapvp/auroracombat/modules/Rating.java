@@ -20,6 +20,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
+import java.util.logging.Level;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
@@ -117,6 +118,8 @@ public class Rating {
         score.save();
       }
     }
+
+    AuroraCombat.getInstance().getLogger().log(Level.INFO, "All ratings saved");
   }
 
   public boolean isEnabled(Player player) {

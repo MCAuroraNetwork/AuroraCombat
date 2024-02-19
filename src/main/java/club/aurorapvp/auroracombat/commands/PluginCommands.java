@@ -1,15 +1,13 @@
 package club.aurorapvp.auroracombat.commands;
 
 import club.aurorapvp.auroracombat.AuroraCombat;
-import club.aurorapvp.auroracombat.config.Config;
-import club.aurorapvp.auroracombat.config.Lang;
 import club.aurorapvp.auroracombat.modules.Rating;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.CommandPermission;
 import co.aikar.commands.annotation.Description;
 import co.aikar.commands.annotation.Subcommand;
-import org.checkerframework.checker.units.qual.A;
+import org.bukkit.entity.Player;
 
 @CommandAlias("auroracombat")
 @CommandPermission("auroracombat.command.auroracombat")
@@ -19,12 +17,14 @@ public class PluginCommands extends BaseCommand {
   @CommandPermission("auroracombat.command.auroracombat.reload")
   @Description("Reloads and saves all plugin data")
   @SuppressWarnings("unused")
-  public void onReload() {
+  public void onReload(Player player) {
     long startTime = System.currentTimeMillis();
 
     AuroraCombat.getInstance().reloadConfig();
     AuroraCombat.getInstance().getLang().reload();
     Rating.saveAll();
+
+    player.sendMessage(AuroraCombat.getInstance().getLang().getComponent("reloaded"));
 
     AuroraCombat.getInstance()
         .getLogger()

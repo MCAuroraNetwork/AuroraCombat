@@ -25,6 +25,7 @@ public class Lang {
     final HashMap<String, String> DEFAULTS = new HashMap<>();
 
     DEFAULTS.put("prefix", "~<gradient:#FFAA00:#FF55FF><bold>AuroraCombat ><reset>~");
+    DEFAULTS.put("reloaded", "prefix <green>Reloaded");
     DEFAULTS.put(
         "you-killed",
         "prefix <green>You killed <bold>%1$s<reset> <yellow><bold>(%2$s)<reset><green>! <bold>+%3$s<reset><green> points");
