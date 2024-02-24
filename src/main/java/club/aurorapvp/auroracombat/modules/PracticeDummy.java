@@ -1,16 +1,17 @@
 package club.aurorapvp.auroracombat.modules;
 
 import club.aurorapvp.auroracombat.AuroraCombat;
+import club.aurorapvp.auroracombat.util.ItemStackUtil;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Zombie;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.PlayerInventory;
 
 public class PracticeDummy {
+
   private static final Map<UUID, PracticeDummy> DUMMIES = new HashMap<>();
   private final Player player;
   private final Zombie zombie;
@@ -35,10 +36,13 @@ public class PracticeDummy {
 
     inventory = player.getInventory();
 
-    zombie.getEquipment().setHelmet(inventory.getHelmet());
-    zombie.getEquipment().setChestplate(inventory.getChestplate());
-    zombie.getEquipment().setLeggings(inventory.getLeggings());
-    zombie.getEquipment().setBoots(inventory.getBoots());
+    zombie.getEquipment().setHelmet(ItemStackUtil.makeItemUnbreakable(inventory.getHelmet()));
+    zombie.getEquipment().setChestplate(
+        ItemStackUtil.makeItemUnbreakable(inventory.getChestplate()));
+    zombie.getEquipment().setLeggings(
+        ItemStackUtil.makeItemUnbreakable(inventory.getLeggings()));
+    zombie.getEquipment().setBoots(
+        ItemStackUtil.makeItemUnbreakable(inventory.getBoots()));
     zombie.getEquipment().setItemInOffHand(inventory.getItemInOffHand());
     zombie.getEquipment().setItemInMainHand(inventory.getItemInMainHand());
 

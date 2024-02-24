@@ -1,7 +1,6 @@
 package club.aurorapvp.auroracombat.util;
 
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.Material;
 import org.bukkit.entity.Arrow;
@@ -12,6 +11,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 public class ItemStackUtil {
+
   public static ItemStack toEndCrystalItemStack(Component displayName) {
     ItemStack item = new ItemStack(Material.END_CRYSTAL);
 
@@ -30,6 +30,18 @@ public class ItemStackUtil {
     }
 
     return item;
+  }
+
+  public static ItemStack makeItemUnbreakable(ItemStack itemStack) {
+    if (itemStack == null) {
+      return null;
+    }
+
+    ItemMeta itemMeta = itemStack.getItemMeta();
+    itemMeta.setUnbreakable(true);
+    itemStack.setItemMeta(itemMeta);
+
+    return itemStack;
   }
 
 
