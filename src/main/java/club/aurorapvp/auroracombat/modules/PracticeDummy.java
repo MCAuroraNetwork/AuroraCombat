@@ -20,6 +20,12 @@ public class PracticeDummy {
     this.player = player;
     this.zombie = (Zombie) player.getWorld().spawnEntity(player.getLocation(), EntityType.ZOMBIE);
 
+    if (DUMMIES.containsKey(player.getUniqueId())) {
+      PracticeDummy dummy = DUMMIES.get(player.getUniqueId());
+
+      dummy.getZombie().remove();
+    }
+
     DUMMIES.put(player.getUniqueId(), this);
   }
 
