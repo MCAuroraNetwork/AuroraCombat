@@ -48,6 +48,12 @@ public class DummyCombatEventListener implements Listener {
       return;
     }
 
+    PracticeDummy dummy = PracticeDummy.getDummy(zombie);
+
+    if (dummy == null) {
+      return;
+    }
+
     event.setCancelled(true);
   }
 }
