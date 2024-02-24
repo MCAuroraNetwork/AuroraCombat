@@ -32,7 +32,7 @@ public class DummyCombatEventListener implements Listener {
     }
 
     if (dummy.getInventory().contains(Material.TOTEM_OF_UNDYING)) {
-      dummy.getInventory().remove(Material.TOTEM_OF_UNDYING);
+      dummy.getInventory().remove(new ItemStack(Material.TOTEM_OF_UNDYING, 1));
 
       dummy.getZombie().getEquipment().setItemInOffHand(new ItemStack(Material.TOTEM_OF_UNDYING));
     }
