@@ -25,10 +25,6 @@ public class PracticeDummy {
     zombie.getEquipment().setItemInOffHand(player.getInventory().getItemInOffHand());
     zombie.getEquipment().setItemInMainHand(player.getInventory().getItemInMainHand());
 
-    if (dummies.containsKey(player.getUniqueId())) {
-      dummies.get(player.getUniqueId()).remove();
-    }
-
     dummies.put(player.getUniqueId(), zombie);
 
     player.sendMessage(AuroraCombat.getInstance().getLang().getComponent("dummy-summoned"));
