@@ -1,7 +1,9 @@
 package club.aurorapvp.auroracombat.events.listeners;
 
+import club.aurorapvp.auroracombat.AuroraCombat;
 import club.aurorapvp.auroracombat.events.custom.EntityDamagedByEntityEvent;
 import club.aurorapvp.auroracombat.modules.PracticeDummy;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Zombie;
@@ -9,6 +11,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityResurrectEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.scheduler.BukkitRunnable;
 
 public class DummyCombatEventListener implements Listener {
 
@@ -24,15 +27,16 @@ public class DummyCombatEventListener implements Listener {
       return;
     }
 
-    if (zombie.getEquipment().getItemInOffHand().getType() == Material.TOTEM_OF_UNDYING) {
-      return;
-    }
+    new BukkitRunnable() {
+      @Override
+      public void run() {
+        if (dummy.getInventory().contains(Material.TOTEM_OF_UNDYING)) {
+          dummy.getInventory().removeItem(new ItemStack(Material.TOTEM_OF_UNDYING));
 
-    if (dummy.getInventory().contains(Material.TOTEM_OF_UNDYING)) {
-      dummy.getInventory().removeItem(new ItemStack(Material.TOTEM_OF_UNDYING));
-
-      dummy.getZombie().getEquipment().setItemInOffHand(new ItemStack(Material.TOTEM_OF_UNDYING));
-    }
+          dummy.getZombie().getEquipment().setItemInOffHand(new ItemStack(Material.TOTEM_OF_UNDYING));
+        }
+      }
+    }.runTaskLater(AuroraCombat.getInstance(), 1L);
   }
 
   @EventHandler
