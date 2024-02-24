@@ -7,26 +7,53 @@ import java.util.UUID;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Zombie;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.PlayerInventory;
 
 public class PracticeDummy {
-  private static final Map<UUID, Zombie> dummies = new HashMap<>();
-  public static void summonDummy(Player player) {
-    Zombie zombie = (Zombie) player.getWorld().spawnEntity(player.getLocation(), EntityType.ZOMBIE);
+  private static final Map<UUID, PracticeDummy> DUMMIES = new HashMap<>();
+  private final Player player;
+  private final Zombie zombie;
+  private PlayerInventory inventory;
 
-    zombie.setAI(false);
+  public PracticeDummy(Player player) {
+    this.player = player;
+    this.zombie = (Zombie) player.getWorld().spawnEntity(player.getLocation(), EntityType.ZOMBIE);
 
+    DUMMIES.put(player.getUniqueId(), this);
+  }
+
+  public void summonDummy() {
     zombie.setHealth(player.getHealth());
     zombie.addPotionEffects(player.getActivePotionEffects());
 
-    zombie.getEquipment().setHelmet(player.getInventory().getHelmet());
-    zombie.getEquipment().setChestplate(player.getInventory().getChestplate());
-    zombie.getEquipment().setLeggings(player.getInventory().getLeggings());
-    zombie.getEquipment().setBoots(player.getInventory().getBoots());
-    zombie.getEquipment().setItemInOffHand(player.getInventory().getItemInOffHand());
-    zombie.getEquipment().setItemInMainHand(player.getInventory().getItemInMainHand());
+    inventory = player.getInventory();
 
-    dummies.put(player.getUniqueId(), zombie);
+    zombie.getEquipment().setHelmet(inventory.getHelmet());
+    zombie.getEquipment().setChestplate(inventory.getChestplate());
+    zombie.getEquipment().setLeggings(inventory.getLeggings());
+    zombie.getEquipment().setBoots(inventory.getBoots());
+    zombie.getEquipment().setItemInOffHand(inventory.getItemInOffHand());
+    zombie.getEquipment().setItemInMainHand(inventory.getItemInMainHand());
 
     player.sendMessage(AuroraCombat.getInstance().getLang().getComponent("dummy-summoned"));
+  }
+
+  public Zombie getZombie() {
+    return zombie;
+  }
+
+  public PlayerInventory getInventory() {
+    return inventory;
+  }
+
+  public static PracticeDummy getDummy(Zombie zombie) {
+    for (PracticeDummy dummy : DUMMIES.values()) {
+      if (dummy.getZombie() == zombie) {
+        return dummy;
+      }
+    }
+
+    return null;
   }
 }

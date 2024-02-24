@@ -16,6 +16,6 @@ public class DummyCommand extends BaseCommand {
   @Description("Summons a practice dummy")
   @SuppressWarnings("unused")
   public void onSummon(Player player) {
-    PracticeDummy.summonDummy(player);
+    new PracticeDummy(player).summonDummy();
   }
 }
