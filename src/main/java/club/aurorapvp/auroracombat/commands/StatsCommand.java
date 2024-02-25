@@ -56,7 +56,7 @@ public class StatsCommand extends BaseCommand {
     for (Rating rating : Rating.getRatings()) {
       String ratingName = rating.getFriendlyName();
       int points = rating.getScore(player).getPoints();
-      ratings.append("<aqua>").append(ratingName).append(" Points: ").append(points).append("\n");
+      ratings.append("<aqua><bold>").append(ratingName).append(" <reset><aqua>Points: ").append(points).append("<reset>\n");
     }
 
     player.sendMessage(
