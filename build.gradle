@@ -1,10 +1,10 @@
 plugins {
     id 'java'
-    id "com.github.johnrengelman.shadow" version "7.1.2"
+    id 'io.github.goooler.shadow' version '8.1.7'
 }
 
 group = 'AuroraCombat'
-version = '1.7.10'
+version = '1.8.0'
 
 repositories {
     mavenCentral()
@@ -33,9 +33,9 @@ repositories {
 dependencies {
     implementation 'co.aikar:acf-paper:0.5.1-SNAPSHOT'
 
-    compileOnly 'io.papermc.paper:paper-api:1.20.4-R0.1-SNAPSHOT'
-    compileOnly 'com.sk89q.worldguard:worldguard-bukkit:7.0.9-SNAPSHOT'
-    compileOnly 'me.clip:placeholderapi:2.11.5'
+    compileOnly 'io.papermc.paper:paper-api:1.20.6-R0.1-SNAPSHOT'
+    compileOnly 'com.sk89q.worldguard:worldguard-bukkit:7.0.10-SNAPSHOT'
+    compileOnly 'me.clip:placeholderapi:2.11.6'
 }
 
 build {
@@ -50,7 +50,7 @@ shadowJar {
     relocate 'co.aikar.locales', 'club.aurorapvp.auroracombat.shaded.locales'
 }
 
-def targetJavaVersion = 17
+def targetJavaVersion = 21
 java {
     def javaVersion = JavaVersion.toVersion(targetJavaVersion)
     sourceCompatibility = javaVersion

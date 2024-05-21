@@ -115,7 +115,7 @@ public class DamageEventListener implements Listener {
     if (thrownPotion.getEffects().stream()
         .anyMatch(
             effect ->
-                effect.getType() == PotionEffectType.HARM
+                effect.getType() == PotionEffectType.INSTANT_DAMAGE
                     || effect.getType() == PotionEffectType.POISON)) {
       new EntityOnPlayerDamageBuilder()
           .setDamageType(AttackType.MAGIC)
