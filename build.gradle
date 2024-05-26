@@ -45,7 +45,6 @@ build {
 shadowJar {
     minimize()
     archiveFileName.set("${project.name}-${project.version}.jar")
-    relocate 'org.bstats', 'club.aurorapvp.auroracombat.shaded.bstats'
     relocate 'co.aikar.commands', 'club.aurorapvp.auroracombat.shaded.acf'
     relocate 'co.aikar.locales', 'club.aurorapvp.auroracombat.shaded.locales'
 }
