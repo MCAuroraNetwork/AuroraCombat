@@ -70,7 +70,7 @@ public class Lang {
       AuroraCombat.getInstance().getLogger().log(Level.SEVERE, "Failed to save lang file", e);
     }
 
-    for (Object path : getYaml().getKeys(false).toArray()) {
+    for (var path : getYaml().getKeys(false).toArray()) {
       if (Objects.requireNonNull(getYaml().getString((String) path)).startsWith("~")
           && Objects.requireNonNull(getYaml().getString((String) path)).endsWith("~")) {
         PLACEHOLDERS.put(
