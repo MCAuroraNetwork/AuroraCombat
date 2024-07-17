@@ -1,7 +1,7 @@
 name: AuroraCombat
 version: '${version}'
 main: club.aurorapvp.auroracombat.AuroraCombat
-api-version: '1.20'
+api-version: '1.21'
 authors: [ Villagers654 ]
 description: A combat plugin for the Aurora Network
 website: aurorapvp.club
