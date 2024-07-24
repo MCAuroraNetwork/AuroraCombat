@@ -8,7 +8,6 @@ import club.aurorapvp.auroracombat.flags.CombatTagFlags;
 import club.aurorapvp.auroracombat.flags.RatingFlags;
 import club.aurorapvp.auroracombat.modules.KillDeathTracker;
 import club.aurorapvp.auroracombat.modules.Placeholders;
-import club.aurorapvp.auroracombat.modules.PlayerInfo;
 import club.aurorapvp.auroracombat.modules.Rating;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -66,7 +65,6 @@ public final class AuroraCombat extends JavaPlugin {
     // Setup classes
     EventManager.init();
     Rating.init();
-    PlayerInfo.init();
     CommandManager.init();
 
     // Check if soft depends are installed
