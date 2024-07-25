@@ -12,26 +12,6 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 public class ItemStackUtil {
 
-  public static ItemStack toEndCrystalItemStack(Component displayName) {
-    ItemStack item = new ItemStack(Material.END_CRYSTAL);
-
-    if (displayName != null) {
-      ItemMeta meta = item.getItemMeta();
-
-      String displayNameStr = PlainTextComponentSerializer.plainText().serialize(displayName);
-
-      displayNameStr = displayNameStr.replace("[", "").replace("]", "");
-
-      Component displayNameWithoutBrackets = Component.text(displayNameStr);
-
-      meta.displayName(displayNameWithoutBrackets);
-
-      item.setItemMeta(meta);
-    }
-
-    return item;
-  }
-
   public static ItemStack makeItemUnbreakable(ItemStack itemStack) {
     if (itemStack == null) {
       return null;

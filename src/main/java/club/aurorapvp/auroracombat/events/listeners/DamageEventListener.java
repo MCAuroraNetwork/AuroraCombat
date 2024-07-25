@@ -8,11 +8,10 @@ import club.aurorapvp.auroracombat.events.custom.EntityDamagedByEntityEvent;
 import club.aurorapvp.auroracombat.events.custom.PlayerDamagedByPlayerEvent;
 import club.aurorapvp.auroracombat.modules.BlockFallDamage;
 import club.aurorapvp.auroracombat.util.ItemStackUtil;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.UUID;
-import net.kyori.adventure.text.Component;
+
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -36,56 +35,64 @@ import org.bukkit.event.entity.ProjectileLaunchEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffectType;
+import org.bukkit.scheduler.BukkitRunnable;
 
 public class DamageEventListener implements Listener {
 
   private final HashSet<Projectile> firedProjectiles = new HashSet<>();
-  private final Map<UUID, Component> lastPlacedCrystalName = new HashMap<>();
-  private final Map<UUID, ItemStack> lastUsedBow = new HashMap<>();
-  private Entity lastCrystalAttacker;
-  private Entity lastInteractedWithBlock;
-  private BlockState lastExplodedBlock;
+  private final Map<Entity, ItemStack> lastPlacedCrystal = new HashMap<>();
+  private final Map<Entity, ItemStack> lastUsedBow = new HashMap<>();
+  private final Map<Entity, Entity> crystalsAttacked = new ConcurrentHashMap<>();
+  private final Map<BlockState, Entity> blocksExploded = new ConcurrentHashMap<>();
 
-  @EventHandler
-      (priority = EventPriority.HIGHEST, ignoreCancelled = true)
+  @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
   public void onEntityDamage(EntityDamageByEntityEvent event) {
-    if (event.getEntity() instanceof EnderCrystal) {
-      this.lastCrystalAttacker = event.getEntity();
+    if (event.getEntity() instanceof EnderCrystal enderCrystal) {
+      crystalsAttacked.put(enderCrystal, event.getDamager());
+
+      new BukkitRunnable() {
+        @Override
+        public void run() {
+          crystalsAttacked.remove(enderCrystal);
+        }
+      }.runTaskLaterAsynchronously(AuroraCombat.getInstance(), 1);
     }
 
     Entity damaged = event.getEntity();
 
     lastDamage.put(damaged.getUniqueId(), event);
 
-    if (event.getDamager() instanceof EnderCrystal) {
-      new EntityOnPlayerDamageBuilder()
+    if (event.getDamager() instanceof EnderCrystal enderCrystal) {
+      new EntityOnEntityDamageBuilder()
           .setDamageType(AttackType.EXPLOSION_ENTITY)
           .setDamaged(damaged)
-          .setAttacker(this.lastCrystalAttacker)
-          .setWeapon(ItemStackUtil.toEndCrystalItemStack(
-              lastPlacedCrystalName.get(this.lastCrystalAttacker.getUniqueId())))
+          .setAttacker(crystalsAttacked.get(enderCrystal))
+          .setWeapon(lastPlacedCrystal.getOrDefault(crystalsAttacked.get(enderCrystal), null))
           .setEvent(event)
-          .build().callEvent();
+          .build()
+          .callEvent();
     }
 
     if (event.getDamageSource().getDamageType() == DamageType.MOB_ATTACK) {
-      new EntityOnPlayerDamageBuilder()
+      new EntityOnEntityDamageBuilder()
           .setDamageType(AttackType.MELEE)
           .setDamaged(damaged)
           .setAttacker(event.getDamager())
           .setWeapon(null)
           .setEvent(event)
-          .build().callEvent();
+          .build()
+          .callEvent();
     }
 
     if (event.getDamager() instanceof Player attacker) {
-      new EntityOnPlayerDamageBuilder()
+      new EntityOnEntityDamageBuilder()
           .setDamageType(AttackType.MELEE)
           .setDamaged(damaged)
           .setAttacker(attacker)
           .setWeapon(attacker.getInventory().getItemInMainHand())
           .setEvent(event)
-          .build().callEvent();
+          .build()
+          .callEvent();
     }
 
     if (!(event.getDamager() instanceof Projectile projectile)) {
@@ -98,13 +105,14 @@ public class DamageEventListener implements Listener {
 
     for (Projectile firedProjectile : firedProjectiles) {
       if (projectile == firedProjectile) {
-        new EntityOnPlayerDamageBuilder()
+        new EntityOnEntityDamageBuilder()
             .setDamageType(AttackType.RANGED)
             .setDamaged(damaged)
             .setAttacker(attacker)
-            .setWeapon(lastUsedBow.get(attacker.getUniqueId()))
+            .setWeapon(lastUsedBow.get(attacker))
             .setEvent(event)
-            .build().callEvent();
+            .build()
+            .callEvent();
       }
     }
 
@@ -117,85 +125,111 @@ public class DamageEventListener implements Listener {
             effect ->
                 effect.getType() == PotionEffectType.INSTANT_DAMAGE
                     || effect.getType() == PotionEffectType.POISON)) {
-      new EntityOnPlayerDamageBuilder()
+      new EntityOnEntityDamageBuilder()
           .setDamageType(AttackType.MAGIC)
           .setDamaged(damaged)
           .setAttacker(attacker)
           .setWeapon(ItemStackUtil.toItemStack(thrownPotion))
           .setEvent(event)
-          .build().callEvent();
+          .build()
+          .callEvent();
     }
   }
 
-  @EventHandler
-      (priority = EventPriority.HIGHEST, ignoreCancelled = true)
+  @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
   public void onEntityDamage(EntityDamageByBlockEvent event) {
     Entity damaged = event.getEntity();
 
     lastDamage.put(damaged.getUniqueId(), event);
 
-    if (event.getCause() == EntityDamageEvent.DamageCause.BLOCK_EXPLOSION
-        && damaged.getLocation().distance(this.lastExplodedBlock.getLocation()) <= 10) {
+    if (event.getCause() != EntityDamageEvent.DamageCause.BLOCK_EXPLOSION) {
+      return;
+    }
 
-      new EntityOnPlayerDamageBuilder()
-          .setDamageType(AttackType.EXPLOSION_BLOCK)
-          .setDamaged(damaged)
-          .setAttacker(this.lastInteractedWithBlock)
-          .setWeapon(new ItemStack(this.lastExplodedBlock.getType()))
-          .setEvent(event)
-          .build().callEvent();
+    BlockState explosive = event.getDamagerBlockState();
+
+    if (explosive == null) {
+      return;
+    }
+
+    for (BlockState blockState : blocksExploded.keySet()) {
+      if (explosive.getLocation() == blockState.getLocation()) {
+        new EntityOnEntityDamageBuilder()
+            .setDamageType(AttackType.EXPLOSION_BLOCK)
+            .setDamaged(damaged)
+            .setAttacker(blocksExploded.get(blockState))
+            .setWeapon(new ItemStack(blockState.getType()))
+            .setEvent(event)
+            .build()
+            .callEvent();
+      }
     }
   }
 
-  @EventHandler
-      (priority = EventPriority.HIGHEST, ignoreCancelled = true)
+  @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
   public void onPlayerInteract(PlayerInteractEvent event) {
     if (event.getClickedBlock() == null) {
       return;
     }
 
-    if (event.getPlayer().getInventory().getItemInMainHand().getType()
+    if (event
+        .getPlayer()
+        .getInventory()
+        .getItemInMainHand()
+        .getType()
         .equals(Material.END_CRYSTAL)) {
-      lastPlacedCrystalName.put(event.getPlayer().getUniqueId(),
-          event.getPlayer().getInventory().getItemInMainHand().displayName());
+      lastPlacedCrystal.put(
+          event.getPlayer(), event.getPlayer().getInventory().getItemInMainHand());
     }
 
     if (event.getClickedBlock().getBlockData() instanceof RespawnAnchor respawnAnchor) {
       if ((respawnAnchor.getCharges() > 0
-          && event.getPlayer().getInventory().getItemInMainHand().getType()
-          != Material.GLOWSTONE)
+              && event.getPlayer().getInventory().getItemInMainHand().getType()
+                  != Material.GLOWSTONE
+              && event.getPlayer().getWorld().getEnvironment() != World.Environment.NETHER)
           || respawnAnchor.getCharges() >= 4) {
-        this.lastExplodedBlock = event.getClickedBlock().getState();
-        this.lastInteractedWithBlock = event.getPlayer();
+        blocksExploded.put(event.getClickedBlock().getState(), event.getPlayer());
+
+        new BukkitRunnable() {
+          @Override
+          public void run() {
+            blocksExploded.remove(event.getClickedBlock().getState());
+          }
+        }.runTaskLaterAsynchronously(AuroraCombat.getInstance(), 1);
       }
     }
 
     if (event.getClickedBlock().getBlockData() instanceof Bed
         && event.getPlayer().getWorld().getEnvironment() != World.Environment.NORMAL) {
-      this.lastExplodedBlock = event.getClickedBlock().getState();
-      this.lastInteractedWithBlock = event.getPlayer();
+      blocksExploded.put(event.getClickedBlock().getState(), event.getPlayer());
+
+      new BukkitRunnable() {
+        @Override
+        public void run() {
+          blocksExploded.remove(event.getClickedBlock().getState());
+        }
+      }.runTaskLaterAsynchronously(AuroraCombat.getInstance(), 1);
     }
   }
 
-  @EventHandler
-      (priority = EventPriority.HIGHEST, ignoreCancelled = true)
+  @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
   public void onProjectileFired(ProjectileLaunchEvent event) {
-    if (event.getEntity().getShooter() instanceof Player player) {
-      this.firedProjectiles.add(event.getEntity());
-      this.lastUsedBow.put(player.getUniqueId(), player.getInventory().getItemInMainHand());
+    if (!(event.getEntity().getShooter() instanceof Player player)) {
+      return;
     }
+
+    this.firedProjectiles.add(event.getEntity());
+    this.lastUsedBow.put(player, player.getInventory().getItemInMainHand());
   }
 
-  @EventHandler
-      (priority = EventPriority.HIGHEST, ignoreCancelled = true)
+  @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
   public void onProjectileHit(ProjectileHitEvent event) {
     Bukkit.getScheduler()
-        .runTaskLater(AuroraCombat.getInstance(), () -> firedProjectiles.remove(event.getEntity()),
-            20L);
+        .runTaskLater(
+            AuroraCombat.getInstance(), () -> firedProjectiles.remove(event.getEntity()), 20L);
   }
 
-  @EventHandler
-      (priority = EventPriority.HIGHEST, ignoreCancelled = true)
+  @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
   public void onFallDamage(EntityDamageEvent event) {
     if (!(event.getEntity() instanceof Player player)) {
       return;
@@ -215,47 +249,50 @@ public class DamageEventListener implements Listener {
     }
   }
 
-  private static class EntityOnPlayerDamageBuilder {
-
+  private static class EntityOnEntityDamageBuilder {
     private AttackType attackType;
     private EntityDamageEvent event;
     private Entity damaged;
     private Entity attacker;
     private ItemStack weapon;
 
-    public EntityOnPlayerDamageBuilder setDamageType(AttackType attackType) {
+    public EntityOnEntityDamageBuilder setDamageType(AttackType attackType) {
       this.attackType = attackType;
       return this;
     }
 
-    public EntityOnPlayerDamageBuilder setDamaged(Entity damaged) {
+    public EntityOnEntityDamageBuilder setDamaged(Entity damaged) {
       this.damaged = damaged;
       return this;
     }
 
-    public EntityOnPlayerDamageBuilder setAttacker(Entity attacker) {
+    public EntityOnEntityDamageBuilder setAttacker(Entity attacker) {
       this.attacker = attacker;
       return this;
     }
 
-    public EntityOnPlayerDamageBuilder setWeapon(ItemStack weapon) {
+    public EntityOnEntityDamageBuilder setWeapon(ItemStack weapon) {
       this.weapon = weapon;
       return this;
     }
 
-    public EntityOnPlayerDamageBuilder setEvent(EntityDamageEvent event) {
+    public EntityOnEntityDamageBuilder setEvent(EntityDamageEvent event) {
       this.event = event;
       return this;
     }
 
     public EntityDamagedByEntityEvent build() {
       if (this.damaged instanceof Player && this.attacker instanceof Player) {
-        return new PlayerDamagedByPlayerEvent(this.attackType, this.event, (Player) this.damaged,
-            (Player) this.attacker, this.weapon);
+        return new PlayerDamagedByPlayerEvent(
+            this.attackType,
+            this.event,
+            (Player) this.damaged,
+            (Player) this.attacker,
+            this.weapon);
       }
 
-      return new EntityDamagedByEntityEvent(this.attackType, this.event, this.damaged,
-          this.attacker, this.weapon);
+      return new EntityDamagedByEntityEvent(
+          this.attackType, this.event, this.damaged, this.attacker, this.weapon);
     }
   }
 }
