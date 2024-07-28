@@ -11,6 +11,7 @@ import club.aurorapvp.auroracombat.util.ItemStackUtil;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -27,6 +28,7 @@ import org.bukkit.entity.ThrownPotion;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockExplodeEvent;
 import org.bukkit.event.entity.EntityDamageByBlockEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -56,6 +58,7 @@ public class DamageEventListener implements Listener {
           crystalsAttacked.remove(enderCrystal);
         }
       }.runTaskLaterAsynchronously(AuroraCombat.getInstance(), 1);
+      return;
     }
 
     Entity damaged = event.getEntity();
@@ -71,6 +74,7 @@ public class DamageEventListener implements Listener {
           .setEvent(event)
           .build()
           .callEvent();
+      return;
     }
 
     if (event.getDamageSource().getDamageType() == DamageType.MOB_ATTACK) {
@@ -82,6 +86,7 @@ public class DamageEventListener implements Listener {
           .setEvent(event)
           .build()
           .callEvent();
+      return;
     }
 
     if (event.getDamager() instanceof Player attacker) {
@@ -93,6 +98,7 @@ public class DamageEventListener implements Listener {
           .setEvent(event)
           .build()
           .callEvent();
+      return;
     }
 
     if (!(event.getDamager() instanceof Projectile projectile)) {
@@ -113,6 +119,7 @@ public class DamageEventListener implements Listener {
             .setEvent(event)
             .build()
             .callEvent();
+        return;
       }
     }
 
@@ -153,7 +160,7 @@ public class DamageEventListener implements Listener {
     }
 
     for (BlockState blockState : blocksExploded.keySet()) {
-      if (explosive.getLocation() == blockState.getLocation()) {
+      if (explosive == blockState) {
         new EntityOnEntityDamageBuilder()
             .setDamageType(AttackType.EXPLOSION_BLOCK)
             .setDamaged(damaged)
@@ -162,6 +169,7 @@ public class DamageEventListener implements Listener {
             .setEvent(event)
             .build()
             .callEvent();
+        return;
       }
     }
   }
@@ -180,6 +188,7 @@ public class DamageEventListener implements Listener {
         .equals(Material.END_CRYSTAL)) {
       lastPlacedCrystal.put(
           event.getPlayer(), event.getPlayer().getInventory().getItemInMainHand());
+      return;
     }
 
     if (event.getClickedBlock().getBlockData() instanceof RespawnAnchor respawnAnchor) {
@@ -196,6 +205,7 @@ public class DamageEventListener implements Listener {
             blocksExploded.remove(event.getClickedBlock().getState());
           }
         }.runTaskLaterAsynchronously(AuroraCombat.getInstance(), 1);
+        return;
       }
     }
 
