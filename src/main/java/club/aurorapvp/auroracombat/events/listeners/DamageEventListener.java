@@ -160,7 +160,7 @@ public class DamageEventListener implements Listener {
     }
 
     for (BlockState blockState : blocksExploded.keySet()) {
-      if (explosive == blockState) {
+      if (explosive.equals(blockState)) {
         new EntityOnEntityDamageBuilder()
             .setDamageType(AttackType.EXPLOSION_BLOCK)
             .setDamaged(damaged)
