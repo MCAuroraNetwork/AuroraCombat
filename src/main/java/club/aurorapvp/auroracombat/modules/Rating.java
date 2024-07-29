@@ -26,11 +26,11 @@ import org.bukkit.entity.Player;
 
 public class Rating {
 
-  private static final Map<String, Rating> RATINGS = new HashMap<>();
+  public static final Map<String, Rating> RATINGS = new HashMap<>();
   private final String name;
   private final RatingType type;
   private final RatingDataHandler data;
-  private final Map<UUID, Score> scores = new HashMap<>();
+  public final Map<UUID, Score> scores = new HashMap<>();
   private final Set<Player> ENABLED_PLAYERS = new HashSet<>();
   private boolean enabled;
 
