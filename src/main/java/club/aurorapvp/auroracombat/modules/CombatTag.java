@@ -1,6 +1,7 @@
 package club.aurorapvp.auroracombat.modules;
 
 import club.aurorapvp.auroracombat.AuroraCombat;
+import club.aurorapvp.auroracombat.events.custom.CombatTagEvent;
 import club.aurorapvp.auroracombat.flags.CombatTagFlags;
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldguard.WorldGuard;
@@ -70,6 +71,8 @@ public class CombatTag {
       tags.get(playerTwo.getUniqueId()).add(this);
 
       this.startTimer();
+
+      new CombatTagEvent(tagged, opponent).callEvent();
     }
   }
 
