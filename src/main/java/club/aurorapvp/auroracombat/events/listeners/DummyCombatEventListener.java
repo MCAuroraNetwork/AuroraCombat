@@ -42,11 +42,11 @@ public class DummyCombatEventListener implements Listener {
 
   @EventHandler
   public void onCombatTag(CombatTagEvent event) {
-    if (PracticeDummy.getDummy(event.getTagged()).getZombie() != null) {
+    if (PracticeDummy.getDummy(event.getTagged()) != null) {
       PracticeDummy.getDummy(event.getTagged()).getZombie().remove();
     }
 
-    if (PracticeDummy.getDummy(event.getTagger()).getZombie() != null) {
+    if (PracticeDummy.getDummy(event.getTagger()) != null) {
       PracticeDummy.getDummy(event.getTagger()).getZombie().remove();
     }
   }
