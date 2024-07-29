@@ -57,6 +57,10 @@ public class PracticeDummy {
     return inventory;
   }
 
+  public static PracticeDummy getDummy(Player player) {
+    return DUMMIES.get(player.getUniqueId());
+  }
+
   public static PracticeDummy getDummy(Zombie zombie) {
     for (PracticeDummy dummy : DUMMIES.values()) {
       if (dummy.getZombie() == zombie) {

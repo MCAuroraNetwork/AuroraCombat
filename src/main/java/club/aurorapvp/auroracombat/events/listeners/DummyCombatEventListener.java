@@ -1,6 +1,7 @@
 package club.aurorapvp.auroracombat.events.listeners;
 
 import club.aurorapvp.auroracombat.AuroraCombat;
+import club.aurorapvp.auroracombat.events.custom.CombatTagEvent;
 import club.aurorapvp.auroracombat.events.custom.EntityDamagedByEntityEvent;
 import club.aurorapvp.auroracombat.modules.PracticeDummy;
 import org.bukkit.Bukkit;
@@ -37,6 +38,12 @@ public class DummyCombatEventListener implements Listener {
         }
       }
     }.runTaskLater(AuroraCombat.getInstance(), 1L);
+  }
+
+  @EventHandler
+  public void onCombatTag(CombatTagEvent event) {
+    PracticeDummy.getDummy(event.getTagged()).getZombie().remove();
+    PracticeDummy.getDummy(event.getTagger()).getZombie().remove();
   }
 
   @EventHandler
