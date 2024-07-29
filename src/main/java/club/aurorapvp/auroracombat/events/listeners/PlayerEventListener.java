@@ -37,7 +37,7 @@ public class PlayerEventListener implements Listener {
 
   @EventHandler
   public void onSave(WorldSaveEvent event) {
-    if (event.getWorld() != Bukkit.getWorlds().get(0)) {
+    if (event.getWorld() != Bukkit.getWorlds().getFirst()) {
       return;
     }
 
