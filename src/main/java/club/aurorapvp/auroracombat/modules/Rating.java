@@ -154,7 +154,7 @@ public class Rating {
   }
 
   public Score getScore(Player player) {
-    return scores.getOrDefault(player.getUniqueId(), new Score(player, this));
+    return scores.get(player.getUniqueId());
   }
 
   @SuppressWarnings("unused")
@@ -224,6 +224,12 @@ public class Rating {
 
   public static Set<Rating> getRatings() {
     return new HashSet<>(RATINGS.values());
+  }
+
+  public static void register(Player player) {
+    for (Rating rating : RATINGS.values()) {
+      rating.scores.put(player.getUniqueId(), new Score(player, rating));
+    }
   }
 
   public static void unregister(Player player) {

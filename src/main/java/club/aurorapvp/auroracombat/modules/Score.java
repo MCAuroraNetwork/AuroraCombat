@@ -4,6 +4,8 @@ import club.aurorapvp.auroracombat.AuroraCombat;
 import club.aurorapvp.auroracombat.data.ScoreDataHandler;
 import org.bukkit.entity.Player;
 
+import java.util.logging.Level;
+
 public class Score {
 
   private final Player player;
@@ -22,8 +24,6 @@ public class Score {
       points = AuroraCombat.getInstance().getConfig().getInt("elo.default-points");
       this.save();
     }
-
-    rating.scores.put(player.getUniqueId(), this);
   }
 
   public Player getPlayer() {

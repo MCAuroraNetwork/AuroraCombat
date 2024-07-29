@@ -23,6 +23,7 @@ public class PlayerEventListener implements Listener {
     }
 
     BlockFallDamage.setInvulnerable(event.getPlayer());
+    Rating.register(event.getPlayer());
   }
 
   @EventHandler
