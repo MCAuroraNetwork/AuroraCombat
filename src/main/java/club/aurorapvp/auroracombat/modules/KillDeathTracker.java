@@ -30,8 +30,14 @@ public class KillDeathTracker {
       killStreak = 0;
       this.save();
     }
+  }
 
-    TRACKERS.put(player.getUniqueId(), this);
+  public static void register(Player player) {
+    TRACKERS.put(player.getUniqueId(), new KillDeathTracker(player));
+  }
+
+  public static void unregister(Player player) {
+    TRACKERS.remove(player.getUniqueId());
   }
 
   public Player getPlayer() {
@@ -97,6 +103,6 @@ public class KillDeathTracker {
   }
 
   public static KillDeathTracker getTracker(Player player) {
-    return TRACKERS.getOrDefault(player.getUniqueId(), new KillDeathTracker(player));
+    return TRACKERS.get(player.getUniqueId());
   }
 }

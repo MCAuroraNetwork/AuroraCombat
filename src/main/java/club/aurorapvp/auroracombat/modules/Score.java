@@ -4,8 +4,6 @@ import club.aurorapvp.auroracombat.AuroraCombat;
 import club.aurorapvp.auroracombat.data.ScoreDataHandler;
 import org.bukkit.entity.Player;
 
-import java.util.logging.Level;
-
 public class Score {
 
   private final Player player;
