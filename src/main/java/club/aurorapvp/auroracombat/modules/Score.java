@@ -38,6 +38,8 @@ public class Score {
 
   public void changePoints(int amount) {
     points = points + amount;
+
+    this.save();
   }
 
   public void reload() {

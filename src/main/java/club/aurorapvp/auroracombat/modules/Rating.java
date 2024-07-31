@@ -20,7 +20,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
-import java.util.logging.Level;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
@@ -110,16 +109,6 @@ public class Rating {
   @SuppressWarnings("unused")
   public void setDisabledPlayer(Player player) {
     ENABLED_PLAYERS.add(player);
-  }
-
-  public static void saveAll() {
-    for (Rating rating : RATINGS.values()) {
-      for (Score score : rating.getScores()) {
-        score.save();
-      }
-    }
-
-    AuroraCombat.getInstance().getLogger().log(Level.INFO, "All ratings saved");
   }
 
   public boolean isEnabled(Player player) {

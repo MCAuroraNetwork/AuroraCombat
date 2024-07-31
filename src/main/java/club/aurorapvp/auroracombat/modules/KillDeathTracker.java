@@ -5,7 +5,6 @@ import club.aurorapvp.auroracombat.data.KillDeathDataHandler;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
-import java.util.logging.Level;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -84,6 +83,8 @@ public class KillDeathTracker {
         .getInt("misc.min-killstreak-to-announce")) {
       Bukkit.broadcast(AuroraCombat.getInstance().getLang()
           .formatComponent("killstreak-lost", player, killStreak));
+
+      this.save();
     }
 
     this.killStreak = 0;
@@ -92,14 +93,8 @@ public class KillDeathTracker {
   public void addKill() {
     this.killStreak = killStreak + 1;
     this.kills = kills + 1;
-  }
 
-  public static void saveAll() {
-    for (KillDeathTracker tracker : TRACKERS.values()) {
-      tracker.save();
-    }
-
-    AuroraCombat.getInstance().getLogger().log(Level.INFO, "All kdr trackers saved");
+    this.save();
   }
 
   public static KillDeathTracker getTracker(Player player) {
