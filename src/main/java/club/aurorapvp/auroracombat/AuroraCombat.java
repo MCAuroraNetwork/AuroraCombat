@@ -6,7 +6,6 @@ import club.aurorapvp.auroracombat.config.Lang;
 import club.aurorapvp.auroracombat.events.EventManager;
 import club.aurorapvp.auroracombat.flags.CombatTagFlags;
 import club.aurorapvp.auroracombat.flags.RatingFlags;
-import club.aurorapvp.auroracombat.modules.KillDeathTracker;
 import club.aurorapvp.auroracombat.modules.Placeholders;
 import club.aurorapvp.auroracombat.modules.Rating;
 import org.bukkit.Bukkit;
@@ -78,9 +77,6 @@ public final class AuroraCombat extends JavaPlugin {
   @Override
   public void onDisable() {
     long startTime = System.currentTimeMillis();
-
-    Rating.saveAll();
-    KillDeathTracker.saveAll();
 
     getLogger().info("AuroraCombat disabled in " + (System.currentTimeMillis() - startTime) + "ms");
   }

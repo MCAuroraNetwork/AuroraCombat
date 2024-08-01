@@ -1,7 +1,6 @@
 package club.aurorapvp.auroracombat.commands;
 
 import club.aurorapvp.auroracombat.AuroraCombat;
-import club.aurorapvp.auroracombat.modules.Rating;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.CommandPermission;
@@ -22,7 +21,6 @@ public class PluginCommands extends BaseCommand {
 
     AuroraCombat.getInstance().reloadConfig();
     AuroraCombat.getInstance().getLang().reload();
-    Rating.saveAll();
 
     player.sendMessage(AuroraCombat.getInstance().getLang().getComponent("reloaded"));
 
