@@ -13,7 +13,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
-import java.util.logging.Level;
 import net.kyori.adventure.sound.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
@@ -114,7 +113,7 @@ public class CombatEventListener implements Listener {
     }
 
     for (Rating rating : Rating.getRatings()) {
-      if (rating.isEnabled(event.getDead())) {
+      if (rating.isEnabled(event.getDead()) && rating.isEnabled(event.getKiller())) {
         rating.updateElo(event.getDead(), event.getKiller());
       }
     }
