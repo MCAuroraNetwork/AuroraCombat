@@ -30,8 +30,7 @@ public class Rating {
   private final RatingType type;
   private final RatingDataHandler data;
   public final Map<UUID, Score> scores = new HashMap<>();
-  private final HashMap<UUID, Boolean> ENABLED_PLAYERS = new HashMap<>();
-  private final HashMap<UUID, Boolean> DISABLED_PLAYERS = new HashMap<>();
+  private final HashMap<UUID, Boolean> enabledPlayers = new HashMap<>();
   private boolean enabled;
 
   public Rating(String name, RatingType type, boolean enabled) {
@@ -103,13 +102,8 @@ public class Rating {
   }
 
   @SuppressWarnings("unused")
-  public void setEnabledPlayer(Player player, boolean enabled) {
-    ENABLED_PLAYERS.put(player.getUniqueId(), enabled);
-  }
-
-  @SuppressWarnings("unused")
-  public void setDisabledPlayer(Player player, boolean disabled) {
-    DISABLED_PLAYERS.put(player.getUniqueId(), disabled);
+  public void setPlayerEnabled(Player player, boolean enabled) {
+    enabledPlayers.put(player.getUniqueId(), enabled);
   }
 
   public boolean isEnabled(Player player) {
@@ -117,12 +111,8 @@ public class Rating {
       return false;
     }
 
-    if (ENABLED_PLAYERS.containsKey(player.getUniqueId())) {
-      return ENABLED_PLAYERS.get(player.getUniqueId());
-    }
-
-    if (DISABLED_PLAYERS.containsKey(player.getUniqueId())) {
-      return !DISABLED_PLAYERS.get(player.getUniqueId());
+    if (enabledPlayers.containsKey(player.getUniqueId())) {
+      return enabledPlayers.get(player.getUniqueId());
     }
 
     if (!AuroraCombat.getInstance().isWorldGuardInstalled()) {
