@@ -30,15 +30,16 @@ public class CombatEventListener implements Listener {
 
   @EventHandler
   public void onPlayerQuit(PlayerQuitEvent event) {
-    if (CombatTag.isTagged(event.getPlayer())) {
-      event.getPlayer().setHealth(0);
-
-      combatLoggers.add(event.getPlayer());
+    if (!CombatTag.isTagged(event.getPlayer())) {
+      return;
     }
+
+    event.getPlayer().setHealth(0);
+
+    combatLoggers.add(event.getPlayer());
   }
 
-  @EventHandler
-      (priority = EventPriority.MONITOR, ignoreCancelled = true)
+  @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
   public void onCommandRun(PlayerCommandPreprocessEvent event) {
     if (!CombatTag.isTagged(event.getPlayer())) {
       return;
@@ -47,7 +48,8 @@ public class CombatEventListener implements Listener {
     boolean commandMatched = false;
 
     if (!AuroraCombat.getInstance().getConfig().getBoolean("combat-tag.commands.allow-commands")) {
-      for (String command : AuroraCombat.getInstance().getConfig().getStringList("combat-tag.commands.whitelisted")) {
+      for (String command :
+          AuroraCombat.getInstance().getConfig().getStringList("combat-tag.commands.whitelisted")) {
         if (event.getMessage().equals("/" + command)) {
           commandMatched = true;
           break;
@@ -63,18 +65,21 @@ public class CombatEventListener implements Listener {
       return;
     }
 
-    event.getPlayer().sendMessage(AuroraCombat.getInstance().getLang().getComponent("commands-disabled"));
+    event
+        .getPlayer()
+        .sendMessage(AuroraCombat.getInstance().getLang().getComponent("commands-disabled"));
 
     event.setCancelled(true);
   }
 
-  @EventHandler
-      (priority = EventPriority.MONITOR, ignoreCancelled = true)
+  @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
   public void onPlayerDeath(PlayerDeathEvent event) {
-    if (combatLoggers.contains(event.getPlayer())) {
+    if (combatLoggers.remove(event.getPlayer())) {
       new PlayerKilledByPlayerEvent(
-          Objects.requireNonNull(CombatTag.getRecentTag(event.getPlayer()))
-              .getOpponent(event.getPlayer()), event).callEvent();
+              Objects.requireNonNull(CombatTag.getRecentTag(event.getPlayer()))
+                  .getOpponent(event.getPlayer()),
+              event)
+          .callEvent();
     }
 
     CombatTag.removeTags(event.getPlayer());
@@ -87,8 +92,8 @@ public class CombatEventListener implements Listener {
       return;
     }
 
-    if (!(lastDamage.get(
-        event.getPlayer().getUniqueId()) instanceof PlayerDamagedByPlayerEvent damagedByPlayerEvent)) {
+    if (!(lastDamage.get(event.getPlayer().getUniqueId())
+        instanceof PlayerDamagedByPlayerEvent damagedByPlayerEvent)) {
       return;
     }
 
@@ -99,16 +104,17 @@ public class CombatEventListener implements Listener {
     }
   }
 
-  @EventHandler
-      (priority = EventPriority.MONITOR, ignoreCancelled = true)
+  @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
   public void onKilledByPlayer(PlayerKilledByPlayerEvent event) {
     if (!CombatTag.isUntaggable(event.getDead()) && !CombatTag.isUntaggable(event.getKiller())) {
       Objects.requireNonNull(KillDeathTracker.getTracker(event.getDead())).addDeath();
       Objects.requireNonNull(KillDeathTracker.getTracker(event.getKiller())).addKill();
 
-      event.getDead()
+      event
+          .getDead()
           .playSound(Sound.sound().type(org.bukkit.Sound.ENTITY_ENDER_DRAGON_GROWL).build());
-      event.getKiller()
+      event
+          .getKiller()
           .playSound(Sound.sound().type(org.bukkit.Sound.ENTITY_ARROW_HIT_PLAYER).build());
     }
 
@@ -119,8 +125,7 @@ public class CombatEventListener implements Listener {
     }
   }
 
-  @EventHandler
-      (priority = EventPriority.MONITOR, ignoreCancelled = true)
+  @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
   public void onDamagedByPlayer(PlayerDamagedByPlayerEvent event) {
     if (event.getAttacker().equals(event.getDamaged())) {
       return;
