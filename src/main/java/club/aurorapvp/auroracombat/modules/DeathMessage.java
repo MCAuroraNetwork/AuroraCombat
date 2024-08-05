@@ -20,7 +20,10 @@ public class DeathMessage {
       event.deathMessage(
           AuroraCombat.getInstance()
               .getLang()
-              .formatComponent("combat-logged", event.getKiller().getName()));
+              .formatComponent(
+                  "death-message.combat-logged",
+                  event.getDead().getName(),
+                  event.getKiller().getName()));
       return;
     }
 
