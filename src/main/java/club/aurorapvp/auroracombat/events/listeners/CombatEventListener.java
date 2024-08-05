@@ -108,7 +108,7 @@ public class CombatEventListener implements Listener {
   public void onKilledByPlayer(PlayerKilledByPlayerEvent event) {
     Player dead = event.getDead();
     Player killer = event.getKiller();
-    
+
     Objects.requireNonNull(KillDeathTracker.getTracker(dead)).addDeath();
     Objects.requireNonNull(KillDeathTracker.getTracker(killer)).addKill();
 
@@ -117,7 +117,7 @@ public class CombatEventListener implements Listener {
         rating.updateElo(dead, killer);
       }
     }
-    
+
     event
         .getDead()
         .playSound(Sound.sound().type(org.bukkit.Sound.ENTITY_ENDER_DRAGON_GROWL).build());
@@ -132,7 +132,10 @@ public class CombatEventListener implements Listener {
       return;
     }
 
-    new CombatTag(event.getDamaged(), event.getAttacker());
+    if (AuroraCombat.getInstance().getConfig().getBoolean("combat-tag.enable")) {
+      new CombatTag(event.getDamaged(), event.getAttacker());
+    }
+
     lastDamage.put(event.getDamaged().getUniqueId(), event);
   }
 }

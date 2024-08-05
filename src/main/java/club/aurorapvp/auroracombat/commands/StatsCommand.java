@@ -1,7 +1,6 @@
 package club.aurorapvp.auroracombat.commands;
 
 import club.aurorapvp.auroracombat.AuroraCombat;
-import club.aurorapvp.auroracombat.config.Lang;
 import club.aurorapvp.auroracombat.modules.KillDeathTracker;
 import club.aurorapvp.auroracombat.modules.Rating;
 import co.aikar.commands.BaseCommand;
@@ -28,13 +27,24 @@ public class StatsCommand extends BaseCommand {
     for (Rating rating : Rating.getRatings()) {
       String ratingName = rating.getFriendlyName();
       int points = rating.getScore(player).getPoints();
-      ratings.append("<aqua><bold>").append(ratingName).append(" Points: <reset><aqua>").append(points).append("<reset>\n");
+      ratings
+          .append("<aqua><bold>")
+          .append(ratingName)
+          .append(" Points: <reset><aqua>")
+          .append(points)
+          .append("<reset>\n");
     }
 
     player.sendMessage(
-        AuroraCombat.getInstance().getLang().formatComponent("stats-command", player.getName(), ratings.toString(),
-            tracker.getKills(),
-            tracker.getDeaths(), tracker.getKDR()));
+        AuroraCombat.getInstance()
+            .getLang()
+            .formatComponent(
+                "stats-command",
+                player.getName(),
+                ratings.toString(),
+                tracker.getKills(),
+                tracker.getDeaths(),
+                tracker.getKDR()));
   }
 
   @Default
@@ -56,12 +66,23 @@ public class StatsCommand extends BaseCommand {
     for (Rating rating : Rating.getRatings()) {
       String ratingName = rating.getFriendlyName();
       int points = rating.getScore(player).getPoints();
-      ratings.append("<aqua><bold>").append(ratingName).append(" Points: <reset><aqua>").append(points).append("<reset>\n");
+      ratings
+          .append("<aqua><bold>")
+          .append(ratingName)
+          .append(" Points: <reset><aqua>")
+          .append(points)
+          .append("<reset>\n");
     }
 
     player.sendMessage(
-        AuroraCombat.getInstance().getLang().formatComponent("stats-command", player.getName(), ratings.toString(),
-            tracker.getKills(),
-            tracker.getDeaths(), tracker.getKDR()));
+        AuroraCombat.getInstance()
+            .getLang()
+            .formatComponent(
+                "stats-command",
+                player.getName(),
+                ratings.toString(),
+                tracker.getKills(),
+                tracker.getDeaths(),
+                tracker.getKDR()));
   }
 }

@@ -45,7 +45,9 @@ public class Rating {
   }
 
   public static void init() {
-    new Rating("default", RatingType.GLOBAL, true);
+    if (AuroraCombat.getInstance().getConfig().getBoolean("rating.enable-default")) {
+      new Rating("default", RatingType.GLOBAL, true);
+    }
 
     File file = new File(AuroraCombat.getInstance().getDataFolder(), "ratings.yml");
     if (!file.exists()) {
