@@ -19,6 +19,7 @@ public class PlayerKilledByPlayerEvent extends PlayerDamagedByPlayerEvent implem
     super(lastDamage.getDamageType(), lastDamage.getDamaged().getLastDamageCause(), lastDamage.getDamaged(), lastDamage.getAttacker(), lastDamage.getWeapon());
     this.deathEvent = deathEvent;
     this.killer = lastDamage.getAttacker();
+    new DeathMessage(this);
   }
 
   public PlayerKilledByPlayerEvent(Player killer, PlayerDeathEvent deathEvent) {
