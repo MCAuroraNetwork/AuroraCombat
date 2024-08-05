@@ -49,13 +49,15 @@ public class Lang {
     DEFAULTS.put("no-running", "prefix <red>No running from combat");
     DEFAULTS.put("dummy-summoned", "prefix <green>Summoned a practice dummy!");
     DEFAULTS.put("rating-created", "prefix <green>Rating created!");
-    DEFAULTS.put("stats-command", """
+    DEFAULTS.put(
+        "stats-command",
+        """
         prefix <yellow><bold>%1$s's Stats<reset>
         %2$s
 
         <yellow><bold>Kills: <reset><yellow>%3$s
         <yellow><bold>Deaths: <reset><yellow>%4$s
-        <yellow><bold>Killstreak: <reset><yellow>%5$s
+        <yellow><bold>KDR: <reset><yellow>%5$s
         """);
 
     for (String path : DEFAULTS.keySet()) {
