@@ -77,7 +77,7 @@ public class KillDeathTracker {
   }
 
   public void addDeath() {
-    this.deaths = deaths + 1;
+    this.deaths++;
 
     if (killStreak >= AuroraCombat.getInstance().getConfig()
         .getInt("misc.min-killstreak-to-announce")) {
@@ -91,8 +91,8 @@ public class KillDeathTracker {
   }
 
   public void addKill() {
-    this.killStreak = killStreak + 1;
-    this.kills = kills + 1;
+    this.killStreak++;
+    this.kills++;
 
     this.save();
   }

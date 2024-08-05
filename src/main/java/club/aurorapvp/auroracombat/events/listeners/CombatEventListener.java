@@ -75,11 +75,21 @@ public class CombatEventListener implements Listener {
   @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
   public void onPlayerDeath(PlayerDeathEvent event) {
     if (combatLoggers.remove(event.getPlayer())) {
-      new PlayerKilledByPlayerEvent(
-              Objects.requireNonNull(CombatTag.getRecentTag(event.getPlayer()))
-                  .getOpponent(event.getPlayer()),
-              event)
-          .callEvent();
+      Player dead = event.getPlayer();
+      Player killer =
+          Objects.requireNonNull(CombatTag.getRecentTag(event.getPlayer()))
+              .getOpponent(event.getPlayer());
+
+      new PlayerKilledByPlayerEvent(killer, event).callEvent();
+
+      Objects.requireNonNull(KillDeathTracker.getTracker(dead)).addDeath();
+      Objects.requireNonNull(KillDeathTracker.getTracker(killer)).addKill();
+
+      for (Rating rating : Rating.getRatings()) {
+        if (rating.isEnabled(dead) && rating.isEnabled(killer)) {
+          rating.updateElo(dead, killer);
+        }
+      }
     }
 
     CombatTag.removeTags(event.getPlayer());
@@ -106,23 +116,12 @@ public class CombatEventListener implements Listener {
 
   @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
   public void onKilledByPlayer(PlayerKilledByPlayerEvent event) {
-    if (!CombatTag.isUntaggable(event.getDead()) && !CombatTag.isUntaggable(event.getKiller())) {
-      Objects.requireNonNull(KillDeathTracker.getTracker(event.getDead())).addDeath();
-      Objects.requireNonNull(KillDeathTracker.getTracker(event.getKiller())).addKill();
-
-      event
-          .getDead()
-          .playSound(Sound.sound().type(org.bukkit.Sound.ENTITY_ENDER_DRAGON_GROWL).build());
-      event
-          .getKiller()
-          .playSound(Sound.sound().type(org.bukkit.Sound.ENTITY_ARROW_HIT_PLAYER).build());
-    }
-
-    for (Rating rating : Rating.getRatings()) {
-      if (rating.isEnabled(event.getDead()) && rating.isEnabled(event.getKiller())) {
-        rating.updateElo(event.getDead(), event.getKiller());
-      }
-    }
+    event
+        .getDead()
+        .playSound(Sound.sound().type(org.bukkit.Sound.ENTITY_ENDER_DRAGON_GROWL).build());
+    event
+        .getKiller()
+        .playSound(Sound.sound().type(org.bukkit.Sound.ENTITY_ARROW_HIT_PLAYER).build());
   }
 
   @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
