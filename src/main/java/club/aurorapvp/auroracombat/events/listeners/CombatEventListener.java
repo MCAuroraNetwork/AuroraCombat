@@ -79,14 +79,16 @@ public class CombatEventListener implements Listener {
           Objects.requireNonNull(CombatTag.getRecentTag(event.getPlayer()))
               .getOpponent(event.getPlayer());
 
+      CombatTag.removeTags(event.getPlayer());
+      BlockFallDamage.setInvulnerable(event.getPlayer());
+
       new PlayerKilledByPlayerEvent(killer, event).callEvent();
+      return;
     }
 
     CombatTag.removeTags(event.getPlayer());
     BlockFallDamage.setInvulnerable(event.getPlayer());
 
-    CombatTag.removeTags(event.getPlayer());
-    BlockFallDamage.setInvulnerable(event.getPlayer());
 
     if (lastDamage.get(event.getPlayer().getUniqueId()) == null) {
       return;
