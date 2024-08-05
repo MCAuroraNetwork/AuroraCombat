@@ -34,9 +34,9 @@ public class CombatEventListener implements Listener {
       return;
     }
 
-    event.getPlayer().setHealth(0);
-
     combatLoggers.add(event.getPlayer());
+
+    event.getPlayer().setHealth(0);
   }
 
   @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
@@ -75,21 +75,11 @@ public class CombatEventListener implements Listener {
   @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
   public void onPlayerDeath(PlayerDeathEvent event) {
     if (combatLoggers.remove(event.getPlayer())) {
-      Player dead = event.getPlayer();
       Player killer =
           Objects.requireNonNull(CombatTag.getRecentTag(event.getPlayer()))
               .getOpponent(event.getPlayer());
 
       new PlayerKilledByPlayerEvent(killer, event).callEvent();
-
-      Objects.requireNonNull(KillDeathTracker.getTracker(dead)).addDeath();
-      Objects.requireNonNull(KillDeathTracker.getTracker(killer)).addKill();
-
-      for (Rating rating : Rating.getRatings()) {
-        if (rating.isEnabled(dead) && rating.isEnabled(killer)) {
-          rating.updateElo(dead, killer);
-        }
-      }
     }
 
     CombatTag.removeTags(event.getPlayer());
@@ -116,6 +106,18 @@ public class CombatEventListener implements Listener {
 
   @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
   public void onKilledByPlayer(PlayerKilledByPlayerEvent event) {
+    Player dead = event.getDead();
+    Player killer = event.getKiller();
+    
+    Objects.requireNonNull(KillDeathTracker.getTracker(dead)).addDeath();
+    Objects.requireNonNull(KillDeathTracker.getTracker(killer)).addKill();
+
+    for (Rating rating : Rating.getRatings()) {
+      if (rating.isEnabled(dead) && rating.isEnabled(killer)) {
+        rating.updateElo(dead, killer);
+      }
+    }
+    
     event
         .getDead()
         .playSound(Sound.sound().type(org.bukkit.Sound.ENTITY_ENDER_DRAGON_GROWL).build());
