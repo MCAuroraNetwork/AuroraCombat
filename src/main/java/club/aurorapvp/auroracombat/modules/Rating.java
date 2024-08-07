@@ -184,23 +184,23 @@ public class Rating {
   }
 
   @SuppressWarnings("unused")
-  public void updateElo(Player player, int referencePoints, boolean winner) {
+  public int updateElo(Player player, int referencePoints, boolean winner) {
     Score score = this.getScore(player);
 
     double EloChange = Rating.getELOChange(score.getPoints(), referencePoints);
 
+    int change =
+        (int)
+            Math.round(
+                AuroraCombat.getInstance().getConfig().getInt("elo.max-change") * -(EloChange));
+
     if (winner) {
-      score.changePoints(
-          (int)
-              Math.round(
-                  AuroraCombat.getInstance().getConfig().getInt("elo.max-change")
-                      * -(0 + EloChange)));
+      score.changePoints(change);
     } else {
-      score.changePoints(
-          (int)
-              Math.round(
-                  AuroraCombat.getInstance().getConfig().getInt("elo.max-change") * EloChange));
+      score.changePoints(-change);
     }
+
+    return change;
   }
 
   public static Rating getRating(String name) {
