@@ -89,7 +89,6 @@ public class CombatEventListener implements Listener {
     CombatTag.removeTags(event.getPlayer());
     BlockFallDamage.setInvulnerable(event.getPlayer());
 
-
     if (lastDamage.get(event.getPlayer().getUniqueId()) == null) {
       return;
     }
@@ -114,11 +113,43 @@ public class CombatEventListener implements Listener {
     Objects.requireNonNull(KillDeathTracker.getTracker(dead)).addDeath();
     Objects.requireNonNull(KillDeathTracker.getTracker(killer)).addKill();
 
+    Map<Rating, Integer> updatedRatings = new HashMap<>();
+
     for (Rating rating : Rating.getRatings()) {
       if (rating.isEnabled(dead) && rating.isEnabled(killer)) {
-        rating.updateElo(dead, killer);
+        updatedRatings.put(rating, rating.updateElo(dead, killer));
       }
     }
+
+    StringBuilder killerMessage = new StringBuilder();
+
+    for (Rating rating : updatedRatings.keySet()) {
+      killerMessage
+          .append("\n")
+          .append(rating.getFriendlyName())
+          .append(": +")
+          .append(updatedRatings.get(rating));
+    }
+
+    StringBuilder deadMessage = new StringBuilder();
+
+    for (Rating rating : updatedRatings.keySet()) {
+      deadMessage
+          .append("\n")
+          .append(rating.getFriendlyName())
+          .append(": -")
+          .append(updatedRatings.get(rating));
+    }
+
+    dead.sendMessage(
+        AuroraCombat.getInstance()
+            .getLang()
+            .formatComponent("you-were-killed-by", killer.getName(), deadMessage.toString()));
+
+    killer.sendMessage(
+        AuroraCombat.getInstance()
+            .getLang()
+            .formatComponent("you-killed", dead.getName(), killerMessage.toString()));
 
     event
         .getDead()

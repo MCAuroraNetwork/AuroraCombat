@@ -45,8 +45,8 @@ public class Rating {
   }
 
   public static void init() {
-    if (AuroraCombat.getInstance().getConfig().getBoolean("rating.enable-default")) {
-      new Rating("default", RatingType.GLOBAL, true);
+    if (AuroraCombat.getInstance().getConfig().getBoolean("rating.enable-overall")) {
+      new Rating("overall", RatingType.GLOBAL, true);
     }
 
     File file = new File(AuroraCombat.getInstance().getDataFolder(), "ratings.yml");
@@ -166,38 +166,21 @@ public class Rating {
     data.delete();
   }
 
-  public void updateElo(Player deadPlayer, Player killer) {
+  public int updateElo(Player deadPlayer, Player killer) {
     Score deadScore = this.getScore(deadPlayer);
     Score killerScore = this.getScore(killer);
 
     assert deadScore != null;
     assert killerScore != null;
-    double EloChange = Rating.getELOChange(deadScore.getPoints(), killerScore.getPoints());
+    double EloChange = Rating.getELOChange(killerScore.getPoints(), deadScore.getPoints());
 
-    deadScore.changePoints(
-        (int) (AuroraCombat.getInstance().getConfig().getInt("elo.max-change") * EloChange));
-    killerScore.changePoints(
-        (int) (AuroraCombat.getInstance().getConfig().getInt("elo.max-change") * -(0 + EloChange)));
+    int change =
+        (int) (AuroraCombat.getInstance().getConfig().getInt("elo.max-change") * EloChange);
 
-    deadPlayer.sendMessage(
-        AuroraCombat.getInstance()
-            .getLang()
-            .formatComponent(
-                "you-were-killed-by",
-                killer.getName(),
-                killerScore.getPoints(),
-                (int)
-                    (AuroraCombat.getInstance().getConfig().getInt("elo.max-change") * EloChange)));
-    killer.sendMessage(
-        AuroraCombat.getInstance()
-            .getLang()
-            .formatComponent(
-                "you-killed",
-                deadPlayer.getName(),
-                deadScore.getPoints(),
-                (int)
-                    (AuroraCombat.getInstance().getConfig().getInt("elo.max-change")
-                        * -(0 + EloChange))));
+    deadScore.changePoints(-change);
+    killerScore.changePoints(change);
+
+    return change;
   }
 
   @SuppressWarnings("unused")

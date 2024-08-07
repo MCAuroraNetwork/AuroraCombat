@@ -3,7 +3,6 @@ package club.aurorapvp.auroracombat.config;
 import club.aurorapvp.auroracombat.AuroraCombat;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Level;
@@ -34,7 +33,7 @@ public class Config {
     DEFAULTS.put("misc.ender-pearl-cooldown.max-distance", 100);
     DEFAULTS.put("misc.ender-pearl-cooldown.time", 10);
     DEFAULTS.put("misc.ender-pearl-cooldown.only-active-when-tagged", false);
-    DEFAULTS.put("rating.enable-default", true);
+    DEFAULTS.put("rating.enable-overall", true);
     DEFAULTS.put("optional-plugins.worldguard-compatibility", true);
 
     for (String path : DEFAULTS.keySet()) {
