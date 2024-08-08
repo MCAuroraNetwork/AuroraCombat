@@ -11,6 +11,11 @@ public class CommandManager {
     MANAGER.registerCommand(new RatingCommands());
     MANAGER.registerCommand(new PluginCommands());
     MANAGER.registerCommand(new StatsCommand());
+
+    if (!AuroraCombat.getInstance().getConfig().getBoolean("misc.enable-dummies")) {
+      return;
+    }
+
     MANAGER.registerCommand(new DummyCommand());
   }
 }
