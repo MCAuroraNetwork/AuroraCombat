@@ -50,3 +50,5 @@ dependencies:
       required: false
     WorldGuard:
       required: false
+    DiscordSRV:
+      required: false

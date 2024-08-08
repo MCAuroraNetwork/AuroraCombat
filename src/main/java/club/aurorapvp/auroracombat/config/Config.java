@@ -36,6 +36,7 @@ public class Config {
     DEFAULTS.put("misc.enable-dummies", true);
     DEFAULTS.put("rating.enable-overall", true);
     DEFAULTS.put("optional-plugins.worldguard-compatibility", true);
+    DEFAULTS.put("optional-plugins.discordsrv-compatibility", true);
 
     for (String path : DEFAULTS.keySet()) {
       if (!getYaml().isSet(path) || getYaml().getString(path) == null) {

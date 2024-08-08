@@ -17,6 +17,7 @@ public final class AuroraCombat extends JavaPlugin {
 
   private static AuroraCombat INSTANCE;
   private boolean worldGuardInstalled;
+  private boolean discordSrvInstalled = false;
   private Config config;
   private Lang lang;
 
@@ -26,6 +27,10 @@ public final class AuroraCombat extends JavaPlugin {
 
   public boolean isWorldGuardInstalled() {
     return worldGuardInstalled;
+  }
+
+  public boolean isDiscordSRVInstalled() {
+    return discordSrvInstalled;
   }
 
   public @NotNull YamlConfiguration getConfig() {
@@ -52,6 +57,11 @@ public final class AuroraCombat extends JavaPlugin {
         CombatTagFlags.init();
         worldGuardInstalled = true;
       }
+    }
+
+    if (Bukkit.getPluginManager().getPlugin("DiscordSRV") != null
+        && this.getConfig().getBoolean("optional-plugins.discordsrv-compatibility")) {
+      discordSrvInstalled = true;
     }
 
     getLogger().info("AuroraCombat loaded in " + (System.currentTimeMillis() - startTime) + "ms");

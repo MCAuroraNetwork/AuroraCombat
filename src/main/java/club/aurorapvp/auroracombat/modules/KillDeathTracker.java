@@ -2,6 +2,9 @@ package club.aurorapvp.auroracombat.modules;
 
 import club.aurorapvp.auroracombat.AuroraCombat;
 import club.aurorapvp.auroracombat.data.KillDeathDataHandler;
+import github.scarsz.discordsrv.DiscordSRV;
+import github.scarsz.discordsrv.dependencies.jda.api.EmbedBuilder;
+import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -85,6 +88,23 @@ public class KillDeathTracker {
           AuroraCombat.getInstance()
               .getLang()
               .formatComponent("killstreak-lost", player.getName(), killStreak));
+
+      if (AuroraCombat.getInstance().isDiscordSRVInstalled()) {
+        DiscordSRV.getPlugin()
+            .getOptionalTextChannel("global")
+            .sendMessageEmbeds(
+                new EmbedBuilder()
+                    .setAuthor(
+                        AuroraCombat.getInstance()
+                            .getLang()
+                            .getString("discord-killstreak-lost")
+                            .formatted(player.getName(), killStreak),
+                        null,
+                        "https://cravatar.eu/helmavatar/" + player.getUniqueId())
+                    .setColor(Color.BLACK)
+                    .build())
+            .queue();
+      }
     }
 
     this.killStreak = 0;
@@ -103,6 +123,23 @@ public class KillDeathTracker {
           AuroraCombat.getInstance()
               .getLang()
               .formatComponent("on-killstreak", player.getName(), killStreak));
+
+      if (AuroraCombat.getInstance().isDiscordSRVInstalled()) {
+        DiscordSRV.getPlugin()
+            .getOptionalTextChannel("global")
+            .sendMessageEmbeds(
+                new EmbedBuilder()
+                    .setAuthor(
+                        AuroraCombat.getInstance()
+                            .getLang()
+                            .getString("discord-on-killstreak")
+                            .formatted(player.getName(), killStreak),
+                        null,
+                        "https://cravatar.eu/helmavatar/" + player.getUniqueId())
+                    .setColor(Color.BLACK)
+                    .build())
+            .queue();
+      }
     }
 
     this.save();

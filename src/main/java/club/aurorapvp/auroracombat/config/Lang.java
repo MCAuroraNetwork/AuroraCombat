@@ -38,6 +38,8 @@ public class Lang {
     DEFAULTS.put(
         "on-killstreak",
         "prefix <green><bold>%1$s<reset><green> has a Killstreak of <green><bold>%2$s<reset><green>!");
+    DEFAULTS.put("discord-killstreak-lost", "%1$s died and lost %2$s Killstreak!");
+    DEFAULTS.put("discord-on-killstreak", "%1$s has a Killstreak of %2$s!");
     DEFAULTS.put("death-message.killed-by-player-generic", "<red>%1$s killed by %2$s");
     DEFAULTS.put(
         "death-message.killed-by-player-explosion", "<red>%1$s was blown up by %2$s with %3$s");
@@ -82,6 +84,17 @@ public class Lang {
             Objects.requireNonNull(getYaml().getString((String) path)).replace("~", ""));
       }
     }
+  }
+
+  public String getString(String message) {
+    String pathString = getYaml().getString(message);
+    for (String placeholder : PLACEHOLDERS.keySet()) {
+      assert pathString != null;
+      if (pathString.contains(placeholder)) {
+        pathString = pathString.replace(placeholder, PLACEHOLDERS.get(placeholder));
+      }
+    }
+    return pathString;
   }
 
   public Component formatComponent(String message, Object... args) {
