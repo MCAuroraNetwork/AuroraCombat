@@ -79,22 +79,31 @@ public class KillDeathTracker {
   public void addDeath() {
     this.deaths++;
 
-    if (killStreak >= AuroraCombat.getInstance().getConfig()
-        .getInt("misc.min-killstreak-to-announce")) {
+    if (killStreak
+        >= AuroraCombat.getInstance().getConfig().getInt("misc.min-killstreak-to-announce")) {
       Bukkit.broadcast(
           AuroraCombat.getInstance()
               .getLang()
               .formatComponent("killstreak-lost", player.getName(), killStreak));
-
-      this.save();
     }
 
     this.killStreak = 0;
+
+    this.save();
   }
 
   public void addKill() {
     this.killStreak++;
     this.kills++;
+
+    if (killStreak
+            % AuroraCombat.getInstance().getConfig().getInt("misc.min-killstreak-to-announce")
+        == 0) {
+      Bukkit.broadcast(
+          AuroraCombat.getInstance()
+              .getLang()
+              .formatComponent("on-killstreak", player.getName(), killStreak));
+    }
 
     this.save();
   }

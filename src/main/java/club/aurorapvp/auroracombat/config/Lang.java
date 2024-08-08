@@ -32,14 +32,19 @@ public class Lang {
     DEFAULTS.put("tagged", "prefix <red>Tagged by <bold>%1$s<reset><red> for %2$s seconds");
     DEFAULTS.put("tag-removed", "prefix <green>You're no longer tagged by %s!");
     DEFAULTS.put("tag-removed-action-bar", "<green>You're no longer tagged by %s!");
-    DEFAULTS.put("killstreak-lost", "prefix <red><bold>%1$s died and lost %2$s Killstreak!");
+    DEFAULTS.put(
+        "killstreak-lost",
+        "prefix <red><bold>%1$s<reset><red> died and lost <red><bold>%2$s<reset><red> Killstreak!");
+    DEFAULTS.put(
+        "on-killstreak-lost",
+        "prefix <green><bold>%1$s<reset><green> has a Killstreak of <green><bold>%2$s<reset><green>!");
     DEFAULTS.put("death-message.killed-by-player-generic", "<red>%1$s killed by %2$s");
     DEFAULTS.put(
         "death-message.killed-by-player-explosion", "<red>%1$s was blown up by %2$s with %3$s");
     DEFAULTS.put("death-message.killed-by-player-slain", "<red>%1$s was slain by %2$s with %3$s");
     DEFAULTS.put("death-message.killed-by-player-shot", "<red>%1$s was shot by %2$s with %3$s");
-    DEFAULTS.put("death-message.killed-by-player-magic",
-        "<red>%1$s was killed by %2$s's magic %3$s");
+    DEFAULTS.put(
+        "death-message.killed-by-player-magic", "<red>%1$s was killed by %2$s's magic %3$s");
     DEFAULTS.put("death-message.combat-logged", "<red>%1$s combat logged to hide from %2$s");
     DEFAULTS.put("unknown-player", "prefix <red>Player not found!");
     DEFAULTS.put("commands-disabled", "prefix <red>Commands disabled in combat");
@@ -73,7 +78,8 @@ public class Lang {
       if (Objects.requireNonNull(getYaml().getString((String) path)).startsWith("~")
           && Objects.requireNonNull(getYaml().getString((String) path)).endsWith("~")) {
         PLACEHOLDERS.put(
-            (String) path, Objects.requireNonNull(getYaml().getString((String) path)).replace("~", ""));
+            (String) path,
+            Objects.requireNonNull(getYaml().getString((String) path)).replace("~", ""));
       }
     }
   }
