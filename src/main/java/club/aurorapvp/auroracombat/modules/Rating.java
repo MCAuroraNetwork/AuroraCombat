@@ -175,10 +175,10 @@ public class Rating {
     double EloChange = Rating.getELOChange(killerScore.getPoints(), deadScore.getPoints());
 
     int change =
-        (int) (AuroraCombat.getInstance().getConfig().getInt("elo.max-change") * EloChange);
+        (int) (AuroraCombat.getInstance().getConfig().getInt("elo.max-change") * -EloChange);
 
-    deadScore.changePoints(-change);
     killerScore.changePoints(change);
+    deadScore.changePoints(-change);
 
     return change;
   }
@@ -192,7 +192,7 @@ public class Rating {
     int change =
         (int)
             Math.round(
-                AuroraCombat.getInstance().getConfig().getInt("elo.max-change") * -(EloChange));
+                AuroraCombat.getInstance().getConfig().getInt("elo.max-change") * -EloChange);
 
     if (winner) {
       score.changePoints(change);

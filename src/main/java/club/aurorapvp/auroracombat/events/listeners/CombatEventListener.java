@@ -131,6 +131,10 @@ public class CombatEventListener implements Listener {
           .append(updatedRatings.get(rating));
     }
 
+    killerMessage
+        .append("\nKillstreak: ")
+        .append(KillDeathTracker.getTracker(killer).getKillStreak());
+
     StringBuilder deadMessage = new StringBuilder();
 
     for (Rating rating : updatedRatings.keySet()) {
