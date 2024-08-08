@@ -36,7 +36,7 @@ public class Lang {
         "killstreak-lost",
         "prefix <red><bold>%1$s<reset><red> died and lost <red><bold>%2$s<reset><red> Killstreak!");
     DEFAULTS.put(
-        "on-killstreak-lost",
+        "on-killstreak",
         "prefix <green><bold>%1$s<reset><green> has a Killstreak of <green><bold>%2$s<reset><green>!");
     DEFAULTS.put("death-message.killed-by-player-generic", "<red>%1$s killed by %2$s");
     DEFAULTS.put(
