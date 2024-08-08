@@ -172,7 +172,7 @@ public class Rating {
 
     assert deadScore != null;
     assert killerScore != null;
-    double EloChange = Rating.getELOChange(killerScore.getPoints(), deadScore.getPoints());
+    double EloChange = Rating.getELOChange(deadScore.getPoints(), killerScore.getPoints());
 
     int change =
         (int) (AuroraCombat.getInstance().getConfig().getInt("elo.max-change") * -EloChange);
@@ -187,7 +187,10 @@ public class Rating {
   public int updateElo(Player player, int referencePoints, boolean winner) {
     Score score = this.getScore(player);
 
-    double EloChange = Rating.getELOChange(score.getPoints(), referencePoints);
+    double EloChange =
+        winner
+            ? Rating.getELOChange(referencePoints, score.getPoints())
+            : Rating.getELOChange(score.getPoints(), referencePoints);
 
     int change =
         (int)
