@@ -73,6 +73,7 @@ public class KillDeathTracker {
   public void reload() {
     kills = data.getKills();
     deaths = data.getDeaths();
+    killStreak = data.getKillstreak();
   }
 
   public void save() {

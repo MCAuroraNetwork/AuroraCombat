@@ -23,6 +23,10 @@ public class KillDeathDataHandler {
     return container.getOrDefault(killKey, PersistentDataType.INTEGER, -1);
   }
 
+  public int getKillstreak() {
+    return container.getOrDefault(streakKey, PersistentDataType.INTEGER, -1);
+  }
+
   public int getDeaths() {
     return container.getOrDefault(deathKey, PersistentDataType.INTEGER, -1);
   }
