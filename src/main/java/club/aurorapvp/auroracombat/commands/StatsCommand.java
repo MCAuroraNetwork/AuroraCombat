@@ -30,7 +30,7 @@ public class StatsCommand extends BaseCommand {
       ratings
           .append("<aqua><bold>")
           .append(ratingName)
-          .append(" Points: <reset><aqua>")
+          .append(": <reset><aqua>")
           .append(points)
           .append("<reset>\n");
     }
