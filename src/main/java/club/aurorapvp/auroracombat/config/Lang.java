@@ -29,9 +29,7 @@ public class Lang {
     DEFAULTS.put("you-killed", "prefix <green>You killed <bold>%1$s<reset><green>!%2$s");
     DEFAULTS.put(
         "you-were-killed-by", "prefix <red>You were killed by <bold>%1$s!<reset><red>.%2$s");
-    DEFAULTS.put("tagged", "prefix <red>Tagged by <bold>%1$s<reset><red> for %2$s seconds");
-    DEFAULTS.put("tag-removed", "prefix <green>You're no longer tagged by %s!");
-    DEFAULTS.put("tag-removed-action-bar", "<green>You're no longer tagged by %s!");
+    DEFAULTS.put("tag-removed", "<green>You're no longer tagged by %s!");
     DEFAULTS.put(
         "killstreak-lost",
         "prefix <red><bold>%1$s<reset><red> died and lost <red><bold>%2$s<reset><red> Killstreak!");

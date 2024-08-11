@@ -231,8 +231,8 @@ public class Rating {
     }.runTaskLater(AuroraCombat.getInstance(), 1);
   }
 
-  public static double getELOChange(int playerElo, int opponentElo) {
-    return -(1 - 1.0 / (1 + Math.pow(10, (playerElo - opponentElo) / 400.0)));
+  public static double getELOChange(int loserElo, int winnerElo) {
+    return -(1 - 1.0 / (1 + Math.pow(10, (loserElo - winnerElo) / 400.0)));
   }
 
   public enum RatingType {
