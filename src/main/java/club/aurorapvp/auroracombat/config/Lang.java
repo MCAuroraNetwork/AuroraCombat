@@ -57,11 +57,10 @@ public class Lang {
         "stats-command",
         """
         prefix <yellow><bold>%1$s's Stats<reset>
-        %2$s
 
-        <yellow><bold>Kills: <reset><yellow>%3$s
-        <yellow><bold>Deaths: <reset><yellow>%4$s
-        <yellow><bold>KDR: <reset><yellow>%5$s
+        <yellow><bold>Kills: <reset><yellow>%2$s
+        <yellow><bold>Deaths: <reset><yellow>%3$s
+        <yellow><bold>KDR: <reset><yellow>%4$s
         """);
 
     for (String path : DEFAULTS.keySet()) {
