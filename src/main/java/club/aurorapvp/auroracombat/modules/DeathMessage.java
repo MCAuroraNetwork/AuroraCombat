@@ -28,6 +28,18 @@ public class DeathMessage {
     }
 
     ItemStack weapon = event.getWeapon();
+
+    if (weapon == null) {
+      event.deathMessage(
+              AuroraCombat.getInstance()
+                      .getLang()
+                      .formatComponent(
+                              "death-message.killed-by-player-generic-no-weapon",
+                              event.getDamaged().getName(),
+                              event.getAttacker().getName()));
+      return;
+    }
+
     HoverEvent<HoverEvent.ShowItem> hover = weapon.asHoverEvent();
 
     Component weaponName = weapon.displayName();
@@ -86,9 +98,7 @@ public class DeathMessage {
                   .formatComponent(
                       "death-message.killed-by-player-generic",
                       event.getDamaged().getName(),
-                      event.getAttacker().getName(),
-                      MiniMessage.miniMessage().serialize(weaponName))
-                  .hoverEvent(hover));
+                      event.getAttacker().getName()));
     }
   }
 }
