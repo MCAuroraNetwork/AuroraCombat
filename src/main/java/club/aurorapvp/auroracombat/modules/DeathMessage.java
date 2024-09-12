@@ -31,12 +31,12 @@ public class DeathMessage {
 
     if (weapon == null) {
       event.deathMessage(
-              AuroraCombat.getInstance()
-                      .getLang()
-                      .formatComponent(
-                              "death-message.killed-by-player-generic-no-weapon",
-                              event.getDamaged().getName(),
-                              event.getAttacker().getName()));
+          AuroraCombat.getInstance()
+              .getLang()
+              .formatComponent(
+                  "death-message.killed-by-player-generic-no-weapon",
+                  event.getDamaged().getName(),
+                  event.getAttacker().getName()));
       return;
     }
 

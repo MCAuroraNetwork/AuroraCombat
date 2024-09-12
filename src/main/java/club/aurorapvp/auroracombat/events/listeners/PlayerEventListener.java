@@ -23,6 +23,7 @@ public class PlayerEventListener implements Listener {
     BlockFallDamage.setInvulnerable(event.getPlayer());
     Rating.register(event.getPlayer());
     KillDeathTracker.register(event.getPlayer());
+    CombatTag.register(event.getPlayer());
   }
 
   @EventHandler
@@ -40,5 +41,6 @@ public class PlayerEventListener implements Listener {
     Rating.unregister(event.getPlayer());
     KillDeathTracker.unregister(event.getPlayer());
     BlockFallDamage.unregister(event.getPlayer());
+    CombatTag.unregister(event.getPlayer());
   }
 }

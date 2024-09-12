@@ -67,14 +67,24 @@ public class CombatTag {
     }
   }
 
+  public static void register(Player player) {
+    tags.put(player.getUniqueId(), new LinkedList<>());
+  }
+
+  public static void unregister(Player player) {
+    tags.remove(player.getUniqueId());
+  }
+
   public static void removeTags(Player player) {
-    for (CombatTag tag : new LinkedList<>(CombatTag.getTags(player))) {
-      tag.removeTag();
+    for (CombatTag tag : CombatTag.getTags(player)) {
+      if (tag != null) {
+        tag.removeTag();
+      }
     }
   }
 
   public static LinkedList<CombatTag> getTags(Player player) {
-    return tags.getOrDefault(player.getUniqueId(), new LinkedList<>());
+    return tags.get(player.getUniqueId());
   }
 
   public static CombatTag getRecentTag(Player player) {
@@ -114,8 +124,7 @@ public class CombatTag {
 
       if (set != null) {
         for (ProtectedRegion region : set.getRegions()) {
-          return Objects.equals(region.getFlag(CombatTagFlags.TAGS_ENABLED),
-              State.DENY);
+          return Objects.equals(region.getFlag(CombatTagFlags.TAGS_ENABLED), State.DENY);
         }
       }
     }
@@ -140,7 +149,7 @@ public class CombatTag {
   }
 
   public void startTimer() {
-    CombatTag tag = this;
+    final CombatTag tag = this;
 
     timer = new Timer();
 
@@ -168,21 +177,19 @@ public class CombatTag {
 
           @Override
           public void run() {
-            int greenBars = (int) Math.round(
-                (double) (executionTimes - counter) / executionTimes * 30);
+            int greenBars =
+                (int) Math.round((double) (executionTimes - counter) / executionTimes * 30);
             int redBars = 30 - greenBars;
 
-            Component green = Component.text("|".repeat(greenBars))
-                .color(NamedTextColor.GREEN);
+            Component green = Component.text("|".repeat(greenBars)).color(NamedTextColor.GREEN);
 
-            Component red = Component.text("|".repeat(redBars))
-                .color(NamedTextColor.RED);
+            Component red = Component.text("|".repeat(redBars)).color(NamedTextColor.RED);
 
-            Component playerOneName = playerOne.name().decorate(TextDecoration.BOLD)
-                .color(NamedTextColor.RED);
+            Component playerOneName =
+                playerOne.name().decorate(TextDecoration.BOLD).color(NamedTextColor.RED);
 
-            Component playerTwoName = playerTwo.name().decorate(TextDecoration.BOLD)
-                .color(NamedTextColor.RED);
+            Component playerTwoName =
+                playerTwo.name().decorate(TextDecoration.BOLD).color(NamedTextColor.RED);
 
             playerOne.sendActionBar(playerTwoName.appendSpace().append(green.append(red)));
             playerTwo.sendActionBar(playerOneName.appendSpace().append(green.append(red)));
@@ -196,14 +203,20 @@ public class CombatTag {
     if (playerOneBar[0] == null) {
       playerOneBar[0] =
           BossBar.bossBar(
-              playerTwo.displayName().decorate(TextDecoration.BOLD).color(NamedTextColor.YELLOW)
-                  .appendSpace().append(
+              playerTwo
+                  .displayName()
+                  .decorate(TextDecoration.BOLD)
+                  .color(NamedTextColor.YELLOW)
+                  .appendSpace()
+                  .append(
                       Component.text(
                               (int) (playerTwo.getHealth() + playerTwo.getAbsorptionAmount()) + "❤")
                           .color(NamedTextColor.RED))
-                  .appendSpace().append(
-                      Component.text(playerTwo.getPing() + "ms").color(NamedTextColor.AQUA)),
-              1.0f, Color.RED, Overlay.PROGRESS);
+                  .appendSpace()
+                  .append(Component.text(playerTwo.getPing() + "ms").color(NamedTextColor.AQUA)),
+              1.0f,
+              Color.RED,
+              Overlay.PROGRESS);
 
       playerOne.showBossBar(playerOneBar[0]);
     }
@@ -211,45 +224,69 @@ public class CombatTag {
     if (playerTwoBar[0] == null) {
       playerTwoBar[0] =
           BossBar.bossBar(
-              playerOne.displayName().decorate(TextDecoration.BOLD).color(NamedTextColor.YELLOW)
-                  .appendSpace().append(
+              playerOne
+                  .displayName()
+                  .decorate(TextDecoration.BOLD)
+                  .color(NamedTextColor.YELLOW)
+                  .appendSpace()
+                  .append(
                       Component.text(
                               (int) (playerOne.getHealth() + playerOne.getAbsorptionAmount()) + "❤")
                           .color(NamedTextColor.RED))
-                  .appendSpace().append(
-                      Component.text(playerOne.getPing() + "ms").color(NamedTextColor.AQUA)),
-              1.0f, Color.RED, Overlay.PROGRESS);
+                  .appendSpace()
+                  .append(Component.text(playerOne.getPing() + "ms").color(NamedTextColor.AQUA)),
+              1.0f,
+              Color.RED,
+              Overlay.PROGRESS);
 
       playerTwo.showBossBar(playerTwoBar[0]);
     }
 
-    bossbarTask = new BukkitRunnable() {
-      @Override
-      public void run() {
-        playerOneBar[0].name(
-                playerTwo.displayName().decorate(TextDecoration.BOLD).color(NamedTextColor.YELLOW)
-                    .appendSpace().append(
-                        Component.text(
-                                (int) (playerTwo.getHealth() + playerTwo.getAbsorptionAmount()) + "❤")
-                            .color(NamedTextColor.RED))
-                    .appendSpace().append(
-                        Component.text(playerTwo.getPing() + "ms").color(NamedTextColor.AQUA)))
-            .progress(
-                (float) Math.min((playerTwo.getHealth() + playerTwo.getAbsorptionAmount()) / 20,
-                    1.0f));
+    bossbarTask =
+        new BukkitRunnable() {
+          @Override
+          public void run() {
+            playerOneBar[0]
+                .name(
+                    playerTwo
+                        .displayName()
+                        .decorate(TextDecoration.BOLD)
+                        .color(NamedTextColor.YELLOW)
+                        .appendSpace()
+                        .append(
+                            Component.text(
+                                    (int) (playerTwo.getHealth() + playerTwo.getAbsorptionAmount())
+                                        + "❤")
+                                .color(NamedTextColor.RED))
+                        .appendSpace()
+                        .append(
+                            Component.text(playerTwo.getPing() + "ms").color(NamedTextColor.AQUA)))
+                .progress(
+                    (float)
+                        Math.min(
+                            (playerTwo.getHealth() + playerTwo.getAbsorptionAmount()) / 20, 1.0f));
 
-        playerTwoBar[0].name(
-            playerOne.displayName().decorate(TextDecoration.BOLD).color(NamedTextColor.YELLOW)
-                .appendSpace().append(
-                    Component.text(
-                            (int) (playerOne.getHealth() + playerOne.getAbsorptionAmount()) + "❤")
-                        .color(NamedTextColor.RED))
-                .appendSpace().append(
-                    Component.text(playerOne.getPing() + "ms").color(NamedTextColor.AQUA))).progress(
-            (float) Math.min((playerOne.getHealth() + playerOne.getAbsorptionAmount()) / 20,
-                1.0f));
-      }
-    }.runTaskTimer(AuroraCombat.getInstance(), 1L, 1L);
+            playerTwoBar[0]
+                .name(
+                    playerOne
+                        .displayName()
+                        .decorate(TextDecoration.BOLD)
+                        .color(NamedTextColor.YELLOW)
+                        .appendSpace()
+                        .append(
+                            Component.text(
+                                    (int) (playerOne.getHealth() + playerOne.getAbsorptionAmount())
+                                        + "❤")
+                                .color(NamedTextColor.RED))
+                        .appendSpace()
+                        .append(
+                            Component.text(playerOne.getPing() + "ms").color(NamedTextColor.AQUA)))
+                .progress(
+                    (float)
+                        Math.min(
+                            (playerOne.getHealth() + playerOne.getAbsorptionAmount()) / 20, 1.0f));
+          }
+        }.runTaskTimer(AuroraCombat.getInstance(), 1L, 1L);
   }
 
   public void resetTimer() {
@@ -287,7 +324,7 @@ public class CombatTag {
       playerTwo.hideBossBar(playerTwoBar[0]);
     }
 
-    tags.getOrDefault(this.getPlayerOne().getUniqueId(), new LinkedList<>()).remove(this);
-    tags.getOrDefault(this.getPlayerTwo().getUniqueId(), new LinkedList<>()).remove(this);
+    tags.get(this.getPlayerOne().getUniqueId()).remove(this);
+    tags.get(this.getPlayerTwo().getUniqueId()).remove(this);
   }
 }
