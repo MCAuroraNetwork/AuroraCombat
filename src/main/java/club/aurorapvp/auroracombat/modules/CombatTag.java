@@ -10,13 +10,7 @@ import com.sk89q.worldguard.protection.flags.StateFlag.State;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import com.sk89q.worldguard.protection.regions.RegionContainer;
 import com.sk89q.worldguard.protection.regions.RegionQuery;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Timer;
-import java.util.TimerTask;
-import java.util.UUID;
+import java.util.*;
 import net.kyori.adventure.bossbar.BossBar;
 import net.kyori.adventure.bossbar.BossBar.Color;
 import net.kyori.adventure.bossbar.BossBar.Overlay;
@@ -50,14 +44,6 @@ public class CombatTag {
     if (CombatTag.getTag(tagged, opponent) != null) {
       Objects.requireNonNull(getTag(tagged, opponent)).resetTimer();
     } else {
-      if (!tags.containsKey(playerOne.getUniqueId())) {
-        tags.put(playerOne.getUniqueId(), new LinkedList<>());
-      }
-
-      if (!tags.containsKey(playerTwo.getUniqueId())) {
-        tags.put(playerTwo.getUniqueId(), new LinkedList<>());
-      }
-
       tags.get(playerOne.getUniqueId()).add(this);
       tags.get(playerTwo.getUniqueId()).add(this);
 
@@ -76,10 +62,12 @@ public class CombatTag {
   }
 
   public static void removeTags(Player player) {
-    for (CombatTag tag : CombatTag.getTags(player)) {
-      if (tag != null) {
-        tag.removeTag();
-      }
+    if (CombatTag.getTags(player).isEmpty()) {
+      return;
+    }
+
+    for (CombatTag tag : new LinkedList<>(CombatTag.getTags(player))) {
+      tag.removeTag();
     }
   }
 
@@ -92,10 +80,6 @@ public class CombatTag {
   }
 
   public static CombatTag getTag(Player p1, Player p2) {
-    if (!tags.containsKey(p1.getUniqueId()) || !tags.containsKey(p2.getUniqueId())) {
-      return null;
-    }
-
     for (CombatTag tag : tags.get(p1.getUniqueId())) {
       if (tag.getPlayerOne() == p2 || tag.getPlayerTwo() == p2) {
         return tag;
@@ -106,7 +90,7 @@ public class CombatTag {
   }
 
   public static boolean isTagged(Player player) {
-    return tags.containsKey(player.getUniqueId()) && !tags.get(player.getUniqueId()).isEmpty();
+    return !tags.get(player.getUniqueId()).isEmpty();
   }
 
   public static void setTaggable(Player player, boolean taggable) {

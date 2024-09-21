@@ -26,7 +26,7 @@ import org.bukkit.event.player.PlayerQuitEvent;
 public class CombatEventListener implements Listener {
 
   public static final Map<UUID, Event> lastDamage = new HashMap<>();
-  private final Set<Player> combatLoggers = new HashSet<>();
+  private final Set<UUID> combatLoggers = new HashSet<>();
 
   @EventHandler
   public void onPlayerQuit(PlayerQuitEvent event) {
@@ -34,7 +34,7 @@ public class CombatEventListener implements Listener {
       return;
     }
 
-    combatLoggers.add(event.getPlayer());
+    combatLoggers.add(event.getPlayer().getUniqueId());
 
     event.getPlayer().setHealth(0);
   }
@@ -72,9 +72,10 @@ public class CombatEventListener implements Listener {
     event.setCancelled(true);
   }
 
+  // NPE here
   @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
   public void onPlayerDeath(PlayerDeathEvent event) {
-    if (combatLoggers.remove(event.getPlayer())) {
+    if (combatLoggers.remove(event.getPlayer().getUniqueId())) {
       Player killer =
           Objects.requireNonNull(CombatTag.getRecentTag(event.getPlayer()))
               .getOpponent(event.getPlayer());
