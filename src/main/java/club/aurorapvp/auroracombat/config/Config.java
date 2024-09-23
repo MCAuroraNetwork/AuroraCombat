@@ -30,7 +30,7 @@ public class Config {
     DEFAULTS.put("misc.fall-damage.enable-first", false);
     DEFAULTS.put("misc.min-killstreak-to-announce", 10);
     DEFAULTS.put("misc.ender-pearl-cooldown.enabled", false);
-    DEFAULTS.put("misc.ender-pearl-cooldown.max-distance", 100);
+    DEFAULTS.put("misc.ender-pearl-cooldown.max-distance", 30);
     DEFAULTS.put("misc.ender-pearl-cooldown.time", 10);
     DEFAULTS.put("misc.ender-pearl-cooldown.only-active-when-tagged", false);
     DEFAULTS.put("misc.enable-dummies", true);
