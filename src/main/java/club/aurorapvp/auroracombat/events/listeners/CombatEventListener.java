@@ -72,7 +72,7 @@ public class CombatEventListener implements Listener {
     event.setCancelled(true);
   }
 
-  // NPE here
+  // TODO fix NPE here
   @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
   public void onPlayerDeath(PlayerDeathEvent event) {
     if (combatLoggers.remove(event.getPlayer().getUniqueId())) {

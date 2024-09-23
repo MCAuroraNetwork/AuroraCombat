@@ -34,7 +34,7 @@ public class DeathMessage {
           AuroraCombat.getInstance()
               .getLang()
               .formatComponent(
-                  "death-message.killed-by-player-generic-no-weapon",
+                  "death-message.killed-by-player-generic",
                   event.getDamaged().getName(),
                   event.getAttacker().getName()));
       return;
