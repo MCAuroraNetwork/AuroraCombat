@@ -1,16 +1,10 @@
 package club.aurorapvp.auroracombat.events.listeners;
 
 import club.aurorapvp.auroracombat.AuroraCombat;
-import club.aurorapvp.auroracombat.modules.BlockFallDamage;
-import club.aurorapvp.auroracombat.modules.CombatTag;
-import club.aurorapvp.auroracombat.modules.KillDeathTracker;
-import club.aurorapvp.auroracombat.modules.Rating;
+import club.aurorapvp.auroracombat.modules.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerChangedWorldEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.event.player.PlayerRespawnEvent;
+import org.bukkit.event.player.*;
 
 public class PlayerEventListener implements Listener {
 
@@ -29,6 +23,11 @@ public class PlayerEventListener implements Listener {
   @EventHandler
   public void onRespawn(PlayerRespawnEvent event) {
     BlockFallDamage.setInvulnerable(event.getPlayer());
+  }
+
+  @EventHandler
+  public void onTeleport(PlayerTeleportEvent event) {
+    AntiPearlPhase.isLocationPermitted(event.getPlayer(), event.getTo());
   }
 
   @EventHandler
