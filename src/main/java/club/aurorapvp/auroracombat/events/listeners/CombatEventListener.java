@@ -69,7 +69,7 @@ public class CombatEventListener implements Listener {
 
     boolean commandMatched = false;
 
-    if (!AuroraCombat.getInstance().getConfig().getBoolean("combat-tag.commands.allow-commands")) {
+    if (AuroraCombat.getInstance().getConfig().getBoolean("combat-tag.commands.allow-commands")) {
       return;
     }
 
