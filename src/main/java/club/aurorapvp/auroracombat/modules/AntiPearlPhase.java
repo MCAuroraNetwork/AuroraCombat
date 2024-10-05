@@ -11,6 +11,8 @@ public class AntiPearlPhase {
   public static boolean isLocationPermitted(Player player, Location to) {
     BoundingBox box = player.getBoundingBox().clone();
 
+    box.shift(new Location(player.getWorld(), 0, 0, 0).subtract(box.getCenterX(), box.getCenterY(), box.getCenterZ()));
+
     box.shift(to);
 
     Set<Block> blocks = getAdjacentBlocks(to);
