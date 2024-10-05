@@ -4,6 +4,7 @@ import club.aurorapvp.auroracombat.AuroraCombat;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.logging.Level;
 import org.bukkit.Location;
 import org.bukkit.entity.EnderPearl;
 import org.bukkit.entity.Player;
@@ -33,46 +34,58 @@ public class PearlCooldown {
     }
 
     if (onCooldown.getOrDefault(event.getPlayer().getUniqueId(), false)) {
-      if (AuroraCombat.getInstance().getConfig()
-          .getBoolean("misc.ender-pearl-cooldown.only-active-when-tagged") && !CombatTag.isTagged(
-          event.getPlayer())) {
+      if (AuroraCombat.getInstance()
+              .getConfig()
+              .getBoolean("misc.ender-pearl-cooldown.only-active-when-tagged")
+          && !CombatTag.isTagged(event.getPlayer())) {
         return;
       }
 
       if (lastThrowLocation.containsKey(event.getPlayer().getUniqueId())
           && lastThrowLocation.get(event.getPlayer().getUniqueId()).distance(event.getTo())
-          < AuroraCombat.getInstance().getConfig()
-          .getInt("misc.ender-pearl-cooldown.max-distance")) {
+              < AuroraCombat.getInstance()
+                  .getConfig()
+                  .getInt("misc.ender-pearl-cooldown.max-distance")) {
         return;
       }
 
       event.setCancelled(true);
 
-      event.getPlayer()
+      event
+          .getPlayer()
           .sendMessage(AuroraCombat.getInstance().getLang().getComponent("no-running"));
 
       return;
     }
 
-    if (lastThrowLocation.containsKey(event.getPlayer().getUniqueId())
-        && lastThrowLocation.get(event.getPlayer().getUniqueId()).distance(event.getTo())
-        >= AuroraCombat.getInstance().getConfig()
-        .getInt("misc.ender-pearl-cooldown.max-distance")) {
-      int ticks =
-          AuroraCombat.getInstance().getConfig().getInt("misc.ender-pearl-cooldown.time") * 20;
+    try {
+      if (lastThrowLocation.containsKey(event.getPlayer().getUniqueId())
+          && lastThrowLocation.get(event.getPlayer().getUniqueId()).distance(event.getTo())
+              >= AuroraCombat.getInstance()
+                  .getConfig()
+                  .getInt("misc.ender-pearl-cooldown.max-distance")) {
+        int ticks =
+            AuroraCombat.getInstance().getConfig().getInt("misc.ender-pearl-cooldown.time") * 20;
 
-      onCooldown.put(event.getPlayer().getUniqueId(), true);
+        onCooldown.put(event.getPlayer().getUniqueId(), true);
 
-      if (tasks.containsKey(event.getPlayer().getUniqueId())) {
-        tasks.get(event.getPlayer().getUniqueId()).cancel();
-      }
-
-      tasks.put(event.getPlayer().getUniqueId(), new BukkitRunnable() {
-        @Override
-        public void run() {
-          onCooldown.put(event.getPlayer().getUniqueId(), false);
+        if (tasks.containsKey(event.getPlayer().getUniqueId())) {
+          tasks.get(event.getPlayer().getUniqueId()).cancel();
         }
-      }.runTaskLater(AuroraCombat.getInstance(), ticks));
+
+        tasks.put(
+            event.getPlayer().getUniqueId(),
+            new BukkitRunnable() {
+              @Override
+              public void run() {
+                onCooldown.put(event.getPlayer().getUniqueId(), false);
+              }
+            }.runTaskLater(AuroraCombat.getInstance(), ticks));
+      }
+    } catch (IllegalArgumentException e) {
+      AuroraCombat.getInstance()
+          .getLogger()
+          .log(Level.WARNING, "Failed to measure distance between pearl throws");
     }
   }
 
@@ -86,9 +99,10 @@ public class PearlCooldown {
     }
 
     if (!AuroraCombat.getInstance().getConfig().getBoolean("misc.ender-pearl-cooldown.enabled")
-        || (AuroraCombat.getInstance().getConfig()
-        .getBoolean("misc.ender-pearl-cooldown.only-active-when-tagged") && !CombatTag.isTagged(
-        player))) {
+        || (AuroraCombat.getInstance()
+                .getConfig()
+                .getBoolean("misc.ender-pearl-cooldown.only-active-when-tagged")
+            && !CombatTag.isTagged(player))) {
       return;
     }
 
