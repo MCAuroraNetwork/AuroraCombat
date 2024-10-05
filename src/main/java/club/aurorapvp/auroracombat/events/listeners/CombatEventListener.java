@@ -19,6 +19,7 @@ import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityToggleGlideEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -40,6 +41,27 @@ public class CombatEventListener implements Listener {
   }
 
   @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+  public void onUseElytra(EntityToggleGlideEvent event) {
+    if (!(event.getEntity() instanceof Player player)) {
+      return;
+    }
+
+    if (!event.isGliding()) {
+      return;
+    }
+
+    if (AuroraCombat.getInstance().getConfig().getBoolean("combat-tag.allow-elytras")) {
+      return;
+    }
+
+    if (!CombatTag.isTagged(player)) {
+      return;
+    }
+
+    event.setCancelled(true);
+  }
+
+  @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
   public void onCommandRun(PlayerCommandPreprocessEvent event) {
     if (!CombatTag.isTagged(event.getPlayer())) {
       return;
@@ -48,12 +70,14 @@ public class CombatEventListener implements Listener {
     boolean commandMatched = false;
 
     if (!AuroraCombat.getInstance().getConfig().getBoolean("combat-tag.commands.allow-commands")) {
-      for (String command :
-          AuroraCombat.getInstance().getConfig().getStringList("combat-tag.commands.whitelisted")) {
-        if (event.getMessage().equals("/" + command)) {
-          commandMatched = true;
-          break;
-        }
+      return;
+    }
+
+    for (String command :
+        AuroraCombat.getInstance().getConfig().getStringList("combat-tag.commands.whitelisted")) {
+      if (event.getMessage().equals("/" + command)) {
+        commandMatched = true;
+        break;
       }
     }
 

@@ -24,6 +24,7 @@ public class Config {
     DEFAULTS.put("elo.default-points", 400);
     DEFAULTS.put("elo.max-change", 32);
     DEFAULTS.put("combat-tag.duration", 15);
+    DEFAULTS.put("combat-tag.allow-elytras", false);
     DEFAULTS.put("combat-tag.commands.allow-commands", false);
     DEFAULTS.put("combat-tag.commands.whitelisted", List.of("kill"));
     DEFAULTS.put("combat-tag.enable", true);
