@@ -31,7 +31,7 @@ public class PlayerEventListener implements Listener {
       return;
     }
 
-    event.setCancelled(AntiPearlPhase.isLocationPermitted(event.getPlayer(), event.getTo()));
+    event.setCancelled(!AntiPearlPhase.isLocationPermitted(event.getPlayer(), event.getTo()));
   }
 
   @EventHandler
