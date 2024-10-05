@@ -27,7 +27,11 @@ public class PlayerEventListener implements Listener {
 
   @EventHandler
   public void onTeleport(PlayerTeleportEvent event) {
-    AntiPearlPhase.isLocationPermitted(event.getPlayer(), event.getTo());
+    if (AuroraCombat.getInstance().getConfig().getBoolean("misc.pearl-phase.allow")) {
+      return;
+    }
+
+    event.setCancelled(AntiPearlPhase.isLocationPermitted(event.getPlayer(), event.getTo()));
   }
 
   @EventHandler
