@@ -26,19 +26,6 @@ public class PlayerEventListener implements Listener {
   }
 
   @EventHandler
-  public void onTeleport(PlayerTeleportEvent event) {
-    if (event.getCause() != PlayerTeleportEvent.TeleportCause.ENDER_PEARL) {
-      return;
-    }
-
-    if (AuroraCombat.getInstance().getConfig().getBoolean("misc.pearl-phase.allow")) {
-      return;
-    }
-
-    event.setCancelled(!AntiPearlPhase.isLocationPermitted(event.getPlayer(), event.getTo()));
-  }
-
-  @EventHandler
   public void onWorldChange(PlayerChangedWorldEvent event) {
     BlockFallDamage.setInvulnerable(event.getPlayer());
   }
