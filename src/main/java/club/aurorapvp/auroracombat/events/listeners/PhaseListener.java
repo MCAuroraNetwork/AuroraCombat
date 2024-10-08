@@ -131,8 +131,8 @@ public class PhaseListener implements Listener {
     for (int x = x1; x <= x2; ++x) {
       for (int y = y1; y <= y2; ++y) {
         for (int z = z1; z <= z2; ++z) {
-          Block block;
-          if ((block = new Location(world, x, y, z).getBlock()).isSolid()) {
+          Block block = new Location(world, x, y, z).getBlock();
+          if (!block.isPassable() && block.isSolid()) {
             BoundingBox blockBox = block.getBoundingBox();
             if (blockBox.overlaps(box)) {
               return true;
