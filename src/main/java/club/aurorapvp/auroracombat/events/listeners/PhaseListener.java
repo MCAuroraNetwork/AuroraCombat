@@ -16,6 +16,7 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.BoundingBox;
+import org.jetbrains.annotations.NotNull;
 
 public class PhaseListener implements Listener {
 
@@ -39,14 +40,7 @@ public class PhaseListener implements Listener {
       return;
     }
 
-    final float minX = (float) Math.min(event.getFrom().getX(), event.getTo().getX()),
-        minY = (float) Math.min(event.getFrom().getY(), event.getTo().getY()),
-        minZ = (float) Math.min(event.getFrom().getZ(), event.getTo().getZ()),
-        maxX = (float) Math.max(event.getFrom().getX(), event.getTo().getX()),
-        maxY = (float) Math.max(event.getFrom().getY(), event.getTo().getY()),
-        maxZ = (float) Math.max(event.getFrom().getZ(), event.getTo().getZ());
-
-    final BoundingBox box = new BoundingBox(minX, minY, minZ, maxX, maxY + 1.8f, maxZ);
+    final BoundingBox box = getBoundingBox(event);
 
     if (isInSolidBlock(box, event.getTo().getWorld())) {
       event.setTo(safeLocations.get(player));
@@ -54,6 +48,18 @@ public class PhaseListener implements Listener {
     }
 
     safeLocations.put(event.getPlayer(), event.getFrom().clone());
+  }
+
+  @NotNull
+  private static BoundingBox getBoundingBox(PlayerMoveEvent event) {
+    final double minX = Math.min(event.getFrom().getX(), event.getTo().getX()),
+        minY = Math.min(event.getFrom().getY(), event.getTo().getY()),
+        minZ = Math.min(event.getFrom().getZ(), event.getTo().getZ()),
+        maxX = Math.max(event.getFrom().getX(), event.getTo().getX()),
+        maxY = Math.max(event.getFrom().getY(), event.getTo().getY()) + 0.9,
+        maxZ = Math.max(event.getFrom().getZ(), event.getTo().getZ());
+
+    return new BoundingBox(minX, minY, minZ, maxX, maxY, maxZ);
   }
 
   @EventHandler(priority = EventPriority.HIGHEST)
