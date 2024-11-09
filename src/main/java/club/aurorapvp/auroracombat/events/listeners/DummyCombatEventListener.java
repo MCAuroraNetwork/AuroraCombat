@@ -4,7 +4,6 @@ import club.aurorapvp.auroracombat.AuroraCombat;
 import club.aurorapvp.auroracombat.events.custom.CombatTagEvent;
 import club.aurorapvp.auroracombat.events.custom.EntityDamagedByEntityEvent;
 import club.aurorapvp.auroracombat.modules.PracticeDummy;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Zombie;

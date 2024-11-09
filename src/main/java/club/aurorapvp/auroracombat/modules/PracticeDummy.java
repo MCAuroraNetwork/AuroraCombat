@@ -63,7 +63,7 @@ public class PracticeDummy {
 
   public static PracticeDummy getDummy(Zombie zombie) {
     for (PracticeDummy dummy : DUMMIES.values()) {
-      if (dummy.getZombie() == zombie) {
+      if (dummy.getZombie().equals(zombie)) {
         return dummy;
       }
     }

@@ -16,7 +16,7 @@ import org.bukkit.inventory.ItemStack;
 public class DeathMessage {
 
   public DeathMessage(PlayerKilledByPlayerEvent event) {
-    if (event.getDamageType() == AttackType.COMBAT_LOG) {
+    if (event.getDamageType().equals(AttackType.COMBAT_LOG)) {
       event.deathMessage(
           AuroraCombat.getInstance()
               .getLang()

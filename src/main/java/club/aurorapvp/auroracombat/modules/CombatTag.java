@@ -44,8 +44,8 @@ public class CombatTag {
     if (CombatTag.getTag(tagged, opponent) != null) {
       Objects.requireNonNull(getTag(tagged, opponent)).resetTimer();
     } else {
-      tags.get(playerOne.getUniqueId()).add(this);
-      tags.get(playerTwo.getUniqueId()).add(this);
+      TAGS.get(playerOne.getUniqueId()).add(this);
+      TAGS.get(playerTwo.getUniqueId()).add(this);
 
       this.startTimer();
 
@@ -54,11 +54,11 @@ public class CombatTag {
   }
 
   public static void register(Player player) {
-    tags.put(player.getUniqueId(), new LinkedList<>());
+    TAGS.put(player.getUniqueId(), new LinkedList<>());
   }
 
   public static void unregister(Player player) {
-    tags.remove(player.getUniqueId());
+    TAGS.remove(player.getUniqueId());
   }
 
   public static void removeTags(Player player) {
@@ -72,16 +72,16 @@ public class CombatTag {
   }
 
   public static LinkedList<CombatTag> getTags(Player player) {
-    return tags.get(player.getUniqueId());
+    return TAGS.get(player.getUniqueId());
   }
 
   public static CombatTag getRecentTag(Player player) {
-    return tags.get(player.getUniqueId()).getFirst();
+    return TAGS.get(player.getUniqueId()).getFirst();
   }
 
-  public static CombatTag getTag(Player p1, Player p2) {
-    for (CombatTag tag : tags.get(p1.getUniqueId())) {
-      if (tag.getPlayerOne() == p2 || tag.getPlayerTwo() == p2) {
+  public static CombatTag getTag(Player playerOne, Player playerTwo) {
+    for (CombatTag tag : TAGS.get(playerOne.getUniqueId())) {
+      if (tag.getOpponent(playerOne).equals(playerTwo)) {
         return tag;
       }
     }
@@ -90,15 +90,15 @@ public class CombatTag {
   }
 
   public static boolean isTagged(Player player) {
-    return !tags.get(player.getUniqueId()).isEmpty();
+    return !TAGS.get(player.getUniqueId()).isEmpty();
   }
 
   public static void setTaggable(Player player, boolean taggable) {
-    taggablePlayers.put(player.getUniqueId(), taggable);
+    TAGGABLE_PLAYERS.put(player.getUniqueId(), taggable);
   }
 
   public static boolean isUntaggable(Player player) {
-    boolean taggable = taggablePlayers.get(player.getUniqueId());
+    boolean taggable = TAGGABLE_PLAYERS.get(player.getUniqueId());
 
     if (taggable && AuroraCombat.getInstance().isWorldGuardInstalled()) {
       RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
@@ -125,7 +125,7 @@ public class CombatTag {
   }
 
   public Player getOpponent(Player player) {
-    if (player == playerOne) {
+    if (player.equals(playerOne)) {
       return playerTwo;
     } else {
       return playerOne;

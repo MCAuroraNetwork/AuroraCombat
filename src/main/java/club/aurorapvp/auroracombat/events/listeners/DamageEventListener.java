@@ -85,7 +85,7 @@ public class DamageEventListener implements Listener {
       return;
     }
 
-    if (event.getDamageSource().getDamageType() == DamageType.MOB_ATTACK) {
+    if (event.getDamageSource().getDamageType().equals(DamageType.MOB_ATTACK)) {
       new EntityOnEntityDamageBuilder()
           .setDamageType(AttackType.MELEE)
           .setDamaged(damaged)
@@ -118,7 +118,7 @@ public class DamageEventListener implements Listener {
     }
 
     for (Projectile firedProjectile : firedProjectiles) {
-      if (projectile == firedProjectile) {
+      if (projectile.equals(firedProjectile)) {
         new EntityOnEntityDamageBuilder()
             .setDamageType(AttackType.RANGED)
             .setDamaged(damaged)
@@ -138,8 +138,8 @@ public class DamageEventListener implements Listener {
     if (thrownPotion.getEffects().stream()
         .anyMatch(
             effect ->
-                effect.getType() == PotionEffectType.INSTANT_DAMAGE
-                    || effect.getType() == PotionEffectType.POISON)) {
+                effect.getType().equals(PotionEffectType.INSTANT_DAMAGE)
+                    || effect.getType().equals(PotionEffectType.POISON))) {
       new EntityOnEntityDamageBuilder()
           .setDamageType(AttackType.MAGIC)
           .setDamaged(damaged)
@@ -264,7 +264,7 @@ public class DamageEventListener implements Listener {
       return;
     }
 
-    if (!(event.getCause() == EntityDamageEvent.DamageCause.FALL)) {
+    if (!(event.getCause().equals(EntityDamageEvent.DamageCause.FALL))) {
       return;
     }
 
