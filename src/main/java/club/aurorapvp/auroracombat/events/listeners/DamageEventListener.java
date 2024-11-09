@@ -8,11 +8,8 @@ import club.aurorapvp.auroracombat.events.custom.EntityDamagedByEntityEvent;
 import club.aurorapvp.auroracombat.events.custom.PlayerDamagedByPlayerEvent;
 import club.aurorapvp.auroracombat.modules.BlockFallDamage;
 import club.aurorapvp.auroracombat.util.ItemStackUtil;
-
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.logging.Level;
-
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -20,15 +17,10 @@ import org.bukkit.block.BlockState;
 import org.bukkit.block.data.type.Bed;
 import org.bukkit.block.data.type.RespawnAnchor;
 import org.bukkit.damage.DamageType;
-import org.bukkit.entity.EnderCrystal;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.Player;
-import org.bukkit.entity.Projectile;
-import org.bukkit.entity.ThrownPotion;
+import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.BlockExplodeEvent;
 import org.bukkit.event.entity.EntityDamageByBlockEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -42,20 +34,34 @@ import org.bukkit.scheduler.BukkitRunnable;
 public class DamageEventListener implements Listener {
 
   private final HashSet<Projectile> firedProjectiles = new HashSet<>();
-  private final Map<Entity, ItemStack> lastPlacedCrystal = new HashMap<>();
-  private final Map<Entity, ItemStack> lastUsedBow = new HashMap<>();
-  private final Map<Entity, Entity> crystalsAttacked = new ConcurrentHashMap<>();
+  private final Map<UUID, ItemStack> lastPlacedCrystal = new HashMap<>();
+  private final Map<UUID, ItemStack> lastUsedBow = new HashMap<>();
+  private final Map<UUID, Entity> crystalsAttacked = new ConcurrentHashMap<>();
+  private final Map<UUID, Long> lastAttackedCrystal = new HashMap<>();
+  private final Map<UUID, Long> lastBlockExploded = new HashMap<>();
   private final Map<BlockState, Entity> blocksExploded = new ConcurrentHashMap<>();
 
   @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
   public void onEntityDamage(EntityDamageByEntityEvent event) {
     if (event.getEntity() instanceof EnderCrystal enderCrystal) {
-      crystalsAttacked.put(enderCrystal, event.getDamager());
+      crystalsAttacked.put(enderCrystal.getUniqueId(), event.getDamager());
+
+      int cpsLimit = AuroraCombat.getInstance().getConfig().getInt("misc.crystal-cps-limit");
+
+      if (cpsLimit > 0
+          && lastAttackedCrystal.containsKey(event.getDamager().getUniqueId())
+          && System.currentTimeMillis() - lastAttackedCrystal.get(event.getDamager().getUniqueId())
+              <= 1000 / cpsLimit) {
+        event.setCancelled(true);
+        return;
+      }
+
+      lastAttackedCrystal.put(event.getDamager().getUniqueId(), System.currentTimeMillis());
 
       new BukkitRunnable() {
         @Override
         public void run() {
-          crystalsAttacked.remove(enderCrystal);
+          crystalsAttacked.remove(enderCrystal.getUniqueId());
         }
       }.runTaskLaterAsynchronously(AuroraCombat.getInstance(), 1);
       return;
@@ -69,8 +75,10 @@ public class DamageEventListener implements Listener {
       new EntityOnEntityDamageBuilder()
           .setDamageType(AttackType.EXPLOSION_ENTITY)
           .setDamaged(damaged)
-          .setAttacker(crystalsAttacked.get(enderCrystal))
-          .setWeapon(lastPlacedCrystal.getOrDefault(crystalsAttacked.get(enderCrystal), null))
+          .setAttacker(crystalsAttacked.get(enderCrystal.getUniqueId()))
+          .setWeapon(
+              lastPlacedCrystal.getOrDefault(
+                  crystalsAttacked.get(enderCrystal.getUniqueId()).getUniqueId(), null))
           .setEvent(event)
           .build()
           .callEvent();
@@ -115,7 +123,7 @@ public class DamageEventListener implements Listener {
             .setDamageType(AttackType.RANGED)
             .setDamaged(damaged)
             .setAttacker(attacker)
-            .setWeapon(lastUsedBow.get(attacker))
+            .setWeapon(lastUsedBow.get(attacker.getUniqueId()))
             .setEvent(event)
             .build()
             .callEvent();
@@ -187,7 +195,7 @@ public class DamageEventListener implements Listener {
         .getType()
         .equals(Material.END_CRYSTAL)) {
       lastPlacedCrystal.put(
-          event.getPlayer(), event.getPlayer().getInventory().getItemInMainHand());
+          event.getPlayer().getUniqueId(), event.getPlayer().getInventory().getItemInMainHand());
       return;
     }
 
@@ -197,6 +205,17 @@ public class DamageEventListener implements Listener {
                   != Material.GLOWSTONE
               && event.getPlayer().getWorld().getEnvironment() != World.Environment.NETHER)
           || respawnAnchor.getCharges() >= 4) {
+
+        int cpsLimit = AuroraCombat.getInstance().getConfig().getInt("misc.anchor-cps-limit");
+
+        if (cpsLimit > 0
+            && lastBlockExploded.containsKey(event.getPlayer().getUniqueId())
+            && System.currentTimeMillis() - lastBlockExploded.get(event.getPlayer().getUniqueId())
+                <= 1000 / cpsLimit) {
+          event.setCancelled(true);
+          return;
+        }
+
         blocksExploded.put(event.getClickedBlock().getState(), event.getPlayer());
 
         new BukkitRunnable() {
@@ -229,7 +248,7 @@ public class DamageEventListener implements Listener {
     }
 
     this.firedProjectiles.add(event.getEntity());
-    this.lastUsedBow.put(player, player.getInventory().getItemInMainHand());
+    this.lastUsedBow.put(player.getUniqueId(), player.getInventory().getItemInMainHand());
   }
 
   @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)

@@ -36,6 +36,8 @@ public class Config {
     DEFAULTS.put("misc.ender-pearl-cooldown.only-active-when-tagged", false);
     DEFAULTS.put("misc.enable-dummies", true);
     DEFAULTS.put("misc.pearl-phase.allow", false);
+    DEFAULTS.put("misc.crystal-cps-limit", 8);
+    DEFAULTS.put("misc.anchor-cps-limit", 4);
     DEFAULTS.put("rating.enable-overall", true);
     DEFAULTS.put("optional-plugins.worldguard-compatibility", true);
     DEFAULTS.put("optional-plugins.discordsrv-compatibility", true);
