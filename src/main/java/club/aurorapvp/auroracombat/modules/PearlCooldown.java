@@ -85,7 +85,7 @@ public class PearlCooldown {
     } catch (IllegalArgumentException e) {
       AuroraCombat.getInstance()
           .getLogger()
-          .log(Level.WARNING, "Failed to measure distance between pearl throws");
+          .log(Level.WARNING, "Failed to measure distance between pearl throws", e);
     }
   }
 
