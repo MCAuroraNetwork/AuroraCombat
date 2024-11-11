@@ -1,6 +1,6 @@
 package club.aurorapvp.auroracombat.events.custom;
 
-import club.aurorapvp.auroracombat.enums.AttackType;
+import club.aurorapvp.auroracombat.enums.DamageType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.HandlerList;
@@ -12,19 +12,23 @@ public class PlayerDamagedByPlayerEvent extends EntityDamagedByEntityEvent imple
 
   private static final HandlerList HANDLERS = new HandlerList();
   private final Player damaged;
-  private final Player attacker;
+  private final Player damager;
   protected boolean cancelled;
 
   public PlayerDamagedByPlayerEvent(
-      AttackType attackType, EntityDamageEvent lastDamage, Player damaged, Player attacker, ItemStack weapon) {
-    super(attackType, lastDamage, damaged, attacker, weapon);
+      DamageType damageType,
+      EntityDamageEvent lastDamage,
+      Player damaged,
+      Player damager,
+      ItemStack weapon) {
+    super(damageType, lastDamage, damaged, damager, weapon);
 
     this.damaged = damaged;
-    this.attacker = attacker;
+    this.damager = damager;
   }
 
-  public Player getAttacker() {
-    return attacker;
+  public Player getDamager() {
+    return damager;
   }
 
   public Player getDamaged() {

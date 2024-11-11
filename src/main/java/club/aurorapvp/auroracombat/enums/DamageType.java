@@ -1,6 +1,6 @@
 package club.aurorapvp.auroracombat.enums;
 
-public enum AttackType {
+public enum DamageType {
   MELEE,
   MAGIC,
   RANGED,

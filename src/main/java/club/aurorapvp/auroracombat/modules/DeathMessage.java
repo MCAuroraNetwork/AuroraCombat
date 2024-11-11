@@ -1,7 +1,7 @@
 package club.aurorapvp.auroracombat.modules;
 
 import club.aurorapvp.auroracombat.AuroraCombat;
-import club.aurorapvp.auroracombat.enums.AttackType;
+import club.aurorapvp.auroracombat.enums.DamageType;
 import club.aurorapvp.auroracombat.events.custom.PlayerKilledByPlayerEvent;
 import java.util.Objects;
 import net.kyori.adventure.text.Component;
@@ -16,7 +16,7 @@ import org.bukkit.inventory.ItemStack;
 public class DeathMessage {
 
   public DeathMessage(PlayerKilledByPlayerEvent event) {
-    if (event.getDamageType().equals(AttackType.COMBAT_LOG)) {
+    if (event.getDamageType().equals(DamageType.COMBAT_LOG)) {
       event.deathMessage(
           AuroraCombat.getInstance()
               .getLang()
@@ -36,7 +36,7 @@ public class DeathMessage {
               .formatComponent(
                   "death-message.killed-by-player-generic",
                   event.getDamaged().getName(),
-                  event.getAttacker().getName()));
+                  event.getDamager().getName()));
       return;
     }
 
@@ -58,7 +58,7 @@ public class DeathMessage {
                   .formatComponent(
                       "death-message.killed-by-player-slain",
                       event.getDamaged().getName(),
-                      event.getAttacker().getName(),
+                      event.getDamager().getName(),
                       MiniMessage.miniMessage().serialize(weaponName))
                   .hoverEvent(hover));
       case EXPLOSION_ENTITY, EXPLOSION_BLOCK ->
@@ -68,7 +68,7 @@ public class DeathMessage {
                   .formatComponent(
                       "death-message.killed-by-player-explosion",
                       event.getDamaged().getName(),
-                      event.getAttacker().getName(),
+                      event.getDamager().getName(),
                       MiniMessage.miniMessage().serialize(weaponName))
                   .hoverEvent(hover));
       case RANGED ->
@@ -78,7 +78,7 @@ public class DeathMessage {
                   .formatComponent(
                       "death-message.killed-by-player-shot",
                       event.getDamaged().getName(),
-                      event.getAttacker().getName(),
+                      event.getDamager().getName(),
                       MiniMessage.miniMessage().serialize(weaponName))
                   .hoverEvent(hover));
       case MAGIC ->
@@ -88,7 +88,7 @@ public class DeathMessage {
                   .formatComponent(
                       "death-message.killed-by-player-magic",
                       event.getDamaged().getName(),
-                      event.getAttacker().getName(),
+                      event.getDamager().getName(),
                       MiniMessage.miniMessage().serialize(weaponName))
                   .hoverEvent(hover));
       default ->
@@ -98,7 +98,7 @@ public class DeathMessage {
                   .formatComponent(
                       "death-message.killed-by-player-generic",
                       event.getDamaged().getName(),
-                      event.getAttacker().getName()));
+                      event.getDamager().getName()));
     }
   }
 }

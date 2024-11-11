@@ -190,12 +190,12 @@ public class CombatEventListener implements Listener {
 
   @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
   public void onDamagedByPlayer(PlayerDamagedByPlayerEvent event) {
-    if (event.getAttacker().equals(event.getDamaged())) {
+    if (event.getDamager().equals(event.getDamaged())) {
       return;
     }
 
     if (AuroraCombat.getInstance().getConfig().getBoolean("combat-tag.enable")) {
-      new CombatTag(event.getDamaged(), event.getAttacker());
+      new CombatTag(event.getDamaged(), event.getDamager());
     }
 
     lastDamage.put(event.getDamaged().getUniqueId(), event);

@@ -1,6 +1,6 @@
 package club.aurorapvp.auroracombat.events.custom;
 
-import club.aurorapvp.auroracombat.enums.AttackType;
+import club.aurorapvp.auroracombat.enums.DamageType;
 import org.bukkit.entity.Entity;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
@@ -12,20 +12,24 @@ import org.jetbrains.annotations.NotNull;
 public class EntityDamagedByEntityEvent extends Event implements Cancellable {
 
   private static final HandlerList HANDLERS = new HandlerList();
-  private final AttackType attackType;
+  private final DamageType damageType;
   protected final EntityDamageEvent lastDamage;
   private final Entity damaged;
-  private final Entity attacker;
+  private final Entity damager;
   private final double damage;
   private final ItemStack weapon;
   protected boolean cancelled;
 
   public EntityDamagedByEntityEvent(
-      AttackType attackType, EntityDamageEvent lastDamage, Entity damaged, Entity attacker, ItemStack weapon) {
-    this.attackType = attackType;
+      DamageType damageType,
+      EntityDamageEvent lastDamage,
+      Entity damaged,
+      Entity damager,
+      ItemStack weapon) {
+    this.damageType = damageType;
     this.lastDamage = lastDamage;
     this.damaged = damaged;
-    this.attacker = attacker;
+    this.damager = damager;
     this.damage = lastDamage.getDamage();
     this.weapon = weapon;
   }
@@ -38,16 +42,16 @@ public class EntityDamagedByEntityEvent extends Event implements Cancellable {
     return damaged;
   }
 
-  public Entity getAttacker() {
-    return attacker;
+  public Entity getDamager() {
+    return damager;
   }
 
   public double getDamage() {
     return damage;
   }
 
-  public AttackType getDamageType() {
-    return attackType;
+  public DamageType getDamageType() {
+    return damageType;
   }
 
   @SuppressWarnings("unused")

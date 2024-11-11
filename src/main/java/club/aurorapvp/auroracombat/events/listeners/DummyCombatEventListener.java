@@ -52,7 +52,7 @@ public class DummyCombatEventListener implements Listener {
 
   @EventHandler
   public void onDummyAttack(EntityDamagedByEntityEvent event) {
-    if (!(event.getAttacker() instanceof Zombie zombie)) {
+    if (!(event.getDamager() instanceof Zombie zombie)) {
       return;
     }
 
