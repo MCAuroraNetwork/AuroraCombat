@@ -16,6 +16,7 @@ public class EntityDamagedByEntityEvent extends Event implements Cancellable {
   protected final EntityDamageEvent lastDamage;
   private final Entity damaged;
   private final Entity attacker;
+  private final double damage;
   private final ItemStack weapon;
   protected boolean cancelled;
 
@@ -25,6 +26,7 @@ public class EntityDamagedByEntityEvent extends Event implements Cancellable {
     this.lastDamage = lastDamage;
     this.damaged = damaged;
     this.attacker = attacker;
+    this.damage = lastDamage.getDamage();
     this.weapon = weapon;
   }
 
@@ -38,6 +40,10 @@ public class EntityDamagedByEntityEvent extends Event implements Cancellable {
 
   public Entity getAttacker() {
     return attacker;
+  }
+
+  public double getDamage() {
+    return damage;
   }
 
   public AttackType getDamageType() {
