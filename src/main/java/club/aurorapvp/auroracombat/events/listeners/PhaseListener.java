@@ -18,6 +18,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.BoundingBox;
 import org.jetbrains.annotations.NotNull;
 
+// TODO this should be in a module class, listeners are for listening only
 public class PhaseListener implements Listener {
 
   private static final Map<Player, Location> safeLocations = new ConcurrentHashMap<>();
@@ -26,10 +27,6 @@ public class PhaseListener implements Listener {
   public void onPhase(PlayerMoveEvent event) {
     Player player = event.getPlayer();
 
-    if (player.getLocation().getY() % 1 != 0 || event.getTo().getY() % 1 != 0) {
-      return;
-    }
-
     if (player.isSwimming()) {
       return;
     }
@@ -37,6 +34,17 @@ public class PhaseListener implements Listener {
     if (player.getAllowFlight()
         || event.getTo().getWorld().getUID() != event.getFrom().getWorld().getUID()
         || player.getVehicle() != null) {
+      return;
+    }
+
+    if (AuroraCombat.getInstance().getConfig().getBoolean("misc.pearl-phase-allow-for-nether-roof")
+        && event.getPlayer().getLocation().getWorld().getEnvironment() == World.Environment.NETHER
+        && event.getTo().getY() >= 122
+        && event.getTo().getY() <= 127) {
+      return;
+    }
+
+    if (player.getLocation().getY() % 1 != 0 || event.getTo().getY() % 1 != 0) {
       return;
     }
 
@@ -68,10 +76,16 @@ public class PhaseListener implements Listener {
       return;
     }
 
+    if (AuroraCombat.getInstance().getConfig().getBoolean("misc.pearl-phase-allow-for-nether-roof")
+        && event.getPlayer().getLocation().getWorld().getEnvironment() == World.Environment.NETHER
+        && event.getTo().getY() >= 122
+        && event.getTo().getY() <= 127) {
+      return;
+    }
+
     new BukkitRunnable() {
       @Override
       public void run() {
-
         if (!isInSolidBlock(event.getPlayer().getBoundingBox(), event.getPlayer().getWorld())) {
           safeLocations.put(event.getPlayer(), event.getPlayer().getLocation().clone());
 
