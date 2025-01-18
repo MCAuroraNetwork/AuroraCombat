@@ -37,10 +37,7 @@ public class PhaseListener implements Listener {
       return;
     }
 
-    if (AuroraCombat.getInstance().getConfig().getBoolean("misc.pearl-phase-allow-for-nether-roof")
-        && event.getPlayer().getLocation().getWorld().getEnvironment() == World.Environment.NETHER
-        && event.getTo().getY() >= 122
-        && event.getTo().getY() <= 127) {
+    if (inNetherRoof(event.getPlayer(), event.getTo(), event.getFrom())) {
       return;
     }
 
@@ -76,10 +73,7 @@ public class PhaseListener implements Listener {
       return;
     }
 
-    if (AuroraCombat.getInstance().getConfig().getBoolean("misc.pearl-phase-allow-for-nether-roof")
-        && event.getPlayer().getLocation().getWorld().getEnvironment() == World.Environment.NETHER
-        && event.getTo().getY() >= 122
-        && event.getTo().getY() <= 127) {
+    if (inNetherRoof(event.getPlayer(), event.getTo(), event.getFrom())) {
       return;
     }
 
@@ -98,6 +92,15 @@ public class PhaseListener implements Listener {
             .thenRun(() -> safeLocations.put(event.getPlayer(), event.getPlayer().getLocation()));
       }
     }.runTaskLater(AuroraCombat.getInstance(), 1L);
+  }
+
+  private boolean inNetherRoof(Player player, Location eventTo, Location from) {
+    return AuroraCombat.getInstance()
+            .getConfig()
+            .getBoolean("misc.pearl-phase-allow-for-nether-roof")
+        && player.getLocation().getWorld().getEnvironment() == World.Environment.NETHER
+        && ((eventTo.getY() >= 122 && eventTo.getY() <= 127)
+            || (from.getY() >= 122 && from.getY() <= 127));
   }
 
   public static Location findSafeLocation(Player player, Location location) {
