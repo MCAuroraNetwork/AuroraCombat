@@ -30,11 +30,7 @@ public class RatingDataHandler {
       return;
     }
 
-    String type = switch (this.rating.getType()) {
-      case GLOBAL -> "global";
-      case REGION -> "region";
-      case CUSTOM -> "custom";
-    };
+    String type = this.rating.getType().toString().toLowerCase();
 
     String key = "ratings." + type;
     List<String> ratings = Optional.of(yaml.getStringList(key)).orElse(new ArrayList<>());
@@ -53,11 +49,7 @@ public class RatingDataHandler {
   }
 
   public void delete() {
-    String type = switch (this.rating.getType()) {
-      case GLOBAL -> "global";
-      case REGION -> "region";
-      case CUSTOM -> "custom";
-    };
+    String type = this.rating.getType().toString().toLowerCase();
 
     String key = "ratings." + type;
     List<String> ratings = Optional.of(yaml.getStringList(key)).orElse(new ArrayList<>());
