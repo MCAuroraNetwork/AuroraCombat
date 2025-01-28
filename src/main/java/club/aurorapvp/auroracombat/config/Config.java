@@ -28,6 +28,9 @@ public class Config {
     DEFAULTS.put("combat-tag.commands.allow-commands", false);
     DEFAULTS.put("combat-tag.commands.whitelisted", List.of("kill"));
     DEFAULTS.put("combat-tag.enable", true);
+    DEFAULTS.put("rating.enable-overall", true);
+    DEFAULTS.put("mongodb.database-name", "aurora_combat");
+    DEFAULTS.put("mongodb.address", "mongodb://localhost:27017");
     DEFAULTS.put("misc.fall-damage.enable-first", false);
     DEFAULTS.put("misc.min-killstreak-to-announce", 10);
     DEFAULTS.put("misc.ender-pearl-cooldown.enabled", false);
@@ -39,7 +42,6 @@ public class Config {
     DEFAULTS.put("misc.pearl-phase-allow-for-nether-roof", false);
     DEFAULTS.put("misc.crystal-cps-limit", 8);
     DEFAULTS.put("misc.anchor-cps-limit", 4);
-    DEFAULTS.put("rating.enable-overall", true);
     DEFAULTS.put("optional-plugins.worldguard-compatibility", true);
     DEFAULTS.put("optional-plugins.discordsrv-compatibility", true);
 

@@ -2,43 +2,52 @@ package club.aurorapvp.auroracombat.data;
 
 import club.aurorapvp.auroracombat.AuroraCombat;
 import club.aurorapvp.auroracombat.modules.KillDeathTracker;
-import org.bukkit.NamespacedKey;
-import org.bukkit.persistence.PersistentDataContainer;
-import org.bukkit.persistence.PersistentDataType;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.model.Filters;
+import org.bson.Document;
 
 public class KillDeathDataHandler {
 
-  private final PersistentDataContainer container;
-  private final NamespacedKey killKey = new NamespacedKey(AuroraCombat.getInstance(), "kills");
-  private final NamespacedKey deathKey = new NamespacedKey(AuroraCombat.getInstance(), "deaths");
-  private final NamespacedKey streakKey = new NamespacedKey(AuroraCombat.getInstance(), "killstreak");
+  private final MongoCollection<Document> collection;
   private final KillDeathTracker tracker;
+  private final String playerId;
 
   public KillDeathDataHandler(KillDeathTracker tracker) {
     this.tracker = tracker;
-    this.container = tracker.getPlayer().getPersistentDataContainer();
+    this.collection = AuroraCombat.getInstance().getDatabase().getCollection("kill_and_death_data");
+    this.playerId = tracker.getPlayer().getUniqueId().toString();
   }
 
   public int getKills() {
-    return container.getOrDefault(killKey, PersistentDataType.INTEGER, -1);
+    Document playerData = collection.find(Filters.eq("_id", playerId)).first();
+    return playerData != null ? playerData.getInteger("kills", -1) : -1;
   }
 
   public int getKillstreak() {
-    return container.getOrDefault(streakKey, PersistentDataType.INTEGER, -1);
+    Document playerData = collection.find(Filters.eq("_id", playerId)).first();
+    return playerData != null ? playerData.getInteger("killstreak", -1) : -1;
   }
 
   public int getDeaths() {
-    return container.getOrDefault(deathKey, PersistentDataType.INTEGER, -1);
+    Document playerData = collection.find(Filters.eq("_id", playerId)).first();
+    return playerData != null ? playerData.getInteger("deaths", -1) : -1;
   }
 
   public void save() {
-    container.set(streakKey, PersistentDataType.INTEGER, tracker.getKillStreak());
-    container.set(killKey, PersistentDataType.INTEGER, tracker.getKills());
-    container.set(deathKey, PersistentDataType.INTEGER, tracker.getDeaths());
+    Document playerData =
+        new Document()
+            .append("_id", playerId)
+            .append("kills", tracker.getKills())
+            .append("deaths", tracker.getDeaths())
+            .append("killstreak", tracker.getKillStreak());
+
+    collection.updateOne(
+        Filters.eq("_id", playerId),
+        new Document("$set", playerData),
+        new com.mongodb.client.model.UpdateOptions().upsert(true));
   }
 
   public boolean exists() {
-    return container.get(deathKey, PersistentDataType.INTEGER) != null
-        && container.get(killKey, PersistentDataType.INTEGER) != null;
+    return collection.find(Filters.eq("_id", playerId)).first() != null;
   }
 }

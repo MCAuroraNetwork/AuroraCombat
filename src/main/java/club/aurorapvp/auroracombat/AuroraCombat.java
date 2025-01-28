@@ -8,6 +8,9 @@ import club.aurorapvp.auroracombat.flags.CombatTagFlags;
 import club.aurorapvp.auroracombat.flags.RatingFlags;
 import club.aurorapvp.auroracombat.modules.Placeholders;
 import club.aurorapvp.auroracombat.modules.Rating;
+import com.mongodb.client.MongoClient;
+import com.mongodb.client.MongoClients;
+import com.mongodb.client.MongoDatabase;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -20,6 +23,9 @@ public final class AuroraCombat extends JavaPlugin {
   private boolean discordSrvInstalled = false;
   private Config config;
   private Lang lang;
+
+  private MongoClient mongoClient;
+  private MongoDatabase mongoDatabase;
 
   public static AuroraCombat getInstance() {
     return INSTANCE;
@@ -39,6 +45,10 @@ public final class AuroraCombat extends JavaPlugin {
 
   public Lang getLang() {
     return lang;
+  }
+
+  public MongoDatabase getDatabase() {
+    return mongoDatabase;
   }
 
   @Override
@@ -64,6 +74,15 @@ public final class AuroraCombat extends JavaPlugin {
       discordSrvInstalled = true;
     }
 
+    String connectionString =
+        this.getConfig().getString("mongodb.address", "mongodb://localhost:27017");
+    String databaseName = this.getConfig().getString("mongodb.database-name", "aurora_combat");
+
+    mongoClient = MongoClients.create(connectionString);
+    mongoDatabase = mongoClient.getDatabase(databaseName);
+
+    getLogger().info("Connected to MongoDB database: " + databaseName);
+
     getLogger().info("AuroraCombat loaded in " + (System.currentTimeMillis() - startTime) + "ms");
   }
 
@@ -87,6 +106,12 @@ public final class AuroraCombat extends JavaPlugin {
   @Override
   public void onDisable() {
     long startTime = System.currentTimeMillis();
+
+    // Close MongoDB connection
+    if (mongoClient != null) {
+      mongoClient.close();
+      getLogger().info("MongoDB connection closed.");
+    }
 
     getLogger().info("AuroraCombat disabled in " + (System.currentTimeMillis() - startTime) + "ms");
   }
