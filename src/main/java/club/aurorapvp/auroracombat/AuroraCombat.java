@@ -107,7 +107,6 @@ public final class AuroraCombat extends JavaPlugin {
   public void onDisable() {
     long startTime = System.currentTimeMillis();
 
-    // Close MongoDB connection
     if (mongoClient != null) {
       mongoClient.close();
       getLogger().info("MongoDB connection closed.");
