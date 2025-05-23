@@ -271,5 +271,19 @@ public class CombatTag {
       playerOne.hideBossBar(playerOneBossBar[0]);
       playerTwo.hideBossBar(playerTwoBossBar[0]);
     }
+
+
+    playerOne.sendActionBar(
+            AuroraCombat.getInstance().getLang().formatComponent("tag-removed", playerTwo.getName()));
+    playerTwo.sendActionBar(
+            AuroraCombat.getInstance().getLang().formatComponent("tag-removed", playerOne.getName()));
+
+    if (playerOneBossBar[0] != null && playerTwoBossBar[0] != null) {
+      playerOne.hideBossBar(playerOneBossBar[0]);
+      playerTwo.hideBossBar(playerTwoBossBar[0]);
+    }
+
+    TAGS.get(this.getPlayerOne().getUniqueId()).remove(this);
+    TAGS.get(this.getPlayerTwo().getUniqueId()).remove(this);
   }
 }
