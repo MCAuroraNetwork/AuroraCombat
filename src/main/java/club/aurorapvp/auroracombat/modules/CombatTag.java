@@ -35,7 +35,8 @@ public class CombatTag {
   private Component playerTwoActionBar;
   private int timeRemaining =
       AuroraCombat.getInstance().getConfig().getInt("combat-tag.duration") * 1000;
-  private Timer countdown;
+  private Timer decrementTimer;
+  private Timer actionBarTimer;
   private BukkitTask bossbarTask;
 
   static {
@@ -168,41 +169,49 @@ public class CombatTag {
   public void startTimer() {
     final CombatTag tag = this;
 
-    countdown = new Timer();
-    countdown.scheduleAtFixedRate(
-        new TimerTask() {
-          @Override
-          public void run() {
-            if (timeRemaining > 0) {
-              timeRemaining -= 1;
+    final int totalTime = timeRemaining;
 
-              int greenBars = (int) Math.round((double) 30 - timeRemaining);
-              int redBars = 30 - greenBars;
+    decrementTimer = new Timer();
+    actionBarTimer  = new Timer();
 
-              Component green = Component.text("|".repeat(greenBars)).color(NamedTextColor.GREEN);
+    decrementTimer.scheduleAtFixedRate(new TimerTask() {
+      @Override
+      public void run() {
+        if (timeRemaining > 0) {
+          timeRemaining--;
+        } else {
+          tag.removeTag();
+        }
+      }
+    }, 0, 1L);
 
-              Component red = Component.text("|".repeat(redBars)).color(NamedTextColor.RED);
+    long interval = totalTime / 30;
 
-              Component playerOneName =
-                  playerOne.name().decorate(TextDecoration.BOLD).color(NamedTextColor.RED);
+    actionBarTimer.scheduleAtFixedRate(new TimerTask() {
+      @Override
+      public void run() {
+          int greenBars = (int) Math.round((double) timeRemaining / totalTime * 30);
+          int redBars   = 30 - greenBars;
 
-              Component playerTwoName =
-                  playerTwo.name().decorate(TextDecoration.BOLD).color(NamedTextColor.RED);
+          Component green = Component.text("|".repeat(greenBars))
+                  .color(NamedTextColor.GREEN);
+          Component red   = Component.text("|".repeat(redBars))
+                  .color(NamedTextColor.RED);
 
-              playerOneActionBar = playerTwoName.appendSpace().append(green.append(red));
-              playerTwoActionBar = playerOneName.appendSpace().append(green).append(red);
-            } else {
-              tag.removeTag();
+          Component p1Name = playerOne.name()
+                  .decorate(TextDecoration.BOLD)
+                  .color(NamedTextColor.RED);
+          Component p2Name = playerTwo.name()
+                  .decorate(TextDecoration.BOLD)
+                  .color(NamedTextColor.RED);
 
-              countdown.cancel();
-              countdown.purge();
-            }
-          }
-        },
-        0,
-        1000L);
+          playerOneActionBar = p2Name.appendSpace().append(green).append(red);
+          playerTwoActionBar = p1Name.appendSpace().append(green).append(red);
+      }
+    }, 0, interval);
 
-    playerOneBossBar[0] = BossBar.bossBar(Component.text(), 0, Color.WHITE, Overlay.PROGRESS);
+    playerOneBossBar[0] = BossBar.bossBar(Component.text(), 0, Color.RED, Overlay.PROGRESS);
+    playerTwoBossBar[0] = BossBar.bossBar(Component.text(), 0, Color.RED, Overlay.PROGRESS);
 
     playerTwoBossBar[0] = BossBar.bossBar(Component.text(), 0, Color.WHITE, Overlay.PROGRESS);
 
@@ -243,13 +252,19 @@ public class CombatTag {
   }
 
   public void removeTag() {
-    new CombatTagRemovedEvent(playerOne, playerTwo).callEvent();
-
-    countdown.cancel();
+    new BukkitRunnable() {
+      @Override
+      public void run() {
+        new CombatTagRemovedEvent(playerOne, playerTwo).callEvent();
+      }
+    }.runTask(AuroraCombat.getInstance());
 
     if (!bossbarTask.isCancelled() && bossbarTask != null) {
       bossbarTask.cancel();
     }
+
+    decrementTimer.cancel();
+    actionBarTimer.cancel();
 
     if (playerOneBossBar[0] != null && playerTwoBossBar[0] != null) {
       playerOne.hideBossBar(playerOneBossBar[0]);
