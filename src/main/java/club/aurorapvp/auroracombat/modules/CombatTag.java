@@ -244,12 +244,6 @@ public class CombatTag {
 
   public void resetTimer() {
     timeRemaining = AuroraCombat.getInstance().getConfig().getInt("combat-tag.duration") * 1000;
-
-    if (!bossbarTask.isCancelled() && bossbarTask != null) {
-      bossbarTask.cancel();
-    }
-
-    this.startTimer();
   }
 
   public void removeTag() {
