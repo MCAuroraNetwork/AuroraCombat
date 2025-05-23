@@ -213,7 +213,8 @@ public class CombatTag {
     playerOneBossBar[0] = BossBar.bossBar(Component.text(), 0, Color.RED, Overlay.PROGRESS);
     playerTwoBossBar[0] = BossBar.bossBar(Component.text(), 0, Color.RED, Overlay.PROGRESS);
 
-    playerTwoBossBar[0] = BossBar.bossBar(Component.text(), 0, Color.WHITE, Overlay.PROGRESS);
+    playerOne.showBossBar(playerOneBossBar[0]);
+    playerTwo.showBossBar(playerTwoBossBar[0]);
 
     bossbarTask =
         new BukkitRunnable() {
@@ -226,19 +227,19 @@ public class CombatTag {
         }.runTaskTimer(AuroraCombat.getInstance(), 0L, 1L);
   }
 
-  private void updatebar(BossBar bar, Player player) {
+  private void updatebar(BossBar bar, Player opponent) {
     bar.name(
-            player
+            opponent
                 .displayName()
                 .decorate(TextDecoration.BOLD)
                 .color(NamedTextColor.YELLOW)
                 .appendSpace()
                 .append(
-                    Component.text((int) (player.getHealth() + player.getAbsorptionAmount()) + "❤")
+                    Component.text((int) (opponent.getHealth() + opponent.getAbsorptionAmount()) + "❤")
                         .color(NamedTextColor.RED))
                 .appendSpace()
-                .append(Component.text(player.getPing() + "ms").color(NamedTextColor.AQUA)))
-        .progress((float) Math.min((player.getHealth() + player.getAbsorptionAmount()) / 20, 1.0f));
+                .append(Component.text(opponent.getPing() + "ms").color(NamedTextColor.AQUA)))
+        .progress((float) Math.min((opponent.getHealth() + opponent.getAbsorptionAmount()) / 20, 1.0f));
   }
 
   public void resetTimer() {
