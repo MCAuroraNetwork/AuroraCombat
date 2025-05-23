@@ -20,9 +20,12 @@ public class ScoreDataHandler {
   public int getPoints() {
     Document scoreDoc =
         collection
-            .find(Filters.eq("playerId", score.getPlayer().getUniqueId().toString()))
-            .filter(Filters.eq("rating", score.getRating().getName()))
+            .find(
+                Filters.and(
+                    Filters.eq("playerId", score.getPlayer().getUniqueId().toString()),
+                    Filters.eq("rating", score.getRating().getName())))
             .first();
+
     return scoreDoc != null ? scoreDoc.getInteger("points", -1) : -1;
   }
 
