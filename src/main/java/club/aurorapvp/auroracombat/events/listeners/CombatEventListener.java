@@ -135,6 +135,10 @@ public class CombatEventListener implements Listener {
     Player dead = event.getDead();
     Player killer = event.getKiller();
 
+    if (CombatTag.isUntaggable(dead) && CombatTag.isUntaggable(killer)) {
+      return;
+    }
+
     Objects.requireNonNull(KillDeathTracker.getTracker(dead)).addDeath();
     Objects.requireNonNull(KillDeathTracker.getTracker(killer)).addKill();
 
