@@ -58,6 +58,66 @@ public class Placeholders extends PlaceholderExpansion {
       }
     }
 
+    if (params.startsWith("killstreak_")) {
+      Rating rating = Rating.getRating(params.replace("killstreak_", ""));
+
+      if (rating == null) {
+        return "Rating not found";
+      } else {
+        KillDeathTracker tracker = KillDeathTracker.getTracker(player, rating);
+
+        return String.valueOf(tracker.getKillStreak());
+      }
+    }
+
+    if (params.startsWith("highest_killstreak_")) {
+      Rating rating = Rating.getRating(params.replace("highest_killstreak_", ""));
+
+      if (rating == null) {
+        return "Rating not found";
+      } else {
+        KillDeathTracker tracker = KillDeathTracker.getTracker(player, rating);
+
+        return String.valueOf(tracker.getHighestKillStreak());
+      }
+    }
+
+    if (params.startsWith("kills_")) {
+      Rating rating = Rating.getRating(params.replace("kills_", ""));
+
+      if (rating == null) {
+        return "Rating not found";
+      } else {
+        KillDeathTracker tracker = KillDeathTracker.getTracker(player, rating);
+
+        return String.valueOf(tracker.getKills());
+      }
+    }
+
+    if (params.startsWith("deaths_")) {
+      Rating rating = Rating.getRating(params.replace("deaths_", ""));
+
+      if (rating == null) {
+        return "Rating not found";
+      } else {
+        KillDeathTracker tracker = KillDeathTracker.getTracker(player, rating);
+
+        return String.valueOf(tracker.getDeaths());
+      }
+    }
+
+    if (params.startsWith("kdr_")) {
+      Rating rating = Rating.getRating(params.replace("kdr_", ""));
+
+      if (rating == null) {
+        return "Rating not found";
+      } else {
+        KillDeathTracker tracker = KillDeathTracker.getTracker(player, rating);
+
+        return String.valueOf(Math.round(tracker.getKDR() * 10d) / 10d);
+      }
+    }
+
     if (params.startsWith("killstreak")) {
       KillDeathTracker tracker = KillDeathTracker.getTracker(player);
 

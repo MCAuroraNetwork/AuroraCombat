@@ -153,6 +153,8 @@ public class CombatEventListener implements Listener {
     StringBuilder killerMessage = new StringBuilder();
 
     for (Rating rating : updatedRatings.keySet()) {
+      Objects.requireNonNull(KillDeathTracker.getTracker(killer, rating)).addKill();
+
       killerMessage
           .append("\n")
           .append(rating.getFriendlyName())
@@ -167,6 +169,8 @@ public class CombatEventListener implements Listener {
     StringBuilder deadMessage = new StringBuilder();
 
     for (Rating rating : updatedRatings.keySet()) {
+      Objects.requireNonNull(KillDeathTracker.getTracker(dead, rating)).addDeath();
+
       deadMessage
           .append("\n")
           .append(rating.getFriendlyName())

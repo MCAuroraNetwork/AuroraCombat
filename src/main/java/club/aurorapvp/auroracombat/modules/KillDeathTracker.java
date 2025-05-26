@@ -14,7 +14,9 @@ import org.bukkit.entity.Player;
 public class KillDeathTracker {
 
   private static final Map<UUID, KillDeathTracker> TRACKERS = new HashMap<>();
+  private static final Map<UUID, Map<Rating, KillDeathTracker>> RATING_TRACKERS = new HashMap<>();
   private final Player player;
+  private final Rating rating;
   private int deaths;
   private int kills;
   private int killStreak;
@@ -23,6 +25,7 @@ public class KillDeathTracker {
 
   public KillDeathTracker(Player player) {
     this.player = player;
+    this.rating = null;
     data = new KillDeathDataHandler(this);
 
     if (this.exists()) {
@@ -34,10 +37,38 @@ public class KillDeathTracker {
       highestKillStreak = 0;
       this.save();
     }
+
+    TRACKERS.put(player.getUniqueId(), this);
+  }
+
+  public KillDeathTracker(Player player, Rating rating) {
+    this.player = player;
+    this.rating = rating;
+    data = new KillDeathDataHandler(this, rating);
+
+    if (this.exists()) {
+      this.reload();
+    } else {
+      kills = 0;
+      deaths = 0;
+      killStreak = 0;
+      highestKillStreak = 0;
+      this.save();
+    }
+
+    if (!RATING_TRACKERS.containsKey(player.getUniqueId())) {
+      RATING_TRACKERS.put(player.getUniqueId(), new HashMap<>());
+    }
+
+    RATING_TRACKERS.get(player.getUniqueId()).put(rating, this);
   }
 
   public static void register(Player player) {
-    TRACKERS.put(player.getUniqueId(), new KillDeathTracker(player));
+    new KillDeathTracker(player);
+
+    for (Rating rating : Rating.getRatings()) {
+      new KillDeathTracker(player, rating);
+    }
   }
 
   public static void unregister(Player player) {
@@ -46,6 +77,10 @@ public class KillDeathTracker {
 
   public Player getPlayer() {
     return player;
+  }
+
+  public Rating getRating() {
+    return rating;
   }
 
   public int getDeaths() {
@@ -159,5 +194,9 @@ public class KillDeathTracker {
 
   public static KillDeathTracker getTracker(Player player) {
     return TRACKERS.get(player.getUniqueId());
+  }
+
+  public static KillDeathTracker getTracker(Player player, Rating rating) {
+    return RATING_TRACKERS.get(player.getUniqueId()).get(rating);
   }
 }
