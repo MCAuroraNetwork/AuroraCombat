@@ -18,6 +18,7 @@ public class KillDeathTracker {
   private int deaths;
   private int kills;
   private int killStreak;
+  private int highestKillStreak;
   private final KillDeathDataHandler data;
 
   public KillDeathTracker(Player player) {
@@ -30,6 +31,7 @@ public class KillDeathTracker {
       kills = 0;
       deaths = 0;
       killStreak = 0;
+      highestKillStreak = 0;
       this.save();
     }
   }
@@ -58,6 +60,10 @@ public class KillDeathTracker {
     return this.killStreak;
   }
 
+  public int getHighestKillStreak() {
+    return this.highestKillStreak;
+  }
+
   public double getKDR() {
     if (deaths == 0) {
       return kills;
@@ -74,6 +80,7 @@ public class KillDeathTracker {
     kills = data.getKills();
     deaths = data.getDeaths();
     killStreak = data.getKillstreak();
+    highestKillStreak = data.getHighestKillstreak();
   }
 
   public void save() {
@@ -116,6 +123,10 @@ public class KillDeathTracker {
   public void addKill() {
     this.killStreak++;
     this.kills++;
+
+    if (killStreak > highestKillStreak) {
+      highestKillStreak++;
+    }
 
     if (killStreak
             % AuroraCombat.getInstance().getConfig().getInt("misc.min-killstreak-to-announce")

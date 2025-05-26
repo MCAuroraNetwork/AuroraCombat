@@ -64,6 +64,12 @@ public class Placeholders extends PlaceholderExpansion {
       return String.valueOf(tracker.getKillStreak());
     }
 
+    if (params.startsWith("highest_killstreak")) {
+      KillDeathTracker tracker = KillDeathTracker.getTracker(player);
+
+      return String.valueOf(tracker.getHighestKillStreak());
+    }
+
     if (params.startsWith("kills")) {
       KillDeathTracker tracker = KillDeathTracker.getTracker(player);
 

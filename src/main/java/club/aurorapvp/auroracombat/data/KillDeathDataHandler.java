@@ -23,6 +23,11 @@ public class KillDeathDataHandler {
     return playerData != null ? playerData.getInteger("kills", -1) : -1;
   }
 
+  public int getHighestKillstreak() {
+    Document playerData = collection.find(Filters.eq("_id", playerId)).first();
+    return playerData != null ? playerData.getInteger("highestKillstreak", -1) : -1;
+  }
+
   public int getKillstreak() {
     Document playerData = collection.find(Filters.eq("_id", playerId)).first();
     return playerData != null ? playerData.getInteger("killstreak", -1) : -1;

@@ -172,43 +172,45 @@ public class CombatTag {
     final int totalTime = timeRemaining;
 
     decrementTimer = new Timer();
-    actionBarTimer  = new Timer();
+    actionBarTimer = new Timer();
 
-    decrementTimer.scheduleAtFixedRate(new TimerTask() {
-      @Override
-      public void run() {
-        if (timeRemaining > 0) {
-          timeRemaining--;
-        } else {
-          tag.removeTag();
-        }
-      }
-    }, 0, 1L);
+    decrementTimer.scheduleAtFixedRate(
+        new TimerTask() {
+          @Override
+          public void run() {
+            if (timeRemaining > 0) {
+              timeRemaining--;
+            } else {
+              tag.removeTag();
+            }
+          }
+        },
+        0,
+        1L);
 
     long interval = totalTime / 30;
 
-    actionBarTimer.scheduleAtFixedRate(new TimerTask() {
-      @Override
-      public void run() {
-          int greenBars = (int) Math.round((double) timeRemaining / totalTime * 30);
-          int redBars   = 30 - greenBars;
+    actionBarTimer.scheduleAtFixedRate(
+        new TimerTask() {
+          @Override
+          public void run() {
+            int greenBars = (int) Math.round((double) timeRemaining / totalTime * 30);
+            int redBars = 30 - greenBars;
 
-          Component green = Component.text("|".repeat(greenBars))
-                  .color(NamedTextColor.GREEN);
-          Component red   = Component.text("|".repeat(redBars))
-                  .color(NamedTextColor.RED);
+            Component green = Component.text("|".repeat(greenBars)).color(NamedTextColor.GREEN);
+            Component red = Component.text("|".repeat(redBars)).color(NamedTextColor.RED);
 
-          Component p1Name = playerOne.name()
-                  .decorate(TextDecoration.BOLD)
-                  .color(NamedTextColor.RED);
-          Component p2Name = playerTwo.name()
-                  .decorate(TextDecoration.BOLD)
-                  .color(NamedTextColor.RED);
+            Component p1Name =
+                playerOne.name().decorate(TextDecoration.BOLD).color(NamedTextColor.RED);
+            Component p2Name =
+                playerTwo.name().decorate(TextDecoration.BOLD).color(NamedTextColor.RED);
 
-          playerOneActionBar = p2Name.appendSpace().append(green).append(red);
-          playerTwoActionBar = p1Name.appendSpace().append(green).append(red);
-      }
-    }, 0, interval);
+            playerOneActionBar = p2Name.appendSpace().append(green).append(red);
+            playerTwoActionBar = p1Name.appendSpace().append(green).append(red);
+          }
+        },
+        0,
+        interval);
 
     playerOneBossBar[0] = BossBar.bossBar(Component.text(), 0, Color.RED, Overlay.PROGRESS);
     playerTwoBossBar[0] = BossBar.bossBar(Component.text(), 0, Color.RED, Overlay.PROGRESS);
@@ -235,11 +237,13 @@ public class CombatTag {
                 .color(NamedTextColor.YELLOW)
                 .appendSpace()
                 .append(
-                    Component.text((int) (opponent.getHealth() + opponent.getAbsorptionAmount()) + "❤")
+                    Component.text(
+                            (int) (opponent.getHealth() + opponent.getAbsorptionAmount()) + "❤")
                         .color(NamedTextColor.RED))
                 .appendSpace()
                 .append(Component.text(opponent.getPing() + "ms").color(NamedTextColor.AQUA)))
-        .progress((float) Math.min((opponent.getHealth() + opponent.getAbsorptionAmount()) / 20, 1.0f));
+        .progress(
+            (float) Math.min((opponent.getHealth() + opponent.getAbsorptionAmount()) / 20, 1.0f));
   }
 
   public void resetTimer() {
@@ -266,11 +270,10 @@ public class CombatTag {
       playerTwo.hideBossBar(playerTwoBossBar[0]);
     }
 
-
     playerOne.sendActionBar(
-            AuroraCombat.getInstance().getLang().formatComponent("tag-removed", playerTwo.getName()));
+        AuroraCombat.getInstance().getLang().formatComponent("tag-removed", playerTwo.getName()));
     playerTwo.sendActionBar(
-            AuroraCombat.getInstance().getLang().formatComponent("tag-removed", playerOne.getName()));
+        AuroraCombat.getInstance().getLang().formatComponent("tag-removed", playerOne.getName()));
 
     if (playerOneBossBar[0] != null && playerTwoBossBar[0] != null) {
       playerOne.hideBossBar(playerOneBossBar[0]);
