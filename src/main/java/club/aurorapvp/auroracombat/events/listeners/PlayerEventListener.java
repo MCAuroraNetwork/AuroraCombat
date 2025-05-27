@@ -3,7 +3,9 @@ package club.aurorapvp.auroracombat.events.listeners;
 import club.aurorapvp.auroracombat.AuroraCombat;
 import club.aurorapvp.auroracombat.modules.*;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.*;
 
 public class PlayerEventListener implements Listener {
@@ -28,6 +30,13 @@ public class PlayerEventListener implements Listener {
   @EventHandler
   public void onWorldChange(PlayerChangedWorldEvent event) {
     BlockFallDamage.setInvulnerable(event.getPlayer());
+  }
+
+  @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+  public void onCommandRun(PlayerCommandPreprocessEvent event) {
+    if (event.getMessage().startsWith("/spawn")) {
+      BlockFallDamage.setInvulnerable(event.getPlayer());
+    }
   }
 
   @EventHandler
